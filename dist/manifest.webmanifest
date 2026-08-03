@@ -1,0 +1,9 @@
+{
+  "name": "Компания по уходу за деревьями",
+  "short_name": "Деревья",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf7ef",
+  "theme_color": "#143d2b",
+  "lang": "ru"
+}
