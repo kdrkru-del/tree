@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   const config = window.TREE_SITE_CONFIG || {};
   const metrikaId = config.metrikaId;
 
@@ -80,32 +80,25 @@
       const goalNode = event.target.closest('[data-goal]');
       if (goalNode) reachGoal(goalNode.dataset.goal, { href: goalNode.getAttribute('href') });
       const phone = event.target.closest('a[href^="tel:"]');
-      if (phone) reachGoal('phone_click', { href: phone.getAttribute('href') });
+      if (phone) reachGoal('click_phone', { href: phone.getAttribute('href') });
       const formLink = event.target.closest('[data-open-form]');
       if (formLink) {
         const service = formLink.dataset.service;
         const form = document.querySelector('[data-lead-form]');
         if (form && service) {
-          const select = form.querySelector('[name="service"]');
-          if (select) {
-            const matching = [...select.options].find((option) => service.toLowerCase().includes(option.text.toLowerCase()));
-            if (matching) select.value = matching.value;
+          const radio = form.querySelector(`input[name="service"][value="${service}"]`);
+          if (radio) {
+            radio.checked = true;
+          } else {
+             // If not an exact match, check 'Другое'
+             const otherRadio = form.querySelector(`input[name="service"][value="Другое"]`);
+             if (otherRadio) otherRadio.checked = true;
           }
         }
-        reachGoal('request_intent', { service });
+        reachGoal('click_calculate', { service });
       }
     });
   }
-
-  function initCredits() {
-    const toggle = document.querySelector('[data-credits-toggle]');
-    const list = document.querySelector('[data-credits-list]');
-    if (!toggle || !list) return;
-    toggle.addEventListener('click', () => {
-      list.hidden = !list.hidden;
-    });
-  }
-
 
   function initHomeAnimations() {
     const hero = document.querySelector('.hero');
@@ -116,10 +109,9 @@
     document.body.classList.add('motion-ready');
 
     const heroItems = [
-      ...document.querySelectorAll('.hero-copy > .eyebrow, .hero-copy h1, .hero-lead, .hero-copy > p:not(.eyebrow):not(.hero-lead), .hero-actions'),
-      ...document.querySelectorAll('.hero-points li'),
-      ...document.querySelectorAll('.hero-panel')
-    ];
+      ...document.querySelectorAll('.hero-copy > .hero-badge, .hero-copy h1, .hero-lead, .hero-actions, .hero-benefits'),
+      document.querySelector('.hero-prices')
+    ].filter(Boolean);
 
     heroItems.forEach((item, index) => {
       item.classList.add('hero-motion');
@@ -131,20 +123,20 @@
       '#problems .problem-card',
       '#services .section-head',
       '#services .service-card',
-      '.split-panel > *',
       '#process .section-head',
       '#process .timeline article',
-      '.trust-grid > *',
+      '.trust-cards > *',
       '#works .section-head',
       '#works .work-card',
       '#prices .section-head',
-      '#prices .factor-cloud span',
+      '#factors .factor-card',
       '#organizations .org-grid > *',
       '#areas .section-head',
       '#areas .area-grid span',
       '#faq .section-head',
       '#faq details',
-      '.lead-section .lead-grid > *'
+      '.lead-section .lead-grid > *',
+      '.branch-upsell-inner > *'
     ].join(','));
 
     revealItems.forEach((item, index) => {
@@ -167,6 +159,57 @@
     revealItems.forEach((item) => observer.observe(item));
   }
 
+  function initQuickLead() {
+      const quickForm = document.querySelector('[data-quick-lead-form]');
+      if(!quickForm) return;
+
+      const utm = getUtm();
+
+      quickForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const btn = quickForm.querySelector('button[type="submit"]');
+          const phoneInput = quickForm.querySelector('input[name="quick_phone"]');
+          const phone = phoneInput.value;
+          const successMsg = quickForm.querySelector('[data-quick-success]');
+
+          if (btn) btn.disabled = true;
+
+          const payload = {
+              created_at: new Date().toISOString(),
+              source: document.referrer || 'direct',
+              page: window.location.href,
+              entry_page: localStorage.getItem('tree_site_entry_page') || window.location.href,
+              utm,
+              fields: {
+                  phone: phone,
+                  service: 'Быстрый расчет',
+                  comment: 'Заявка из формы "Узнайте стоимость вашего дерева"'
+              }
+          };
+
+          saveLead(payload);
+
+          try {
+            if (config.leadEndpoint) {
+              await fetch(config.leadEndpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                keepalive: true
+              });
+            }
+            reachGoal('lead_phone', { phone });
+            if(successMsg) successMsg.hidden = false;
+            phoneInput.closest('.quick-lead-field').hidden = true;
+          } catch (error) {
+             saveError({ at: new Date().toISOString(), message: error.message, payload });
+             alert('Заявка сохранена в резерве. Пожалуйста, позвоните нам.');
+          } finally {
+             if (btn) btn.disabled = false;
+          }
+      });
+  }
+
   function initForms() {
     const utm = getUtm();
     document.querySelectorAll('[data-lead-form]').forEach((form) => {
@@ -176,7 +219,8 @@
       const fileInput = form.querySelector('[data-photo-input]');
       const fileStatus = form.querySelector('[data-file-status]');
       const entryPage = form.querySelector('[name="entry_page"]');
-      const requestedService = new URLSearchParams(window.location.search).get('service');
+      const branchAfterBlock = form.querySelector('[data-branch-after]');
+      const serviceRadios = form.querySelectorAll('input[name="service"]');
       let current = 0;
       let started = false;
 
@@ -184,21 +228,41 @@
         entryPage.value = localStorage.getItem('tree_site_entry_page') || window.location.href;
       }
 
+      // Check URL parameters for requested service
+      const requestedService = new URLSearchParams(window.location.search).get('service');
       if (requestedService) {
-        const select = form.querySelector('[name="service"]');
-        if (select) {
-          const normalized = requestedService.toLowerCase();
-          const matching = [...select.options].find((option) => normalized.includes(option.text.toLowerCase()) || option.text.toLowerCase().includes(normalized));
-          if (matching) select.value = matching.value;
+        const normalized = requestedService.toLowerCase();
+        const matchingRadio = [...serviceRadios].find((radio) =>
+          normalized.includes(radio.value.toLowerCase()) || radio.value.toLowerCase().includes(normalized)
+        );
+        if (matchingRadio) {
+            matchingRadio.checked = true;
         }
       }
+
+      function updateBranchAfterVisibility() {
+          if (!branchAfterBlock) return;
+          const selected = form.querySelector('input[name="service"]:checked');
+          if (selected && ['Спилить дерево', 'Аварийное дерево', 'Обрезать дерево', 'Расчистить участок'].includes(selected.value)) {
+              branchAfterBlock.hidden = false;
+          } else {
+              branchAfterBlock.hidden = true;
+              const afterInputs = branchAfterBlock.querySelectorAll('input');
+              afterInputs.forEach(i => i.checked = false);
+          }
+      }
+
+      serviceRadios.forEach(radio => radio.addEventListener('change', updateBranchAfterVisibility));
+      updateBranchAfterVisibility(); // Init
 
       function showStep(index) {
         current = Math.max(0, Math.min(index, steps.length - 1));
         steps.forEach((step, stepIndex) => {
           step.hidden = stepIndex !== current;
         });
-        if (progress) progress.style.width = `${((current + 1) / steps.length) * 100}%`;
+        if (progress) {
+             progress.style.width = index === 0 ? '50%' : '100%';
+        }
       }
 
       function validCurrentStep() {
@@ -212,6 +276,21 @@
           reachGoal('form_start');
         }
       }, { once: true });
+
+      // Save contact step
+      const saveContactBtn = form.querySelector('[data-save-contact]');
+      if (saveContactBtn) {
+          saveContactBtn.addEventListener('click', async () => {
+              if (validCurrentStep()) {
+                  reachGoal('form_contact_saved');
+                  reachGoal('form_step_1');
+                  
+                  // Optionally send partial lead here if needed.
+                  // For now, just advance to step 2.
+                  showStep(current + 1);
+              }
+          });
+      }
 
       form.querySelectorAll('[data-next]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -233,7 +312,7 @@
           }
           const totalMb = files.reduce((sum, file) => sum + file.size, 0) / 1024 / 1024;
           fileStatus.textContent = files.length ? `${files.length} файл(ов), ${totalMb.toFixed(1)} МБ` : 'Файлы не выбраны';
-          reachGoal('photo_upload', { count: files.length });
+          reachGoal('lead_photo', { count: files.length });
         });
       }
 
@@ -247,6 +326,12 @@
 
         const data = new FormData(form);
         const files = [...(fileInput ? fileInput.files : [])].slice(0, 10);
+        
+        let commentText = data.get('comment') || '';
+        if (data.get('branch_after')) {
+            commentText += `\nПосле работы с ветками: ${data.get('branch_after')}`;
+        }
+
         const payload = {
           created_at: new Date().toISOString(),
           source: document.referrer || 'direct',
@@ -255,27 +340,14 @@
           utm,
           fields: {
             service: data.get('service'),
-            region: data.get('region'),
             city: data.get('city'),
-            address: data.get('address'),
-            tree_count: data.get('tree_count'),
-            height: data.get('height'),
-            desired_date: data.get('desired_date'),
-            conditions: data.getAll('conditions'),
             name: data.get('name'),
             phone: data.get('phone'),
-            contact_method: data.get('contact_method'),
-            comment: data.get('comment')
+            comment: commentText.trim()
           },
           files: files.map((file) => ({ name: file.name, size: file.size, type: file.type })),
           crm: {
-            stage: 'новая заявка',
-            status_order: '',
-            responsible_manager: '',
-            assigned_team: '',
-            preliminary_price: '',
-            final_price: '',
-            commission_amount: ''
+            stage: 'новая заявка'
           }
         };
 
@@ -290,9 +362,10 @@
               keepalive: true
             });
           }
-          reachGoal('form_submit', { service: payload.fields.service });
-          reachGoal('estimate_request', { service: payload.fields.service });
+          reachGoal('lead_form', { service: payload.fields.service });
+          reachGoal('form_complete', { service: payload.fields.service });
           form.querySelectorAll('fieldset').forEach((fieldset) => { fieldset.hidden = true; });
+          if (progress) progress.parentElement.hidden = true;
           if (success) success.hidden = false;
           form.reset();
         } catch (error) {
@@ -324,7 +397,6 @@
   loadIntegrations();
   initNav();
   initHomeAnimations();
-  initGoals();
-  initCredits();
+  initQuickLead();
   initForms();
 })();
