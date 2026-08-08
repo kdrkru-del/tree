@@ -1,4 +1,3 @@
-﻿.edge-audit-profile/
-.audit-*.png
 node_modules/
-.DS_Store
+worker/.wrangler/
+worker/wrangler.toml

@@ -1,0 +1,6 @@
+name = "zelsrez-leads"
+main = "lead-worker.mjs"
+compatibility_date = "2026-08-01"
+
+[vars]
+ALLOWED_ORIGINS = "https://zelsrez.ru,https://www.zelsrez.ru"

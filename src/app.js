@@ -29,6 +29,133 @@
     }
   }
 
+  function createLeadId() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+      return window.crypto.randomUUID();
+    }
+    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  }
+
+  function selectService(form, requestedService) {
+    if (!form || !requestedService) return;
+    const radios = [...form.querySelectorAll('input[name="service"]')];
+    const normalized = String(requestedService).toLowerCase();
+    const exact = radios.find((radio) => {
+      const value = radio.value.toLowerCase();
+      return normalized.includes(value) || value.includes(normalized);
+    });
+
+    let match = exact;
+    if (!match) {
+      const mappings = [
+        { words: ['аварийн'], value: 'Аварийное дерево' },
+        { words: ['обрез', 'плодов'], value: 'Обрезать дерево' },
+        { words: ['вывоз'], value: 'Вывоз веток' },
+        { words: ['ветк', 'щеп', 'измельч'], value: 'Измельчить ветки' },
+        { words: ['пень', 'пня', 'пней', 'корч'], value: 'Удалить пень' },
+        { words: ['расчист'], value: 'Расчистить участок' },
+        { words: ['спил', 'сух', 'дерев'], value: 'Спилить дерево' }
+      ];
+      const mapping = mappings.find((item) => item.words.some((word) => normalized.includes(word)));
+      match = radios.find((radio) => radio.value === (mapping ? mapping.value : 'Другое'));
+    }
+
+    if (match) {
+      match.checked = true;
+      match.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+  function formatLeadMessage(payload) {
+    const fields = payload.fields || {};
+    const lines = [
+      '🌳 Новая заявка с zelsrez.ru',
+      payload.lead_id ? `Номер: ${payload.lead_id}` : '',
+      fields.service ? `Услуга: ${fields.service}` : '',
+      fields.phone ? `Телефон: ${fields.phone}` : '',
+      fields.name ? `Имя: ${fields.name}` : '',
+      fields.city ? `Населенный пункт: ${fields.city}` : '',
+      fields.comment ? `Комментарий: ${fields.comment}` : '',
+      payload.files && payload.files.length
+        ? `Выбрано фото: ${payload.files.length}. Прикрепите их к сообщению в Telegram.`
+        : '',
+      payload.page ? `Страница: ${payload.page}` : ''
+    ];
+    return lines.filter(Boolean).join('\n');
+  }
+
+  function telegramDraftUrl(payload) {
+    if (!config.telegramUrl) return '';
+    try {
+      const url = new URL(config.telegramUrl, window.location.origin);
+      if (url.hostname !== 't.me' && url.protocol !== 'tg:') return '';
+      url.searchParams.set('text', formatLeadMessage(payload));
+      return url.toString();
+    } catch {
+      return '';
+    }
+  }
+
+  function openTelegramDraft(payload) {
+    const url = telegramDraftUrl(payload);
+    if (!url) return { opened: false, url: '' };
+    const opened = window.open(url, '_blank', 'noopener,noreferrer');
+    return { opened: Boolean(opened), url };
+  }
+
+  async function deliverLead(payload, files = []) {
+    if (!config.leadEndpoint) {
+      return { method: 'telegram', ...openTelegramDraft(payload) };
+    }
+
+    const requestOptions = { method: 'POST' };
+    if (files.length) {
+      const body = new FormData();
+      body.append('payload', JSON.stringify(payload));
+      files.forEach((file) => body.append('photos', file, file.name));
+      requestOptions.body = body;
+    } else {
+      requestOptions.headers = { 'Content-Type': 'application/json' };
+      requestOptions.body = JSON.stringify(payload);
+      requestOptions.keepalive = true;
+    }
+
+    const response = await fetch(config.leadEndpoint, requestOptions);
+    const responseData = await response.json().catch(() => null);
+
+    if (!response.ok || (responseData && responseData.ok === false)) {
+      throw new Error(`Сервис заявок ответил с кодом ${response.status}`);
+    }
+
+    return { method: 'endpoint', opened: false, url: '', response: responseData };
+  }
+
+  function showSubmissionState(node, { title, text, telegramUrl = '' }) {
+    if (!node) return;
+    const titleNode = node.querySelector('[data-submission-title]');
+    const textNode = node.querySelector('[data-submission-text]');
+    const linkNode = node.querySelector('[data-submission-link]');
+    if (titleNode) titleNode.textContent = title;
+    if (textNode) textNode.textContent = text;
+    node.classList.toggle('is-telegram-fallback', Boolean(telegramUrl));
+    if (linkNode) {
+      linkNode.hidden = !telegramUrl;
+      if (telegramUrl) linkNode.href = telegramUrl;
+    }
+    node.hidden = false;
+  }
+
+  function recordDeliveryError(error, payload) {
+    const key = 'tree_site_form_errors';
+    const errors = JSON.parse(localStorage.getItem(key) || '[]');
+    errors.push({
+      at: new Date().toISOString(),
+      lead_id: payload.lead_id,
+      message: error instanceof Error ? error.message : String(error)
+    });
+    localStorage.setItem(key, JSON.stringify(errors.slice(-10)));
+  }
+
   function loadIntegrations() {
     if (metrikaId) {
       (function (m, e, t, r, i, k, a) {
@@ -85,16 +212,7 @@
       if (formLink) {
         const service = formLink.dataset.service;
         const form = document.querySelector('[data-lead-form]');
-        if (form && service) {
-          const radio = form.querySelector(`input[name="service"][value="${service}"]`);
-          if (radio) {
-            radio.checked = true;
-          } else {
-             // If not an exact match, check 'Другое'
-             const otherRadio = form.querySelector(`input[name="service"][value="Другое"]`);
-             if (otherRadio) otherRadio.checked = true;
-          }
-        }
+        selectService(form, service);
         reachGoal('click_calculate', { service });
       }
     });
@@ -175,6 +293,7 @@
           if (btn) btn.disabled = true;
 
           const payload = {
+              lead_id: createLeadId(),
               created_at: new Date().toISOString(),
               source: document.referrer || 'direct',
               page: window.location.href,
@@ -187,23 +306,33 @@
               }
           };
 
-          saveLead(payload);
-
           try {
-            if (config.leadEndpoint) {
-              await fetch(config.leadEndpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-                keepalive: true
+            const result = await deliverLead(payload);
+            reachGoal('lead_phone');
+            if (result.method === 'endpoint') {
+              showSubmissionState(successMsg, {
+                title: 'Заявка отправлена.',
+                text: 'Менеджер свяжется с вами.'
               });
+            } else {
+              showSubmissionState(successMsg, {
+                title: result.opened ? 'Открылся Telegram.' : 'Отправьте заявку в Telegram.',
+                text: 'Проверьте сообщение и нажмите «Отправить».',
+                telegramUrl: result.url
+              });
+              reachGoal('lead_telegram_fallback');
             }
-            reachGoal('lead_phone', { phone });
-            if(successMsg) successMsg.hidden = false;
             phoneInput.closest('.quick-lead-field').hidden = true;
           } catch (error) {
-             saveError({ at: new Date().toISOString(), message: error.message, payload });
-             alert('Заявка сохранена в резерве. Пожалуйста, позвоните нам.');
+             recordDeliveryError(error, payload);
+             const fallback = openTelegramDraft(payload);
+             showSubmissionState(successMsg, {
+               title: 'Автоматическая отправка не сработала.',
+               text: fallback.url
+                 ? 'Мы открыли Telegram: проверьте сообщение и нажмите «Отправить».'
+                 : 'Пожалуйста, позвоните нам по номеру в шапке сайта.',
+               telegramUrl: fallback.url
+             });
           } finally {
              if (btn) btn.disabled = false;
           }
@@ -230,15 +359,7 @@
 
       // Check URL parameters for requested service
       const requestedService = new URLSearchParams(window.location.search).get('service');
-      if (requestedService) {
-        const normalized = requestedService.toLowerCase();
-        const matchingRadio = [...serviceRadios].find((radio) =>
-          normalized.includes(radio.value.toLowerCase()) || radio.value.toLowerCase().includes(normalized)
-        );
-        if (matchingRadio) {
-            matchingRadio.checked = true;
-        }
-      }
+      selectService(form, requestedService);
 
       function updateBranchAfterVisibility() {
           if (!branchAfterBlock) return;
@@ -333,6 +454,7 @@
         }
 
         const payload = {
+          lead_id: createLeadId(),
           created_at: new Date().toISOString(),
           source: document.referrer || 'direct',
           page: window.location.href,
@@ -351,26 +473,42 @@
           }
         };
 
-        saveLead(payload);
-
         try {
-          if (config.leadEndpoint) {
-            await fetch(config.leadEndpoint, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload),
-              keepalive: true
-            });
-          }
-          reachGoal('lead_form', { service: payload.fields.service });
-          reachGoal('form_complete', { service: payload.fields.service });
+          const result = await deliverLead(payload, files);
           form.querySelectorAll('fieldset').forEach((fieldset) => { fieldset.hidden = true; });
           if (progress) progress.parentElement.hidden = true;
-          if (success) success.hidden = false;
+          if (result.method === 'endpoint') {
+            reachGoal('lead_form', { service: payload.fields.service });
+            reachGoal('form_complete', { service: payload.fields.service });
+            showSubmissionState(success, {
+              title: 'Спасибо! Заявка отправлена.',
+              text: 'Менеджер компании свяжется с вами для уточнения информации.'
+            });
+          } else {
+            reachGoal('lead_telegram_fallback', { service: payload.fields.service });
+            showSubmissionState(success, {
+              title: result.opened ? 'Открылся Telegram.' : 'Отправьте заявку в Telegram.',
+              text: files.length
+                ? 'Проверьте сообщение, прикрепите выбранные фотографии и нажмите «Отправить».'
+                : 'Проверьте сообщение и нажмите «Отправить».',
+              telegramUrl: result.url
+            });
+          }
           form.reset();
         } catch (error) {
-          saveError({ at: new Date().toISOString(), message: error.message, payload });
-          alert('Заявка сохранена в резерве. Пожалуйста, позвоните нам или попробуйте отправить еще раз.');
+          recordDeliveryError(error, payload);
+          const fallback = openTelegramDraft(payload);
+          if (fallback.url) {
+            form.querySelectorAll('fieldset').forEach((fieldset) => { fieldset.hidden = true; });
+            if (progress) progress.parentElement.hidden = true;
+          }
+          showSubmissionState(success, {
+            title: 'Автоматическая отправка не сработала.',
+            text: fallback.url
+              ? 'Мы открыли Telegram: проверьте сообщение, при необходимости добавьте фотографии и нажмите «Отправить».'
+              : 'Пожалуйста, позвоните нам по номеру в шапке сайта или попробуйте еще раз.',
+            telegramUrl: fallback.url
+          });
         } finally {
           if (submit) submit.disabled = false;
         }
@@ -380,22 +518,9 @@
     });
   }
 
-  function saveLead(payload) {
-    const key = 'tree_site_leads_backup';
-    const leads = JSON.parse(localStorage.getItem(key) || '[]');
-    leads.push(payload);
-    localStorage.setItem(key, JSON.stringify(leads.slice(-30)));
-  }
-
-  function saveError(error) {
-    const key = 'tree_site_form_errors';
-    const errors = JSON.parse(localStorage.getItem(key) || '[]');
-    errors.push(error);
-    localStorage.setItem(key, JSON.stringify(errors.slice(-30)));
-  }
-
   loadIntegrations();
   initNav();
+  initGoals();
   initHomeAnimations();
   initQuickLead();
   initForms();

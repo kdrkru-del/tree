@@ -143,6 +143,7 @@ export function homePage() {
   ${heroSection()}
   ${quickLeadSection()}
   ${problemsSection()}
+  ${servicesSection()}
   ${priceTableSection()}
   ${priceFactorsSection()}
   ${worksPreview()}
@@ -201,12 +202,14 @@ function quickLeadSection() {
       <div class="quick-lead-actions">
         <form class="quick-lead-form" data-quick-lead-form>
           <div class="quick-lead-field">
-            <input type="tel" name="quick_phone" id="quick_phone" placeholder="Ваш телефон" required autocomplete="tel">
+            <input type="tel" name="quick_phone" id="quick_phone" placeholder="Ваш телефон" required autocomplete="tel" inputmode="tel" minlength="10" maxlength="24" pattern="[+0-9 ()\\-]{10,24}">
             <button class="btn btn-accent" type="submit" data-goal="lead_phone">Получить расчет</button>
           </div>
-          <p class="quick-lead-hint">Телефон — обязательно. Остальное — по желанию.</p>
-          <div class="form-success quick-lead-success" data-quick-success hidden>
-            <strong>Заявка принята.</strong> Менеджер свяжется с вами.
+          <label class="quick-lead-consent"><input type="checkbox" name="quick_consent" required> <span>Согласен на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a></span></label>
+          <p class="quick-lead-hint">Телефон — обязательно. Остальное уточним при связи.</p>
+          <div class="form-success quick-lead-success" data-quick-success hidden aria-live="polite">
+            <strong data-submission-title>Заявка отправлена.</strong> <span data-submission-text>Менеджер свяжется с вами.</span>
+            <a class="submission-link" href="${messengerHref('#lead-form')}" data-submission-link hidden rel="noopener">Открыть Telegram</a>
           </div>
         </form>
         ${hasValue(site.telegramUrl) ? `<a class="btn btn-outline" href="${messengerHref('#lead-form')}" data-goal="click_messenger">Отправить фото</a>` : ''}
@@ -283,7 +286,7 @@ function leadForm(selectedService) {
     <legend>1. Что нужно сделать?</legend>
     <div class="service-options">${serviceOptions.map((opt) => `<label class="service-option-label"><input type="radio" name="service" value="${esc(opt)}" ${opt === 'Спилить дерево' ? 'checked' : ''}><span>${esc(opt)}</span></label>`).join('')}</div>
     <div class="form-grid">
-      <label>Телефон <span class="required">*</span><input name="phone" type="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__"></label>
+      <label>Телефон <span class="required">*</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required minlength="10" maxlength="24" pattern="[+0-9 ()\\-]{10,24}" placeholder="+7 (___) ___-__-__"></label>
     </div>
     <div class="branch-after-block" data-branch-after hidden>
       <p>Что сделать с ветками после работы?</p>
@@ -292,7 +295,7 @@ function leadForm(selectedService) {
     <label class="consent"><input type="checkbox" name="consent" required> Нажимая кнопку, я даю согласие на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a></label>
     <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
     <div class="form-buttons">
-      <button class="btn btn-accent btn-full" type="button" data-save-contact data-goal="form_contact_saved">Получить расчет</button>
+      <button class="btn btn-accent btn-full" type="button" data-save-contact data-goal="form_contact_saved">Продолжить</button>
     </div>
   </fieldset>
   <fieldset data-step hidden>
@@ -309,7 +312,7 @@ function leadForm(selectedService) {
       <button class="btn btn-accent" type="submit">Отправить заявку</button>
     </div>
   </fieldset>
-  <div class="form-success" data-form-success hidden><h3>Спасибо! Заявка принята.</h3><p>Менеджер компании свяжется с вами для уточнения информации.</p></div>
+  <div class="form-success" data-form-success hidden aria-live="polite"><h3 data-submission-title>Спасибо! Заявка отправлена.</h3><p data-submission-text>Менеджер компании свяжется с вами для уточнения информации.</p><a class="btn btn-accent submission-link" href="${messengerHref('#lead-form')}" data-submission-link hidden rel="noopener">Открыть Telegram</a></div>
 </form>`;
 }
 

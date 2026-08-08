@@ -593,10 +593,39 @@ textarea {
     text-align: right;
 }
 
+.quick-lead-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.quick-lead-consent input {
+    margin-top: 2px;
+    flex: 0 0 auto;
+}
+
+.quick-lead-consent a {
+    color: var(--white);
+    text-decoration: underline;
+}
+
 .quick-lead-success {
     background: rgba(255,255,255,0.1);
     color: #fff;
     border-color: rgba(255,255,255,0.2);
+}
+
+.form-success.is-telegram-fallback {
+  background: #fff4dd;
+  border-color: var(--orange-600);
+}
+
+.quick-lead-success.is-telegram-fallback {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 @media(max-width: 768px) {
@@ -1391,6 +1420,17 @@ details p {
 
 .form-success p {
   margin: 0;
+}
+
+.submission-link {
+  display: inline-flex;
+  margin-top: 16px;
+}
+
+.quick-lead-success .submission-link {
+  color: var(--white);
+  font-weight: 700;
+  text-decoration: underline;
 }
 
 @media (max-width: 1024px) {

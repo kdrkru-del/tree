@@ -89,7 +89,9 @@ async function build() {
   await add('works', worksPage());
   await add('faq', faqPage());
   await add('contacts', contactsPage());
-  await add('404', notFoundPage());
+  const notFoundHtml = notFoundPage();
+  await write('404', notFoundHtml);
+  await writeFile(path.join(dist, '404.html'), notFoundHtml, 'utf8');
 
   for (const service of services) {
     await add(service.slug, servicePage(service));
@@ -114,6 +116,7 @@ ${routes.map((route) => `  <url><loc>${xmlEscape(site.baseUrl + route)}</loc></u
 Allow: /
 Sitemap: ${site.baseUrl}/sitemap.xml
 `, 'utf8');
+  await writeFile(path.join(dist, 'CNAME'), 'zelsrez.ru\n', 'utf8');
   await writeFile(path.join(dist, 'manifest.webmanifest'), JSON.stringify({
     name: site.brand,
     short_name: 'Деревья',
