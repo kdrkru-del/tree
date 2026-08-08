@@ -246,6 +246,8 @@
       '.trust-cards > *',
       '#works .section-head',
       '#works .work-card',
+      '#videos .section-head',
+      '#videos .short-card',
       '#prices .section-head',
       '#factors .factor-card',
       '#organizations .org-grid > *',

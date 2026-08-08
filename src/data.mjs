@@ -263,6 +263,20 @@ export const workExamples = [
   }
 ];
 
+export const workVideos = [
+  'Bo5lWUE8UAk',
+  'oMOOqb6vgmw',
+  'nvt6iCWwLm4',
+  '6MSzlEpyrBQ',
+  'TnuufbzdOyQ',
+  'MTZXrfj0UtU'
+].map((youtubeId, index) => ({
+  youtubeId,
+  title: `Процесс спила деревьев — видео ${index + 1}`,
+  url: `https://www.youtube.com/shorts/${youtubeId}`,
+  thumbnail: `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`
+}));
+
 export const regions = [
   'Москва', 'Московская область', 'Одинцово', 'Истра', 'Красногорск', 'Химки', 'Мытищи', 'Балашиха', 'Подольск', 'Домодедово'
 ].map((title, index) => {

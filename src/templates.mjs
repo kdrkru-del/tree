@@ -12,7 +12,8 @@ import {
   services,
   site,
   trustPoints,
-  workExamples
+  workExamples,
+  workVideos
 } from './data.mjs';
 
 const esc = (value) => String(value ?? '')
@@ -148,6 +149,7 @@ export function homePage() {
   ${priceFactorsSection()}
   ${worksPreview()}
   ${trustSection()}
+  ${videosSection()}
   ${processSection()}
   ${branchChippingUpsell()}
   ${organizationsSection()}
@@ -245,6 +247,10 @@ function worksPreview() {
 
 function trustSection() {
   return `<section class="section section-muted"><div class="container"><div class="section-head"><p class="eyebrow">Доверие</p><h2>Почему нам доверяют работу возле домов и построек</h2></div><div class="trust-cards">${trustPoints.map((point) => `<div class="trust-card"><h3>${esc(point.title)}</h3><p>${esc(point.text)}</p></div>`).join('')}</div></div></section>`;
+}
+
+function videosSection() {
+  return `<section class="section video-section" id="videos"><div class="container"><div class="section-head"><p class="eyebrow">Процесс</p><h2>Как мы выполняем спил деревьев</h2><p>Реальные кадры с наших объектов. Без монтажа и прикрас — просто показываем, как работаем.</p></div><div class="shorts-grid">${workVideos.map((video) => `<article class="short-card"><a class="yt-facade" href="${esc(video.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(video.title)}" data-goal="click_video"><img src="${esc(video.thumbnail)}" alt="${esc(video.title)}" loading="lazy" width="360" height="640"><span class="yt-play-btn" aria-hidden="true">▶</span></a></article>`).join('')}</div></div></section>`;
 }
 
 function processSection() {
