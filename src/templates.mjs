@@ -117,7 +117,7 @@ function footer() {
   return `<footer class="site-footer">
   <div class="container footer-grid">
     <div>
-      <a class="brand footer-brand" href="/tree/"><span class="brand-mark" aria-hidden="true">Д</span><span><strong>${esc(site.brand)}</strong><small>Спил, обрезка, пни и расчистка</small></span></a>
+      <a class="brand footer-brand" href="/tree/"><span class="brand-mark" aria-hidden="true">Д</span><span><strong>${esc(site.brand)}</strong><small>Спил, обрезка, дробление веток и пней</small></span></a>
       <p>Выполняем работы с деревьями на частных и коммерческих территориях. Стоимость и состав работ согласуются до начала выполнения.</p>
       <p class="muted">${esc(site.addressNote)}</p>
     </div>
@@ -164,14 +164,14 @@ function heroSection() {
     <div class="hero-copy">
       <p class="hero-badge">Предварительная оценка по фото</p>
       <h1>Спил и удаление деревьев<br>в Москве и Московской области</h1>
-      <p class="hero-lead">Спиливаем обычные, большие и аварийные деревья. Работаем возле домов, заборов и коммуникаций. Оценим стоимость по фотографиям до выезда.</p>
+      <p class="hero-lead">Спиливаем аварийные деревья, дробим ветки и пни, расчищаем участки. Работаем возле домов, заборов и коммуникаций. Оценим стоимость по фотографиям до выезда.</p>
       <div class="hero-actions">
         <a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Рассчитать стоимость по фото</a>
         <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
       </div>
       <ul class="hero-benefits">
-        <li>✓ Москва и Московская область</li>
-        <li>✓ Работа в сложных условиях</li>
+        <li>✓ Спил и обрезка деревьев</li>
+        <li>✓ Дробление веток и пней</li>
         <li>✓ Оценка по фото</li>
         <li>✓ Уборка и вывоз по договоренности</li>
       </ul>
