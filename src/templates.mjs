@@ -139,7 +139,6 @@ export function homePage() {
   ${trustSection()}
   ${videosSection()}
   ${processSection()}
-  ${branchChippingUpsell()}
   ${organizationsSection()}
   ${faqSection(faq)}
   ${leadSection('Получите расчет по фотографиям', 'Пришлите 2–3 фотографии. Обычно по ним уже можно определить способ работы и ориентировочную стоимость.')}`;
@@ -212,7 +211,7 @@ function priceFactorsSection() {
 }
 
 function servicesSection() {
-  return `<section class="section section-muted" id="services"><div class="container"><div class="section-head"><p class="eyebrow">Основные услуги</p><h2>Работы с деревьями, пнями и участками</h2><p>Каждая услуга рассчитывается индивидуально. Вывоз и уборка включаются только если они согласованы.</p></div><div class="service-grid">${services.slice(0, 8).map(serviceCard).join('')}</div></div></section>`;
+  return `<section class="section section-muted" id="services"><div class="container"><div class="section-head"><p class="eyebrow">Основные услуги</p><h2>Работы с деревьями, пнями и участками</h2><p>Каждая услуга рассчитывается индивидуально. Вывоз и уборка включаются только если они согласованы.</p></div><div class="service-grid">${services.slice(0, 9).map(serviceCard).join('')}</div></div></section>`;
 }
 
 function serviceCard(service) {
@@ -233,10 +232,6 @@ function videosSection() {
 
 function processSection() {
   return `<section class="section" id="process"><div class="container"><div class="section-head"><p class="eyebrow">Порядок работы</p><h2>Как мы работаем</h2></div><div class="timeline">${processSteps.map(([title, text], index) => `<article><span>${String(index + 1).padStart(2, '0')}</span><h3>${esc(title)}</h3><p>${esc(text)}</p></article>`).join('')}</div><div class="process-cta"><p>Есть фото дерева? Узнайте стоимость сейчас.</p><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Отправить фото</a></div></div></section>`;
-}
-
-function branchChippingUpsell() {
-  return `<section class="section branch-upsell" id="izmelchenie"><div class="container"><div class="branch-upsell-inner"><div><p class="eyebrow">Дополнительная услуга</p><h2>Измельчение веток в щепу</h2><p>Измельчим ветки после спила, обрезки или расчистки участка. Дробилка (щепорез) существенно уменьшает объем древесных отходов.</p><p class="from-price-large">от 2 500 ₽</p><div class="branch-upsell-actions"><a class="btn btn-accent" href="/izmelchenie-vetok/" data-goal="click_branch_chipping">Рассчитать стоимость измельчения</a><a class="link-more" href="/izmelchenie-vetok/">Подробнее об услуге</a></div></div><div class="branch-upsell-options"><p><strong>Что делать с ветками после работы?</strong></p><ul><li>🌿 Оставить на участке</li><li>♻️ Измельчить в щепу</li><li>🚛 Подготовить к вывозу</li><li>✅ Измельчить и вывезти остатки</li></ul><p class="muted">Вариант согласовывается при оформлении заказа.</p></div></div></div></section>`;
 }
 
 function organizationsSection() {
