@@ -75,6 +75,7 @@ async function build() {
 
   await copyFile(path.join(root, 'src', 'styles.css'), path.join(dist, 'assets', 'styles.css'));
   await copyFile(path.join(root, 'src', 'app.js'), path.join(dist, 'assets', 'app.js'));
+  await copyFile(path.join(root, 'assets', 'logo.svg'), path.join(dist, 'assets', 'logo.svg')).catch(() => {});
   await writeFile(path.join(dist, 'server', 'index.js'), staticWorker, 'utf8');
 
   const routes = [];

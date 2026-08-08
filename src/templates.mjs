@@ -94,7 +94,7 @@ function header(leadHref) {
   return `<header class="site-header" data-header>
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="${esc(site.brand)}">
-      <span class="brand-mark" aria-hidden="true">Д</span>
+      <img src="/assets/logo.svg" alt="" class="brand-logo" width="40" height="40">
       <span><strong>${esc(site.brand)}</strong><small>${esc(site.region)}</small></span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-nav-toggle>
@@ -117,7 +117,7 @@ function footer() {
   return `<footer class="site-footer">
   <div class="container footer-grid">
     <div>
-      <a class="brand footer-brand" href="/"><span class="brand-mark" aria-hidden="true">Д</span><span><strong>${esc(site.brand)}</strong><small>Спил, обрезка, дробление веток и пней</small></span></a>
+      <a class="brand footer-brand" href="/"><img src="/assets/logo.svg" alt="" class="brand-logo" width="32" height="32"><span><strong>${esc(site.brand)}</strong><small>Спил, обрезка, дробление веток и пней</small></span></a>
       <p>Выполняем работы с деревьями на частных и коммерческих территориях. Стоимость и состав работ согласуются до начала выполнения.</p>
       <p class="muted">${esc(site.addressNote)}</p>
     </div>
