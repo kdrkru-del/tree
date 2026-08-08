@@ -9,7 +9,7 @@ export const site = {
   telegramUrl: '[ССЫЛКА TELEGRAM]',
   messengerUrl: '[ССЫЛКА НА МЕССЕНДЖЕР]',
   hours: '[РЕЖИМ РАБОТЫ]',
-  baseUrl: 'https://kdrkru-del.github.io/tree',
+  baseUrl: 'http://zelsrez.ru',
   region: 'Москва и Московская область',
   addressNote: 'Работы выполняются на территории заказчика. Офис для приема посетителей не заявлен.',
   metrikaId: '',
@@ -19,13 +19,13 @@ export const site = {
 
 export const nav = [
   { label: 'Услуги', href: '/#services' },
-  { label: 'Цены', href: '/tree/prices/' },
-  { label: 'До / стало', href: '/tree/works/' },
+  { label: 'Цены', href: '/prices/' },
+  { label: 'До / стало', href: '/works/' },
   { label: 'Как мы работаем', href: '/#process' },
-  { label: 'Для организаций', href: '/tree/uslugi-dlya-organizaciy/' },
-  { label: 'Районы выезда', href: '/tree/moskovskaya-oblast/' },
-  { label: 'Вопросы', href: '/tree/faq/' },
-  { label: 'Контакты', href: '/tree/contacts/' }
+  { label: 'Для организаций', href: '/uslugi-dlya-organizaciy/' },
+  { label: 'Районы выезда', href: '/moskovskaya-oblast/' },
+  { label: 'Вопросы', href: '/faq/' },
+  { label: 'Контакты', href: '/contacts/' }
 ];
 
 const commonsFile = (fileName, width = 1200) => `https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/${encodeURIComponent(fileName)}&width=${width}`;
@@ -63,14 +63,14 @@ export const imageCredits = Object.values(mediaFiles).map(({ title, file }) => (
 }));
 
 export const problemCards = [
-  { title: 'Спилить дерево', fromPrice: 'от 1 000 ₽', service: 'Спил деревьев', href: '/tree/spil-derevev/', text: 'Целиком или по частям, если рядом дом, забор или коммуникации.' },
-  { title: 'Удалить аварийное дерево', fromPrice: 'от 4 000 ₽', service: 'Удаление аварийных деревьев', href: '/tree/udalenie-avariynyh-derevev/', text: 'Наклон, сухостой, трещины, последствия ветра или угроза проезду.' },
-  { title: 'Спил дерева по частям', fromPrice: 'от 3 500 ₽', service: 'Спил деревьев по частям', href: '/tree/spil-derevev-po-chastyam/', text: 'Когда нельзя безопасно свалить целиком — разбираем по фрагментам.' },
-  { title: 'Обрезать дерево', fromPrice: 'от 1 500 ₽', service: 'Обрезка деревьев', href: '/tree/obrezka-derevev/', text: 'Сухие ветви, крона, ветки над крышей, плодовые деревья.' },
-  { title: 'Удалить пень', fromPrice: 'от 1 500 ₽', service: 'Корчевание пней', href: '/tree/korchevanie-pney/', text: 'Корчевание, дробление, удаление корней и подготовка места.' },
-  { title: 'Расчистить участок', fromPrice: 'от 5 000 ₽', service: 'Расчистка участков', href: '/tree/raschistka-uchastkov/', text: 'Заросший участок, поросль, кустарник, подготовка к строительству.' },
-  { title: 'Измельчить ветки', fromPrice: 'от 2 500 ₽', service: 'Измельчение веток (Щепорез)', href: '/tree/izmelchenie-vetok/', text: 'Переработаем ветки в щепу после спила, обрезки или расчистки.' },
-  { title: 'Вывезти ветки', fromPrice: 'от 2 000 ₽', service: 'Вывоз веток', href: '/tree/vyvoz-vetok/', text: 'Сбор, погрузка, измельчение и вывоз по согласованному объему.' }
+  { title: 'Спилить дерево', fromPrice: 'от 1 000 ₽', service: 'Спил деревьев', href: '/spil-derevev/', text: 'Целиком или по частям, если рядом дом, забор или коммуникации.' },
+  { title: 'Удалить аварийное дерево', fromPrice: 'от 4 000 ₽', service: 'Удаление аварийных деревьев', href: '/udalenie-avariynyh-derevev/', text: 'Наклон, сухостой, трещины, последствия ветра или угроза проезду.' },
+  { title: 'Спил дерева по частям', fromPrice: 'от 3 500 ₽', service: 'Спил деревьев по частям', href: '/spil-derevev-po-chastyam/', text: 'Когда нельзя безопасно свалить целиком — разбираем по фрагментам.' },
+  { title: 'Обрезать дерево', fromPrice: 'от 1 500 ₽', service: 'Обрезка деревьев', href: '/obrezka-derevev/', text: 'Сухие ветви, крона, ветки над крышей, плодовые деревья.' },
+  { title: 'Удалить пень', fromPrice: 'от 1 500 ₽', service: 'Корчевание пней', href: '/korchevanie-pney/', text: 'Корчевание, дробление, удаление корней и подготовка места.' },
+  { title: 'Расчистить участок', fromPrice: 'от 5 000 ₽', service: 'Расчистка участков', href: '/raschistka-uchastkov/', text: 'Заросший участок, поросль, кустарник, подготовка к строительству.' },
+  { title: 'Измельчить ветки', fromPrice: 'от 2 500 ₽', service: 'Измельчение веток (Щепорез)', href: '/izmelchenie-vetok/', text: 'Переработаем ветки в щепу после спила, обрезки или расчистки.' },
+  { title: 'Вывезти ветки', fromPrice: 'от 2 000 ₽', service: 'Вывоз веток', href: '/vyvoz-vetok/', text: 'Сбор, погрузка, измельчение и вывоз по согласованному объему.' }
 ];
 
 const defaultFactors = ['высота и диаметр', 'доступ к месту работ', 'препятствия рядом', 'объем уборки', 'необходимость вывоза'];

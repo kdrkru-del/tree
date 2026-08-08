@@ -67,12 +67,12 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <meta property="og:image" content="${esc(image)}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#143d2b">
-  <link rel="manifest" href="/tree/manifest.webmanifest">
+  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://commons.wikimedia.org">
-  <link rel="stylesheet" href="/tree/assets/styles.css">
+  <link rel="stylesheet" href="/assets/styles.css">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl })};</script>
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
 </head>
@@ -82,7 +82,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <main id="main">${body}</main>
   ${footer()}
   ${mobileBar(leadHref)}
-  <script src="/tree/assets/app.js" defer></script>
+  <script src="/assets/app.js" defer></script>
 </body>
 </html>`;
 }
@@ -93,7 +93,7 @@ function header(leadHref) {
     : '';
   return `<header class="site-header" data-header>
   <div class="container header-inner">
-    <a class="brand" href="/tree/" aria-label="${esc(site.brand)}">
+    <a class="brand" href="/" aria-label="${esc(site.brand)}">
       <span class="brand-mark" aria-hidden="true">Д</span>
       <span><strong>${esc(site.brand)}</strong><small>${esc(site.region)}</small></span>
     </a>
@@ -117,15 +117,15 @@ function footer() {
   return `<footer class="site-footer">
   <div class="container footer-grid">
     <div>
-      <a class="brand footer-brand" href="/tree/"><span class="brand-mark" aria-hidden="true">Д</span><span><strong>${esc(site.brand)}</strong><small>Спил, обрезка, дробление веток и пней</small></span></a>
+      <a class="brand footer-brand" href="/"><span class="brand-mark" aria-hidden="true">Д</span><span><strong>${esc(site.brand)}</strong><small>Спил, обрезка, дробление веток и пней</small></span></a>
       <p>Выполняем работы с деревьями на частных и коммерческих территориях. Стоимость и состав работ согласуются до начала выполнения.</p>
       <p class="muted">${esc(site.addressNote)}</p>
     </div>
-    <div><h2>Услуги</h2>${services.slice(0, 7).map((service) => `<a href="/tree/${service.slug}/">${esc(service.title)}</a>`).join('')}</div>
-    <div><h2>Районы</h2>${regions.slice(0, 10).map((region) => `<a href="/tree/${region.slug}/">${esc(region.title)}</a>`).join('')}</div>
+    <div><h2>Услуги</h2>${services.slice(0, 7).map((service) => `<a href="/${service.slug}/">${esc(service.title)}</a>`).join('')}</div>
+    <div><h2>Районы</h2>${regions.slice(0, 10).map((region) => `<a href="/${region.slug}/">${esc(region.title)}</a>`).join('')}</div>
     <div><h2>Контакты</h2>${phoneEl}${emailEl}${messengerEl}<p class="call-note">В целях контроля качества разговор может быть записан.</p></div>
   </div>
-  <div class="container footer-bottom"><span>© ${new Date().getFullYear()} ${esc(site.brand)}</span><a href="/tree/privacy/">Политика конфиденциальности</a><a href="/tree/personal-data-consent/">Согласие на обработку данных</a><a href="/tree/requisites/">Реквизиты</a></div>
+  <div class="container footer-bottom"><span>© ${new Date().getFullYear()} ${esc(site.brand)}</span><a href="/privacy/">Политика конфиденциальности</a><a href="/personal-data-consent/">Согласие на обработку данных</a><a href="/requisites/">Реквизиты</a></div>
 </footer>`;
 }
 
@@ -234,11 +234,11 @@ function servicesSection() {
 }
 
 function serviceCard(service) {
-  return `<article class="service-card"><img src="${esc(service.image)}" alt="${esc(service.title)}" loading="lazy"><div><h3>${esc(service.title)}</h3><p>${esc(service.short)}</p><p class="card-note">Цена зависит от: ${service.priceFactors.slice(0, 3).map(esc).join(', ')}.</p><div class="card-actions"><a class="btn btn-small btn-accent" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать стоимость</a><a class="link-more" href="/tree/${service.slug}/">Подробнее об услуге</a></div></div></article>`;
+  return `<article class="service-card"><img src="${esc(service.image)}" alt="${esc(service.title)}" loading="lazy"><div><h3>${esc(service.title)}</h3><p>${esc(service.short)}</p><p class="card-note">Цена зависит от: ${service.priceFactors.slice(0, 3).map(esc).join(', ')}.</p><div class="card-actions"><a class="btn btn-small btn-accent" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать стоимость</a><a class="link-more" href="/${service.slug}/">Подробнее об услуге</a></div></div></article>`;
 }
 
 function worksPreview() {
-  return `<section class="section" id="works"><div class="container"><div class="section-head"><p class="eyebrow">До / стало</p><h2>Типовые задачи</h2></div><div class="work-grid">${workExamples.map((work) => `<article class="work-card"><div class="before-after" aria-label="Сравнение до и стало"><figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure><figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure></div><h3>${esc(work.area)}</h3><p>${esc(work.service)}</p><ul>${work.facts.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="${esc(work.service)}" data-goal="click_calculate">Рассчитать похожую работу</a></article>`).join('')}</div><a class="btn btn-ghost" href="/tree/works/">Открыть раздел работ</a></div></section>`;
+  return `<section class="section" id="works"><div class="container"><div class="section-head"><p class="eyebrow">До / стало</p><h2>Типовые задачи</h2></div><div class="work-grid">${workExamples.map((work) => `<article class="work-card"><div class="before-after" aria-label="Сравнение до и стало"><figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure><figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure></div><h3>${esc(work.area)}</h3><p>${esc(work.service)}</p><ul>${work.facts.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="${esc(work.service)}" data-goal="click_calculate">Рассчитать похожую работу</a></article>`).join('')}</div><a class="btn btn-ghost" href="/works/">Открыть раздел работ</a></div></section>`;
 }
 
 function trustSection() {
@@ -250,7 +250,7 @@ function processSection() {
 }
 
 function branchChippingUpsell() {
-  return `<section class="section branch-upsell" id="izmelchenie"><div class="container"><div class="branch-upsell-inner"><div><p class="eyebrow">Дополнительная услуга</p><h2>Измельчение веток в щепу</h2><p>Измельчим ветки после спила, обрезки или расчистки участка. Дробилка (щепорез) существенно уменьшает объем древесных отходов.</p><p class="from-price-large">от 2 500 ₽</p><div class="branch-upsell-actions"><a class="btn btn-accent" href="/tree/izmelchenie-vetok/" data-goal="click_branch_chipping">Рассчитать стоимость измельчения</a><a class="link-more" href="/tree/izmelchenie-vetok/">Подробнее об услуге</a></div></div><div class="branch-upsell-options"><p><strong>Что делать с ветками после работы?</strong></p><ul><li>🌿 Оставить на участке</li><li>♻️ Измельчить в щепу</li><li>🚛 Подготовить к вывозу</li><li>✅ Измельчить и вывезти остатки</li></ul><p class="muted">Вариант согласовывается при оформлении заказа.</p></div></div></div></section>`;
+  return `<section class="section branch-upsell" id="izmelchenie"><div class="container"><div class="branch-upsell-inner"><div><p class="eyebrow">Дополнительная услуга</p><h2>Измельчение веток в щепу</h2><p>Измельчим ветки после спила, обрезки или расчистки участка. Дробилка (щепорез) существенно уменьшает объем древесных отходов.</p><p class="from-price-large">от 2 500 ₽</p><div class="branch-upsell-actions"><a class="btn btn-accent" href="/izmelchenie-vetok/" data-goal="click_branch_chipping">Рассчитать стоимость измельчения</a><a class="link-more" href="/izmelchenie-vetok/">Подробнее об услуге</a></div></div><div class="branch-upsell-options"><p><strong>Что делать с ветками после работы?</strong></p><ul><li>🌿 Оставить на участке</li><li>♻️ Измельчить в щепу</li><li>🚛 Подготовить к вывозу</li><li>✅ Измельчить и вывезти остатки</li></ul><p class="muted">Вариант согласовывается при оформлении заказа.</p></div></div></div></section>`;
 }
 
 function organizationsSection() {
@@ -258,7 +258,7 @@ function organizationsSection() {
 }
 
 function areasSection() {
-  return `<section class="section" id="areas"><div class="container"><div class="section-head"><p class="eyebrow">Районы выезда</p><h2>Москва и Московская область</h2><p>Возможность и стоимость выезда уточняются по адресу, доступу и составу работ.</p></div><div class="area-grid">${regions.map((region) => `<span><a href="/tree/${region.slug}/">${esc(region.title)}</a></span>`).join('')}</div><div class="areas-cta"><a class="btn btn-ghost" href="/tree/moskovskaya-oblast/">Все районы выезда</a></div></div></section>`;
+  return `<section class="section" id="areas"><div class="container"><div class="section-head"><p class="eyebrow">Районы выезда</p><h2>Москва и Московская область</h2><p>Возможность и стоимость выезда уточняются по адресу, доступу и составу работ.</p></div><div class="area-grid">${regions.map((region) => `<span><a href="/${region.slug}/">${esc(region.title)}</a></span>`).join('')}</div><div class="areas-cta"><a class="btn btn-ghost" href="/moskovskaya-oblast/">Все районы выезда</a></div></div></section>`;
 }
 
 function faqSection(items) {
@@ -289,7 +289,7 @@ function leadForm(selectedService) {
       <p>Что сделать с ветками после работы?</p>
       <div class="branch-after-options">${afterBranchOptions.map((opt) => `<label class="service-option-label"><input type="radio" name="branch_after" value="${esc(opt)}"><span>${esc(opt)}</span></label>`).join('')}</div>
     </div>
-    <label class="consent"><input type="checkbox" name="consent" required> Нажимая кнопку, я даю согласие на <a href="/tree/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a></label>
+    <label class="consent"><input type="checkbox" name="consent" required> Нажимая кнопку, я даю согласие на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a></label>
     <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
     <div class="form-buttons">
       <button class="btn btn-accent btn-full" type="button" data-save-contact data-goal="form_contact_saved">Получить расчет</button>
@@ -335,14 +335,14 @@ export function servicePage(service) {
 
 export function regionPage(region) {
   const path = route(region.slug);
-  const body = `${innerHero(region.h1, region.intro, images.cottage, 'Район выезда', region.title)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Районы выезда', url: '/tree/moskovskaya-oblast/' }, { name: region.title, url: path }])}<h2>Особенности выезда</h2><ul class="rich-list">${region.details.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><h2>Какие работы можно заказать</h2><div class="service-grid compact">${services.slice(0, 6).map(serviceCard).join('')}</div></article><aside class="side-panel"><h2>Уточнить выезд</h2><p>Возможность и стоимость выезда уточняются по адресу объекта, доступу и составу работ.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="Выезд: ${esc(region.title)}" data-goal="click_calculate">Отправить фото</a></aside></div></section>${leadSection('Отправьте фотографии участка', 'Укажите населенный пункт, адрес или ориентир, количество деревьев и что нужно сделать.', `Выезд: ${region.title}`)}`;
+  const body = `${innerHero(region.h1, region.intro, images.cottage, 'Район выезда', region.title)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Районы выезда', url: '/moskovskaya-oblast/' }, { name: region.title, url: path }])}<h2>Особенности выезда</h2><ul class="rich-list">${region.details.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><h2>Какие работы можно заказать</h2><div class="service-grid compact">${services.slice(0, 6).map(serviceCard).join('')}</div></article><aside class="side-panel"><h2>Уточнить выезд</h2><p>Возможность и стоимость выезда уточняются по адресу объекта, доступу и составу работ.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="Выезд: ${esc(region.title)}" data-goal="click_calculate">Отправить фото</a></aside></div></section>${leadSection('Отправьте фотографии участка', 'Укажите населенный пункт, адрес или ориентир, количество деревьев и что нужно сделать.', `Выезд: ${region.title}`)}`;
   return renderPage({ title: region.h1, description: `${region.h1}. Спил, обрезка, пни и расчистка участков.`, path, body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: region.title, url: path }])] });
 }
 
 export function legalPage(page) {
   const path = route(page.slug);
   const body = `${simpleHero(page.h1, 'Юридическая информация сайта и порядок обработки обращений.')}<section class="section"><div class="container text-page">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: page.title, url: path }])}${page.sections.map(([heading, text]) => `<section><h2>${esc(heading)}</h2><p>${esc(text)}</p></section>`).join('')}</div></section>`;
-  return renderPage({ title: page.title, description: `${page.title}: условия обработки данных и обращений.`, path, body, leadHref: '/tree/#lead-form', jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: page.title, url: path }])] });
+  return renderPage({ title: page.title, description: `${page.title}: условия обработки данных и обращений.`, path, body, leadHref: '/#lead-form', jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: page.title, url: path }])] });
 }
 
 export function pricesPage() {
@@ -366,8 +366,8 @@ export function contactsPage() {
 }
 
 export function notFoundPage() {
-  const body = `${simpleHero('Страница не найдена', 'Такой страницы нет или адрес изменился.')}<section class="section"><div class="container center"><a class="btn btn-accent" href="/tree/">На главную</a><a class="btn btn-ghost" href="/tree/#services">К услугам</a></div></section>`;
-  return renderPage({ title: 'Страница не найдена', description: 'Страница не найдена.', path: '/404/', body, leadHref: '/tree/#lead-form' });
+  const body = `${simpleHero('Страница не найдена', 'Такой страницы нет или адрес изменился.')}<section class="section"><div class="container center"><a class="btn btn-accent" href="/">На главную</a><a class="btn btn-ghost" href="/#services">К услугам</a></div></section>`;
+  return renderPage({ title: 'Страница не найдена', description: 'Страница не найдена.', path: '/404/', body, leadHref: '/#lead-form' });
 }
 
 function organizationSchema() {
