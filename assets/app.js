@@ -227,7 +227,7 @@
     document.body.classList.add('motion-ready');
 
     const heroItems = [
-      ...document.querySelectorAll('.hero-copy > .hero-badge, .hero-copy h1, .hero-lead, .hero-actions, .hero-benefits'),
+      ...document.querySelectorAll('.hero-copy > .hero-badge, .hero-copy h1, .hero-lead, .hero-actions'),
       document.querySelector('.hero-prices')
     ].filter(Boolean);
 
