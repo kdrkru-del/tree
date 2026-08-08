@@ -229,20 +229,13 @@ textarea {
   gap: 12px;
 }
 
-.brand-mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  font-weight: 700;
-  font-size: 1.25rem;
-  color: var(--white);
-  background: var(--green-800);
-  border-radius: var(--radius);
+.brand-logo {
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
-.brand span:not(.brand-mark) {
+.brand span:not(.brand-logo) {
   display: flex;
   flex-direction: column;
 }
@@ -1427,10 +1420,6 @@ details p {
   grid-template-columns: 2fr 1fr 1fr 1.5fr;
   gap: 48px;
   margin-bottom: 64px;
-}
-
-.footer-brand .brand-mark {
-  background: var(--orange-600);
 }
 
 .site-footer p {
