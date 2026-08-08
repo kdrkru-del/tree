@@ -7,7 +7,6 @@ import {
   priceRows,
   problemCards,
   processSteps,
-  regions,
   serviceAreas,
   services,
   site,
@@ -122,7 +121,6 @@ function footer() {
       <p class="muted">${esc(site.addressNote)}</p>
     </div>
     <div><h2>Услуги</h2>${services.slice(0, 7).map((service) => `<a href="/${service.slug}/">${esc(service.title)}</a>`).join('')}</div>
-    <div><h2>Районы</h2>${regions.slice(0, 10).map((region) => `<a href="/${region.slug}/">${esc(region.title)}</a>`).join('')}</div>
     <div><h2>Контакты</h2>${phoneEl}${emailEl}${messengerEl}<p class="call-note">В целях контроля качества разговор может быть записан.</p></div>
   </div>
   <div class="container footer-bottom"><span>© ${new Date().getFullYear()} ${esc(site.brand)}</span><a href="/privacy/">Политика конфиденциальности</a><a href="/personal-data-consent/">Согласие на обработку данных</a><a href="/requisites/">Реквизиты</a></div>
@@ -137,8 +135,8 @@ function mobileBar(leadHref) {
 }
 
 export function homePage() {
-  const title = 'Спил и удаление деревьев в Москве и Московской области';
-  const description = 'Спил, удаление и обрезка деревьев, аварийные деревья, пни, расчистка участков и вывоз веток. Предварительная оценка по фотографиям. Москва и Московская область.';
+  const title = 'Спил и удаление деревьев в Московской области';
+  const description = 'Спил, удаление и обрезка деревьев, аварийные деревья, пни, расчистка участков и вывоз веток. Предварительная оценка по фотографиям. Московская область.';
   const body = `
   ${heroSection()}
   ${quickLeadSection()}
@@ -159,12 +157,12 @@ export function homePage() {
 
 function heroSection() {
   return `<section class="hero">
-  <img class="hero-bg" src="${esc(images.hero)}" alt="Деревья в Москве" fetchpriority="high">
+  <img class="hero-bg" src="${esc(images.hero)}" alt="Деревья в Московской области" fetchpriority="high">
   <div class="hero-shade"></div>
   <div class="container hero-content">
     <div class="hero-copy">
       <p class="hero-badge">Предварительная оценка по фото</p>
-      <h1>Спил и удаление деревьев<br>в Москве и Московской области</h1>
+      <h1>Спил и удаление деревьев<br>в Московской области</h1>
       <p class="hero-lead">Спиливаем аварийные деревья, дробим ветки и пни, расчищаем участки. Работаем возле домов, заборов и коммуникаций. Оценим стоимость по фотографиям до выезда.</p>
       <div class="hero-actions">
         <a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Рассчитать стоимость по фото</a>
@@ -301,7 +299,7 @@ function leadForm(selectedService) {
   <fieldset data-step hidden>
     <legend>2. Дополните заявку (необязательно)</legend>
     <div class="form-grid">
-      <label>Населенный пункт<input name="city" placeholder="например, Истра"></label>
+      <label>Адрес объекта<input name="city" placeholder="укажите адрес или ориентир"></label>
       <label>Имя<input name="name" autocomplete="name"></label>
     </div>
     <label class="file-drop">Добавьте фотографии дерева<input name="photos" type="file" accept="image/*" multiple data-photo-input><span class="form-hint" data-file-status>Файлы не выбраны</span></label>
@@ -332,14 +330,8 @@ export function servicePage(service) {
   const path = route(service.slug);
   const related = services.filter((item) => item.slug !== service.slug).slice(0, 4);
   const isChipping = service.slug === 'izmelchenie-vetok';
-  const body = `${innerHero(service.h1, service.lead, service.image, 'Услуга', service.title)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Услуги', url: '/#services' }, { name: service.title, url: path }])}<h2>Что входит в работу</h2><ul class="rich-list">${service.includes.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><div class="honest-note">${esc(service.warning)}</div><h2>Что влияет на расчет</h2><div class="factor-cloud">${service.priceFactors.map((factor) => `<span>${esc(factor)}</span>`).join('')}</div>${isChipping ? `<h2>Что делать со щепой после измельчения?</h2><div class="branch-what-block"><div><strong>Оставить</strong><p>Щепа остается заказчику.</p></div><div><strong>Измельчить</strong><p>Переработаем ветки в щепу.</p></div><div><strong>Вывезти</strong><p>Подготовим и организуем вывоз.</p></div></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Измельчение веток в щепу" data-goal="click_branch_chipping">Рассчитать работу под ключ</a>` : ''}<h2>Как проходит заявка</h2><div class="mini-steps">${processSteps.map(([step, text], index) => `<article><span>${index + 1}</span><h3>${esc(step)}</h3><p>${esc(text)}</p></article>`).join('')}</div></article><aside class="side-panel"><h2>Расчет стоимости</h2><p>${esc(service.directTitle)}. Передайте фотографии, населенный пункт и желаемый результат.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать</a><a class="btn btn-ghost btn-full" href="${phoneHref()}" data-goal="click_phone">Позвонить</a></aside></div></section><section class="section section-muted"><div class="container"><div class="section-head"><p class="eyebrow">Связанные услуги</p><h2>Может понадобиться вместе с услугой</h2></div><div class="service-grid compact">${related.map(serviceCard).join('')}</div></div></section>${faqSection([...service.faq, ...faq.slice(0, 4)])}${leadSection('Получите предварительный расчет по фотографиям', 'Опишите задачу, укажите населенный пункт и приложите фотографии дерева, ствола, кроны и территории вокруг.', service.title)}`;
+  const body = `${innerHero(service.h1, service.lead, service.image, 'Услуга', service.title)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Услуги', url: '/#services' }, { name: service.title, url: path }])}<h2>Что входит в работу</h2><ul class="rich-list">${service.includes.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><div class="honest-note">${esc(service.warning)}</div><h2>Что влияет на расчет</h2><div class="factor-cloud">${service.priceFactors.map((factor) => `<span>${esc(factor)}</span>`).join('')}</div>${isChipping ? `<h2>Что делать со щепой после измельчения?</h2><div class="branch-what-block"><div><strong>Оставить</strong><p>Щепа остается заказчику.</p></div><div><strong>Измельчить</strong><p>Переработаем ветки в щепу.</p></div><div><strong>Вывезти</strong><p>Подготовим и организуем вывоз.</p></div></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Измельчение веток в щепу" data-goal="click_branch_chipping">Рассчитать работу под ключ</a>` : ''}<h2>Как проходит заявка</h2><div class="mini-steps">${processSteps.map(([step, text], index) => `<article><span>${index + 1}</span><h3>${esc(step)}</h3><p>${esc(text)}</p></article>`).join('')}</div></article><aside class="side-panel"><h2>Расчет стоимости</h2><p>${esc(service.directTitle)}. Передайте фотографии, адрес объекта и желаемый результат.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать</a><a class="btn btn-ghost btn-full" href="${phoneHref()}" data-goal="click_phone">Позвонить</a></aside></div></section><section class="section section-muted"><div class="container"><div class="section-head"><p class="eyebrow">Связанные услуги</p><h2>Может понадобиться вместе с услугой</h2></div><div class="service-grid compact">${related.map(serviceCard).join('')}</div></div></section>${faqSection([...service.faq, ...faq.slice(0, 4)])}${leadSection('Получите предварительный расчет по фотографиям', 'Опишите задачу, укажите адрес объекта и приложите фотографии дерева, ствола, кроны и территории вокруг.', service.title)}`;
   return renderPage({ title: service.h1, description: `${service.short} Предварительная оценка по фото.`, path, image: service.image, body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: service.title, url: path }]), serviceSchema(service, path), faqSchema(service.faq)] });
-}
-
-export function regionPage(region) {
-  const path = route(region.slug);
-  const body = `${innerHero(region.h1, region.intro, images.cottage, 'Район выезда', region.title)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Районы выезда', url: '/moskovskaya-oblast/' }, { name: region.title, url: path }])}<h2>Особенности выезда</h2><ul class="rich-list">${region.details.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><h2>Какие работы можно заказать</h2><div class="service-grid compact">${services.slice(0, 6).map(serviceCard).join('')}</div></article><aside class="side-panel"><h2>Уточнить выезд</h2><p>Возможность и стоимость выезда уточняются по адресу объекта, доступу и составу работ.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="Выезд: ${esc(region.title)}" data-goal="click_calculate">Отправить фото</a></aside></div></section>${leadSection('Отправьте фотографии участка', 'Укажите населенный пункт, адрес или ориентир, количество деревьев и что нужно сделать.', `Выезд: ${region.title}`)}`;
-  return renderPage({ title: region.h1, description: `${region.h1}. Спил, обрезка, пни и расчистка участков.`, path, body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: region.title, url: path }])] });
 }
 
 export function legalPage(page) {
@@ -349,7 +341,7 @@ export function legalPage(page) {
 }
 
 export function pricesPage() {
-  const body = `${simpleHero('Стоимость спила, обрезки и расчистки участков', 'Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.')}${priceTableSection()}${leadSection('Получите расчет под ваш объект', 'Прикрепите фотографии, укажите населенный пункт и опишите, что требуется сделать.')}`;
+  const body = `${simpleHero('Стоимость спила, обрезки и расчистки участков', 'Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.')}${priceTableSection()}${leadSection('Получите расчет под ваш объект', 'Прикрепите фотографии, укажите адрес объекта и опишите, что требуется сделать.')}`;
   return renderPage({ title: 'Цены на спил и обрезку деревьев', description: 'От чего зависит стоимость спила, обрезки, удаления пней, расчистки участка и вывоза веток.', path: '/prices/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Цены', url: '/prices/' }])] });
 }
 
@@ -364,7 +356,7 @@ export function faqPage() {
 }
 
 export function contactsPage() {
-  const body = `${simpleHero('Контакты компании', 'Позвоните, отправьте фотографии или оставьте заявку на предварительный расчет.')}<section class="section"><div class="container contact-grid"><div class="contact-card"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : ''}${hasValue(site.email) ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : ''}<p>${esc(site.addressNote)}</p></div><div class="contact-card"><h2>Что подготовить</h2><ul class="rich-list"><li>фото дерева целиком</li><li>фото ствола и кроны</li><li>фото препятствий рядом</li><li>населенный пункт и желаемый результат</li></ul></div></div></section>${leadSection('Отправьте заявку', 'Чем подробнее фотографии и описание, тем точнее предварительный расчет.')}`;
+  const body = `${simpleHero('Контакты компании', 'Позвоните, отправьте фотографии или оставьте заявку на предварительный расчет.')}<section class="section"><div class="container contact-grid"><div class="contact-card"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : ''}${hasValue(site.email) ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : ''}<p>${esc(site.addressNote)}</p></div><div class="contact-card"><h2>Что подготовить</h2><ul class="rich-list"><li>фото дерева целиком</li><li>фото ствола и кроны</li><li>фото препятствий рядом</li><li>адрес объекта и желаемый результат</li></ul></div></div></section>${leadSection('Отправьте заявку', 'Чем подробнее фотографии и описание, тем точнее предварительный расчет.')}`;
   return renderPage({ title: 'Контакты', description: 'Контакты компании по уходу за деревьями: телефон, email и форма заявки.', path: '/contacts/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Контакты', url: '/contacts/' }])] });
 }
 
@@ -378,7 +370,7 @@ function organizationSchema() {
 }
 
 function professionalServiceSchema() {
-  return { '@context': 'https://schema.org', '@type': 'ProfessionalService', name: site.brand, areaServed: ['Москва', 'Московская область'], telephone: hasValue(site.phone) ? site.phone : undefined, url: site.baseUrl, description: 'Спил, удаление, обрезка деревьев, корчевание пней и расчистка участков.' };
+  return { '@context': 'https://schema.org', '@type': 'ProfessionalService', name: site.brand, areaServed: ['Московская область'], telephone: hasValue(site.phone) ? site.phone : undefined, url: site.baseUrl, description: 'Спил, удаление, обрезка деревьев, корчевание пней и расчистка участков.' };
 }
 
 function serviceSchema(service, path) {

@@ -1,7 +1,7 @@
 import { mkdir, rm, writeFile, copyFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { legalPages, regions, services, site } from '../src/data.mjs';
+import { legalPages, services, site } from '../src/data.mjs';
 import {
   contactsPage,
   faqPage,
@@ -10,7 +10,6 @@ import {
   notFoundPage,
   pagePath,
   pricesPage,
-  regionPage,
   servicePage,
   worksPage
 } from '../src/templates.mjs';
@@ -75,7 +74,7 @@ async function build() {
 
   await copyFile(path.join(root, 'src', 'styles.css'), path.join(dist, 'assets', 'styles.css'));
   await copyFile(path.join(root, 'src', 'app.js'), path.join(dist, 'assets', 'app.js'));
-  await copyFile(path.join(root, 'assets', 'logo.svg'), path.join(dist, 'assets', 'logo.svg')).catch(() => {});
+  await copyFile(path.join(root, 'assets', 'logo-zelenyi-srez.png'), path.join(dist, 'assets', 'logo-zelenyi-srez.png'));
   await writeFile(path.join(dist, 'server', 'index.js'), staticWorker, 'utf8');
 
   const routes = [];
@@ -95,10 +94,6 @@ async function build() {
 
   for (const service of services) {
     await add(service.slug, servicePage(service));
-  }
-
-  for (const region of regions) {
-    await add(region.slug, regionPage(region));
   }
 
   for (const page of legalPages) {
