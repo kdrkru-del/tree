@@ -5,7 +5,6 @@ import {
   nav,
   priceFactors,
   priceRows,
-  problemCards,
   processSteps,
   serviceAreas,
   services,
@@ -41,11 +40,6 @@ function phoneHref() {
 
 function messengerHref(fallback = '#lead-form') {
   return site.telegramUrl && !site.telegramUrl.startsWith('[') ? site.telegramUrl : fallback;
-}
-
-function serviceFormHref(href, service) {
-  const [cleanHref] = href.split('#');
-  return `${cleanHref}?service=${encodeURIComponent(service)}#lead-form`;
 }
 
 export function renderPage({ title, description, path = '/', body, jsonLd = [], image = images.hero, leadHref = '#lead-form' }) {
@@ -140,10 +134,7 @@ export function homePage() {
   const body = `
   ${heroSection()}
   ${quickLeadSection()}
-  ${problemsSection()}
   ${servicesSection()}
-  ${priceTableSection()}
-  ${priceFactorsSection()}
   ${worksPreview()}
   ${trustSection()}
   ${videosSection()}
@@ -215,10 +206,6 @@ function quickLeadSection() {
     </div>
   </div>
 </section>`;
-}
-
-function problemsSection() {
-  return `<section class="section" id="problems"><div class="container"><div class="section-head"><p class="eyebrow">Выберите задачу</p><h2>Что необходимо сделать?</h2></div><div class="problem-grid">${problemCards.map((card) => `<a class="problem-card" href="${serviceFormHref(card.href, card.service)}" data-open-form data-service="${esc(card.service)}" data-goal="click_calculate"><div class="problem-card-top"><span class="problem-card-title">${esc(card.title)}</span><span class="problem-card-price">${esc(card.fromPrice)}</span></div><p>${esc(card.text)}</p><span class="problem-card-btn">Рассчитать стоимость</span></a>`).join('')}</div></div></section>`;
 }
 
 function priceTableSection() {
@@ -341,7 +328,7 @@ export function legalPage(page) {
 }
 
 export function pricesPage() {
-  const body = `${simpleHero('Стоимость спила, обрезки и расчистки участков', 'Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.')}${priceTableSection()}${leadSection('Получите расчет под ваш объект', 'Прикрепите фотографии, укажите адрес объекта и опишите, что требуется сделать.')}`;
+  const body = `${simpleHero('Стоимость спила, обрезки и расчистки участков', 'Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.')}${priceTableSection()}${priceFactorsSection()}${leadSection('Получите расчет под ваш объект', 'Прикрепите фотографии, укажите адрес объекта и опишите, что требуется сделать.')}`;
   return renderPage({ title: 'Цены на спил и обрезку деревьев', description: 'От чего зависит стоимость спила, обрезки, удаления пней, расчистки участка и вывоза веток.', path: '/prices/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Цены', url: '/prices/' }])] });
 }
 
