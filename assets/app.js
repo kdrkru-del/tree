@@ -255,8 +255,7 @@
       '#areas .area-grid span',
       '#faq .section-head',
       '#faq details',
-      '.lead-section .lead-grid > *',
-      '.branch-upsell-inner > *'
+      '.lead-section .lead-grid > *'
     ].join(','));
 
     revealItems.forEach((item, index) => {
