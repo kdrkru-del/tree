@@ -219,8 +219,10 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  max-width: 1440px;
   height: 72px;
-  gap: 32px;
+  gap: 18px;
 }
 
 .brand {
@@ -253,12 +255,13 @@ textarea {
 .main-nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
 }
 
 .main-nav a {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .main-nav a:hover {
@@ -268,8 +271,9 @@ textarea {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .header-contact {
@@ -277,11 +281,18 @@ textarea {
   flex-direction: column;
   align-items: flex-end;
   text-align: right;
+  flex-shrink: 0;
 }
 
 .phone-link {
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+.header-actions .btn {
+  padding-inline: 18px;
+  white-space: nowrap;
 }
 
 .header-contact span {
@@ -314,9 +325,37 @@ textarea {
   border-radius: 2px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1480px) {
   .main-nav {
     display: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+    order: 3;
+    flex-shrink: 0;
+  }
+
+  .main-nav.is-open {
+    position: fixed;
+    top: 72px;
+    left: 0;
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    height: calc(100vh - 72px);
+    gap: 0;
+    padding: 24px 20px;
+    background: var(--warm-50);
+    overflow-y: auto;
+  }
+
+  .main-nav.is-open a {
+    padding: 12px 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--line);
   }
 }
 
