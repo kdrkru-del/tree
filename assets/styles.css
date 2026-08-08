@@ -752,69 +752,6 @@ textarea {
   }
 }
 
-.problem-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
-}
-
-.problem-card {
-  display: flex;
-  flex-direction: column;
-  padding: 32px;
-  background: var(--white);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s, box-shadow 0.2s;
-  height: 100%;
-}
-
-.problem-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow);
-}
-
-.problem-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 16px;
-  gap: 16px;
-}
-
-.problem-card-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.problem-card-price {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--orange-600);
-  background: rgba(217, 107, 39, 0.1);
-  padding: 4px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-}
-
-.problem-card p {
-  color: var(--muted);
-  margin: 0 0 24px;
-  flex-grow: 1;
-}
-
-.problem-card-btn {
-  font-weight: 600;
-  color: var(--green-700);
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.problem-card-btn::after {
-  content: '→';
-}
-
 .price-table-wrap {
   background: var(--white);
   border-radius: var(--radius);
