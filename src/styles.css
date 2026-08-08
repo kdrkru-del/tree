@@ -490,18 +490,7 @@ textarea {
 .hero-actions {
   display: flex;
   gap: 16px;
-  margin-bottom: 48px;
-}
-
-.hero-benefits {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px 32px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 0.95rem;
-  opacity: 0.85;
+  margin-bottom: 0;
 }
 
 .hero-prices {
@@ -579,10 +568,6 @@ textarea {
   }
   .hero-actions {
     flex-direction: column;
-  }
-  .hero-benefits {
-    flex-direction: column;
-    gap: 12px;
   }
 }
 
