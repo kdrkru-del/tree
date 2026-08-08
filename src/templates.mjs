@@ -151,7 +151,6 @@ export function homePage() {
   ${processSection()}
   ${branchChippingUpsell()}
   ${organizationsSection()}
-  ${areasSection()}
   ${faqSection(faq)}
   ${leadSection('Получите расчет по фотографиям', 'Пришлите 2–3 фотографии. Обычно по ним уже можно определить способ работы и ориентировочную стоимость.')}`;
   return renderPage({ title, description, path: '/', body, jsonLd: [professionalServiceSchema(), faqSchema(faq), breadcrumbSchema([{ name: 'Главная', url: '/' }])] });
@@ -258,10 +257,6 @@ function branchChippingUpsell() {
 
 function organizationsSection() {
   return `<section class="section section-dark" id="organizations"><div class="container org-grid"><div><p class="eyebrow">Для организаций</p><h2>Работаем с организациями</h2><p>Выполняем разовые и регулярные работы для территорий СНТ, коттеджных поселков, управляющих компаний, складов, производственных площадок и коммерческих объектов.</p><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Расчет для организации" data-goal="organization_lead">Получить расчет для организации</a></div><ul><li>СНТ и коттеджные поселки</li><li>УК, ТСЖ и дворовые территории</li><li>Склады и производственные площадки</li><li>Базы отдыха и коммерческие объекты</li><li>Договор и смета по условиям компании</li><li>Безналичная оплата</li></ul></div></section>`;
-}
-
-function areasSection() {
-  return `<section class="section" id="areas"><div class="container"><div class="section-head"><p class="eyebrow">Районы выезда</p><h2>Москва и Московская область</h2><p>Возможность и стоимость выезда уточняются по адресу, доступу и составу работ.</p></div><div class="area-grid">${regions.map((region) => `<span><a href="/${region.slug}/">${esc(region.title)}</a></span>`).join('')}</div><div class="areas-cta"><a class="btn btn-ghost" href="/moskovskaya-oblast/">Все районы выезда</a></div></div></section>`;
 }
 
 function faqSection(items) {
