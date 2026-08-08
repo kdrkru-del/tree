@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <!-- Main sphere gradient -->
+    <radialGradient id="sphereBg" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#a8e832"/>
+      <stop offset="55%" stop-color="#52c40a"/>
+      <stop offset="100%" stop-color="#267a00"/>
+    </radialGradient>
+    <!-- Leaf left half gradient -->
+    <radialGradient id="leafLeft" cx="40%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#3db800"/>
+      <stop offset="100%" stop-color="#1e6e00"/>
+    </radialGradient>
+    <!-- Leaf right half gradient -->
+    <radialGradient id="leafRight" cx="60%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#6de620"/>
+      <stop offset="100%" stop-color="#32a300"/>
+    </radialGradient>
+    <!-- Glossy highlight gradient -->
+    <radialGradient id="gloss" cx="35%" cy="25%" r="50%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.90)"/>
+      <stop offset="60%" stop-color="rgba(255,255,255,0.25)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+    <!-- Clip path for sphere -->
+    <clipPath id="circleClip">
+      <circle cx="100" cy="100" r="88"/>
+    </clipPath>
+  </defs>
+
+  <!-- Sphere background -->
+  <circle cx="100" cy="100" r="88" fill="url(#sphereBg)"/>
+
+  <!-- Leaf shape clipped inside sphere -->
+  <g clip-path="url(#circleClip)">
+    <!-- Left half of leaf (darker) -->
+    <path d="M100 185 C100 185, 30 155, 28 95 C26 50, 70 20, 100 18 L100 185 Z"
+          fill="url(#leafLeft)"/>
+    <!-- Right half of leaf (lighter) -->
+    <path d="M100 185 C100 185, 170 155, 172 95 C174 50, 130 20, 100 18 L100 185 Z"
+          fill="url(#leafRight)"/>
+    <!-- Center stem line -->
+    <line x1="100" y1="18" x2="100" y2="185" stroke="#1a6800" stroke-width="2.5" opacity="0.7"/>
+    <!-- Right leaf veins (curved) -->
+    <path d="M100 75 C118 78, 138 90, 148 108" stroke="#2a8a00" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+    <path d="M100 105 C118 108, 138 120, 145 138" stroke="#2a8a00" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+    <!-- Left leaf veins (subtle) -->
+    <path d="M100 85 C82 88, 65 95, 58 110" stroke="#1a6800" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+  </g>
+
+  <!-- Water drop (left side, over leaf) -->
+  <path d="M68 72 C68 72, 56 90, 56 98 C56 108, 63 115, 72 115 C81 115, 88 108, 88 98 C88 90, 76 72, 68 72 Z"
+        fill="white" opacity="0.95"/>
+  <!-- Drop inner highlight -->
+  <path d="M63 88 C60 92, 59 97, 61 102" stroke="rgba(255,255,255,0.6)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Glossy highlight top-left -->
+  <path d="M48 48 C58 28, 90 24, 110 32 C90 36, 62 48, 55 70 C42 62, 40 56, 48 48 Z"
+        fill="white" opacity="0.75"/>
+  <!-- Small secondary gloss -->
+  <ellipse cx="58" cy="40" rx="10" ry="6" fill="white" opacity="0.45" transform="rotate(-30 58 40)"/>
+
+  <!-- Circle border -->
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#1a6800" stroke-width="4"/>
+</svg>
