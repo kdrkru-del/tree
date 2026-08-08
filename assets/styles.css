@@ -229,12 +229,24 @@ textarea {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .brand-logo {
   display: block;
   object-fit: contain;
   flex-shrink: 0;
+}
+
+.brand-logo-header {
+  width: 178px;
+  height: auto;
+  max-height: 55px;
+}
+
+.brand-logo-footer {
+  width: 210px;
+  height: auto;
 }
 
 .brand span:not(.brand-logo) {
@@ -364,6 +376,11 @@ textarea {
     height: 64px;
     gap: 16px;
   }
+
+  .brand-logo-header {
+    width: 150px;
+    max-height: 47px;
+}
 
   .header-contact {
     display: none;
