@@ -46,6 +46,10 @@ function maxHref(fallback = '#lead-form') {
   return hasValue(site.maxUrl) ? site.maxUrl : fallback;
 }
 
+function telegramHref(fallback = '#lead-form') {
+  return hasValue(site.telegramUrl) ? site.telegramUrl : fallback;
+}
+
 export function renderPage({ title, description, path = '/', body, jsonLd = [], image = images.hero, leadHref = '#lead-form' }) {
   const canonical = pathUrl(path);
   const fullTitle = title.includes(site.region) ? title : `${title} | ${site.region}`;
@@ -79,6 +83,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${header(leadHref)}
   <main id="main">${body}</main>
   ${footer()}
+  ${floatingContacts()}
   ${mobileBar(leadHref)}
   <script src="/assets/app.js" defer></script>
 </body>
@@ -112,6 +117,7 @@ function footer() {
   const emailEl = hasValue(site.email) ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : '';
   const messengerEl = hasValue(site.messengerUrl) ? `<a href="${messengerHref('/#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : '';
   const maxEl = hasValue(site.maxUrl) ? `<a href="${maxHref('/#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX: ${esc(site.maxPhone)}</a>` : '';
+  const telegramEl = hasValue(site.telegramUrl) ? `<a href="${telegramHref('/#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram: ${esc(site.telegramHandle)}</a>` : '';
   return `<footer class="site-footer">
   <div class="container footer-grid">
     <div>
@@ -120,10 +126,20 @@ function footer() {
       <p class="muted">${esc(site.addressNote)}</p>
     </div>
     <div><h2>Услуги</h2>${services.slice(0, 7).map((service) => `<a href="/${service.slug}/">${esc(service.title)}</a>`).join('')}</div>
-    <div><h2>Контакты</h2>${phoneEl}${emailEl}${messengerEl}${maxEl}<p class="call-note">В целях контроля качества разговор может быть записан.</p></div>
+    <div><h2>Контакты</h2>${phoneEl}${emailEl}${messengerEl}${maxEl}${telegramEl}<p class="call-note">В целях контроля качества разговор может быть записан.</p></div>
   </div>
   <div class="container footer-bottom"><span>© ${new Date().getFullYear()} ${esc(site.brand)}</span><a href="/privacy/">Политика конфиденциальности</a><a href="/personal-data-consent/">Согласие на обработку данных</a><a href="/requisites/">Реквизиты</a></div>
 </footer>`;
+}
+
+function floatingContacts() {
+  const buttons = [
+    hasValue(site.maxUrl) ? `<a class="floating-contact-button floating-contact-max" href="${maxHref()}" target="_blank" rel="noopener" aria-label="Открыть MAX" data-goal="click_max"><span class="floating-contact-max-mark" aria-hidden="true">MAX</span><span class="floating-contact-label">MAX</span></a>` : '',
+    hasValue(site.messengerUrl) ? `<a class="floating-contact-button floating-contact-whatsapp" href="${messengerHref()}" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" data-goal="click_whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span class="floating-contact-label">WhatsApp</span></a>` : '',
+    hasValue(site.telegramUrl) ? `<a class="floating-contact-button floating-contact-telegram" href="${telegramHref()}" target="_blank" rel="noopener" aria-label="Написать в Telegram" data-goal="click_telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span class="floating-contact-label">Telegram</span></a>` : '',
+    hasValue(site.email) ? `<a class="floating-contact-button floating-contact-email" href="mailto:${esc(site.email)}" aria-label="Написать на почту" data-goal="click_email"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="floating-contact-label">Почта</span></a>` : ''
+  ].filter(Boolean).join('');
+  return buttons ? `<aside class="floating-contact-rail" aria-label="Быстрая связь">${buttons}</aside>` : '';
 }
 
 function mobileBar(leadHref) {
@@ -248,7 +264,7 @@ function faqSection(items) {
 }
 
 function leadSection(title, text, selectedService = 'Фото на оценку') {
-  return `<section class="section lead-section" id="lead-form"><div class="container lead-grid"><div><p class="eyebrow">Заявка</p><h2>${esc(title)}</h2><p>${esc(text)}</p><div class="lead-actions">${hasValue(site.phone) ? `<a class="btn btn-light" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>` : ''}${hasValue(site.messengerUrl) ? `<a class="btn btn-ghost-dark" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : ''}${hasValue(site.maxUrl) ? `<a class="btn btn-ghost-dark" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX</a>` : ''}</div><p class="call-note">В целях контроля качества разговор может быть записан.</p></div>${leadForm(selectedService)}</div></section>`;
+  return `<section class="section lead-section" id="lead-form"><div class="container lead-grid"><div><p class="eyebrow">Заявка</p><h2>${esc(title)}</h2><p>${esc(text)}</p><div class="lead-actions">${hasValue(site.phone) ? `<a class="btn btn-light" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>` : ''}${hasValue(site.messengerUrl) ? `<a class="btn btn-ghost-dark" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : ''}${hasValue(site.maxUrl) ? `<a class="btn btn-ghost-dark" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX</a>` : ''}${hasValue(site.telegramUrl) ? `<a class="btn btn-ghost-dark" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram</a>` : ''}</div><p class="call-note">В целях контроля качества разговор может быть записан.</p></div>${leadForm(selectedService)}</div></section>`;
 }
 
 function leadForm(selectedService) {
@@ -337,7 +353,7 @@ export function faqPage() {
 }
 
 export function contactsPage() {
-  const body = `${simpleHero('Контакты компании', 'Позвоните, отправьте фотографии или оставьте заявку на предварительный расчет.')}<section class="section"><div class="container contact-grid"><div class="contact-card"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : ''}${hasValue(site.messengerUrl) ? `<a href="${messengerHref()}" data-goal="click_whatsapp">WhatsApp: 8 925 757 78 88</a>` : ''}${hasValue(site.maxUrl) ? `<a href="${maxHref()}" target="_blank" rel="noopener" data-goal="click_max">MAX: ${esc(site.maxPhone)}</a>` : ''}${hasValue(site.email) ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : ''}<p>${esc(site.addressNote)}</p></div><div class="contact-card"><h2>Что подготовить</h2><ul class="rich-list"><li>фото дерева целиком</li><li>фото ствола и кроны</li><li>фото препятствий рядом</li><li>адрес объекта и желаемый результат</li></ul></div></div></section>${leadSection('Отправьте заявку', 'Чем подробнее фотографии и описание, тем точнее предварительный расчет.')}`;
+  const body = `${simpleHero('Контакты компании', 'Позвоните, отправьте фотографии или оставьте заявку на предварительный расчет.')}<section class="section"><div class="container contact-grid"><div class="contact-card"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : ''}${hasValue(site.messengerUrl) ? `<a href="${messengerHref()}" data-goal="click_whatsapp">WhatsApp: 8 925 757 78 88</a>` : ''}${hasValue(site.maxUrl) ? `<a href="${maxHref()}" target="_blank" rel="noopener" data-goal="click_max">MAX: ${esc(site.maxPhone)}</a>` : ''}${hasValue(site.telegramUrl) ? `<a href="${telegramHref()}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram: ${esc(site.telegramHandle)}</a>` : ''}${hasValue(site.email) ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : ''}<p>${esc(site.addressNote)}</p></div><div class="contact-card"><h2>Что подготовить</h2><ul class="rich-list"><li>фото дерева целиком</li><li>фото ствола и кроны</li><li>фото препятствий рядом</li><li>адрес объекта и желаемый результат</li></ul></div></div></section>${leadSection('Отправьте заявку', 'Чем подробнее фотографии и описание, тем точнее предварительный расчет.')}`;
   return renderPage({ title: 'Контакты', description: 'Контакты компании по уходу за деревьями: телефон, email и форма заявки.', path: '/contacts/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Контакты', url: '/contacts/' }])] });
 }
 
