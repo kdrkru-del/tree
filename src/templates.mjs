@@ -106,7 +106,6 @@ function header(leadHref) {
     <div class="header-actions">
       ${phoneEl ? `<div class="header-contact">${phoneEl}</div>` : ''}
       <a class="btn btn-small btn-ghost" href="${leadHref}" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать</a>
-      ${hasValue(site.messengerUrl) ? `<a class="btn btn-small btn-accent" href="${messengerHref(leadHref)}" data-goal="click_whatsapp">WhatsApp</a>` : ''}
     </div>
   </div>
 </header>`;
@@ -116,8 +115,6 @@ function footer() {
   const phoneEl = hasValue(site.phone) ? `<a class="phone-link" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : '';
   const emailEl = hasValue(site.email) ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : '';
   const messengerEl = hasValue(site.messengerUrl) ? `<a href="${messengerHref('/#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : '';
-  const maxEl = hasValue(site.maxUrl) ? `<a href="${maxHref('/#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX: ${esc(site.maxPhone)}</a>` : '';
-  const telegramEl = hasValue(site.telegramUrl) ? `<a href="${telegramHref('/#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram: ${esc(site.telegramHandle)}</a>` : '';
   return `<footer class="site-footer">
   <div class="container footer-grid">
     <div>
@@ -126,7 +123,7 @@ function footer() {
       <p class="muted">${esc(site.addressNote)}</p>
     </div>
     <div><h2>Услуги</h2>${services.slice(0, 7).map((service) => `<a href="/${service.slug}/">${esc(service.title)}</a>`).join('')}</div>
-    <div><h2>Контакты</h2>${phoneEl}${emailEl}${messengerEl}${maxEl}${telegramEl}<p class="call-note">В целях контроля качества разговор может быть записан.</p></div>
+    <div><h2>Контакты</h2>${phoneEl}${emailEl}${messengerEl}<p class="call-note">В целях контроля качества разговор может быть записан.</p></div>
   </div>
   <div class="container footer-bottom"><span>© ${new Date().getFullYear()} ${esc(site.brand)}</span><a href="/privacy/">Политика конфиденциальности</a><a href="/personal-data-consent/">Согласие на обработку данных</a><a href="/requisites/">Реквизиты</a></div>
 </footer>`;
