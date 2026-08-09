@@ -39,7 +39,11 @@ function phoneHref() {
 }
 
 function messengerHref(fallback = '#lead-form') {
-  return site.telegramUrl && !site.telegramUrl.startsWith('[') ? site.telegramUrl : fallback;
+  return hasValue(site.messengerUrl) ? site.messengerUrl : fallback;
+}
+
+function maxHref(fallback = '#lead-form') {
+  return hasValue(site.maxUrl) ? site.maxUrl : fallback;
 }
 
 export function renderPage({ title, description, path = '/', body, jsonLd = [], image = images.hero, leadHref = '#lead-form' }) {
@@ -67,7 +71,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://commons.wikimedia.org">
   <link rel="stylesheet" href="/assets/styles.css">
-  <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl })};</script>
+  <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
 </head>
 <body>
@@ -97,7 +101,7 @@ function header(leadHref) {
     <div class="header-actions">
       ${phoneEl ? `<div class="header-contact">${phoneEl}</div>` : ''}
       <a class="btn btn-small btn-ghost" href="${leadHref}" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать</a>
-      ${hasValue(site.telegramUrl) ? `<a class="btn btn-small btn-accent" href="${messengerHref(leadHref)}" data-goal="click_messenger">Написать</a>` : ''}
+      ${hasValue(site.messengerUrl) ? `<a class="btn btn-small btn-accent" href="${messengerHref(leadHref)}" data-goal="click_whatsapp">WhatsApp</a>` : ''}
     </div>
   </div>
 </header>`;
@@ -106,7 +110,8 @@ function header(leadHref) {
 function footer() {
   const phoneEl = hasValue(site.phone) ? `<a class="phone-link" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : '';
   const emailEl = hasValue(site.email) ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : '';
-  const messengerEl = hasValue(site.telegramUrl) ? `<a href="${messengerHref('/#lead-form')}" data-goal="click_messenger">Написать нам</a>` : '';
+  const messengerEl = hasValue(site.messengerUrl) ? `<a href="${messengerHref('/#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : '';
+  const maxEl = hasValue(site.maxUrl) ? `<a href="${maxHref('/#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX: ${esc(site.maxPhone)}</a>` : '';
   return `<footer class="site-footer">
   <div class="container footer-grid">
     <div>
@@ -115,7 +120,7 @@ function footer() {
       <p class="muted">${esc(site.addressNote)}</p>
     </div>
     <div><h2>Услуги</h2>${services.slice(0, 7).map((service) => `<a href="/${service.slug}/">${esc(service.title)}</a>`).join('')}</div>
-    <div><h2>Контакты</h2>${phoneEl}${emailEl}${messengerEl}<p class="call-note">В целях контроля качества разговор может быть записан.</p></div>
+    <div><h2>Контакты</h2>${phoneEl}${emailEl}${messengerEl}${maxEl}<p class="call-note">В целях контроля качества разговор может быть записан.</p></div>
   </div>
   <div class="container footer-bottom"><span>© ${new Date().getFullYear()} ${esc(site.brand)}</span><a href="/privacy/">Политика конфиденциальности</a><a href="/personal-data-consent/">Согласие на обработку данных</a><a href="/requisites/">Реквизиты</a></div>
 </footer>`;
@@ -124,7 +129,7 @@ function footer() {
 function mobileBar(leadHref) {
   const callBtn = `<a class="mobile-btn mobile-btn-call" href="${phoneHref()}" data-goal="click_phone"><span class="mobile-btn-icon">📞</span><span>Позвонить</span></a>`;
   const calcBtn = `<a class="mobile-btn mobile-btn-calc" href="${leadHref}" data-open-form data-service="Расчет стоимости" data-goal="click_calculate"><span class="mobile-btn-icon">📷</span><span>Рассчитать</span></a>`;
-  const messengerBtn = hasValue(site.telegramUrl) ? `<a class="mobile-btn mobile-btn-msg" href="${messengerHref(leadHref)}" data-goal="click_messenger"><span class="mobile-btn-icon">✉</span><span>Написать</span></a>` : '';
+  const messengerBtn = hasValue(site.messengerUrl) ? `<a class="mobile-btn mobile-btn-msg" href="${messengerHref(leadHref)}" data-goal="click_whatsapp"><span class="mobile-btn-icon">✉</span><span>WhatsApp</span></a>` : '';
   return `<div class="mobile-action-bar" aria-label="Быстрые действия">${callBtn}${calcBtn}${messengerBtn}</div>`;
 }
 
@@ -191,10 +196,10 @@ function quickLeadSection() {
           <p class="quick-lead-hint">Телефон — обязательно. Остальное уточним при связи.</p>
           <div class="form-success quick-lead-success" data-quick-success hidden aria-live="polite">
             <strong data-submission-title>Заявка отправлена.</strong> <span data-submission-text>Менеджер свяжется с вами.</span>
-            <a class="submission-link" href="${messengerHref('#lead-form')}" data-submission-link hidden rel="noopener">Открыть Telegram</a>
+            <a class="submission-link" href="${messengerHref('#lead-form')}" data-submission-link hidden rel="noopener">Открыть WhatsApp</a>
           </div>
         </form>
-        ${hasValue(site.telegramUrl) ? `<a class="btn btn-outline" href="${messengerHref('#lead-form')}" data-goal="click_messenger">Отправить фото</a>` : ''}
+        ${hasValue(site.messengerUrl) ? `<a class="btn btn-outline" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">Отправить фото в WhatsApp</a>` : ''}
       </div>
     </div>
   </div>
@@ -243,7 +248,7 @@ function faqSection(items) {
 }
 
 function leadSection(title, text, selectedService = 'Фото на оценку') {
-  return `<section class="section lead-section" id="lead-form"><div class="container lead-grid"><div><p class="eyebrow">Заявка</p><h2>${esc(title)}</h2><p>${esc(text)}</p><div class="lead-actions">${hasValue(site.phone) ? `<a class="btn btn-light" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>` : ''}${hasValue(site.telegramUrl) ? `<a class="btn btn-ghost-dark" href="${messengerHref('#lead-form')}" data-goal="click_messenger">Написать</a>` : ''}</div><p class="call-note">В целях контроля качества разговор может быть записан.</p></div>${leadForm(selectedService)}</div></section>`;
+  return `<section class="section lead-section" id="lead-form"><div class="container lead-grid"><div><p class="eyebrow">Заявка</p><h2>${esc(title)}</h2><p>${esc(text)}</p><div class="lead-actions">${hasValue(site.phone) ? `<a class="btn btn-light" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>` : ''}${hasValue(site.messengerUrl) ? `<a class="btn btn-ghost-dark" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : ''}${hasValue(site.maxUrl) ? `<a class="btn btn-ghost-dark" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX</a>` : ''}</div><p class="call-note">В целях контроля качества разговор может быть записан.</p></div>${leadForm(selectedService)}</div></section>`;
 }
 
 function leadForm(selectedService) {
@@ -286,7 +291,7 @@ function leadForm(selectedService) {
       <button class="btn btn-accent" type="submit">Отправить заявку</button>
     </div>
   </fieldset>
-  <div class="form-success" data-form-success hidden aria-live="polite"><h3 data-submission-title>Спасибо! Заявка отправлена.</h3><p data-submission-text>Менеджер компании свяжется с вами для уточнения информации.</p><a class="btn btn-accent submission-link" href="${messengerHref('#lead-form')}" data-submission-link hidden rel="noopener">Открыть Telegram</a></div>
+  <div class="form-success" data-form-success hidden aria-live="polite"><h3 data-submission-title>Спасибо! Заявка отправлена.</h3><p data-submission-text>Менеджер компании свяжется с вами для уточнения информации.</p><a class="btn btn-accent submission-link" href="${messengerHref('#lead-form')}" data-submission-link hidden rel="noopener">Открыть WhatsApp</a></div>
 </form>`;
 }
 
@@ -332,7 +337,7 @@ export function faqPage() {
 }
 
 export function contactsPage() {
-  const body = `${simpleHero('Контакты компании', 'Позвоните, отправьте фотографии или оставьте заявку на предварительный расчет.')}<section class="section"><div class="container contact-grid"><div class="contact-card"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : ''}${hasValue(site.email) ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : ''}<p>${esc(site.addressNote)}</p></div><div class="contact-card"><h2>Что подготовить</h2><ul class="rich-list"><li>фото дерева целиком</li><li>фото ствола и кроны</li><li>фото препятствий рядом</li><li>адрес объекта и желаемый результат</li></ul></div></div></section>${leadSection('Отправьте заявку', 'Чем подробнее фотографии и описание, тем точнее предварительный расчет.')}`;
+  const body = `${simpleHero('Контакты компании', 'Позвоните, отправьте фотографии или оставьте заявку на предварительный расчет.')}<section class="section"><div class="container contact-grid"><div class="contact-card"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : ''}${hasValue(site.messengerUrl) ? `<a href="${messengerHref()}" data-goal="click_whatsapp">WhatsApp: 8 925 757 78 88</a>` : ''}${hasValue(site.maxUrl) ? `<a href="${maxHref()}" target="_blank" rel="noopener" data-goal="click_max">MAX: ${esc(site.maxPhone)}</a>` : ''}${hasValue(site.email) ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : ''}<p>${esc(site.addressNote)}</p></div><div class="contact-card"><h2>Что подготовить</h2><ul class="rich-list"><li>фото дерева целиком</li><li>фото ствола и кроны</li><li>фото препятствий рядом</li><li>адрес объекта и желаемый результат</li></ul></div></div></section>${leadSection('Отправьте заявку', 'Чем подробнее фотографии и описание, тем точнее предварительный расчет.')}`;
   return renderPage({ title: 'Контакты', description: 'Контакты компании по уходу за деревьями: телефон, email и форма заявки.', path: '/contacts/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Контакты', url: '/contacts/' }])] });
 }
 

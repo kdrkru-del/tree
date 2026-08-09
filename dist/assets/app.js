@@ -77,18 +77,18 @@
       fields.city ? `Населенный пункт: ${fields.city}` : '',
       fields.comment ? `Комментарий: ${fields.comment}` : '',
       payload.files && payload.files.length
-        ? `Выбрано фото: ${payload.files.length}. Прикрепите их к сообщению в Telegram.`
+        ? `Выбрано фото: ${payload.files.length}. Прикрепите их к сообщению в WhatsApp.`
         : '',
       payload.page ? `Страница: ${payload.page}` : ''
     ];
     return lines.filter(Boolean).join('\n');
   }
 
-  function telegramDraftUrl(payload) {
-    if (!config.telegramUrl) return '';
+  function whatsappDraftUrl(payload) {
+    if (!config.messengerUrl) return '';
     try {
-      const url = new URL(config.telegramUrl, window.location.origin);
-      if (url.hostname !== 't.me' && url.protocol !== 'tg:') return '';
+      const url = new URL(config.messengerUrl, window.location.origin);
+      if (url.hostname !== 'wa.me' && url.hostname !== 'api.whatsapp.com') return '';
       url.searchParams.set('text', formatLeadMessage(payload));
       return url.toString();
     } catch {
@@ -96,8 +96,8 @@
     }
   }
 
-  function openTelegramDraft(payload) {
-    const url = telegramDraftUrl(payload);
+  function openWhatsAppDraft(payload) {
+    const url = whatsappDraftUrl(payload);
     if (!url) return { opened: false, url: '' };
     const opened = window.open(url, '_blank', 'noopener,noreferrer');
     return { opened: Boolean(opened), url };
@@ -105,7 +105,7 @@
 
   async function deliverLead(payload, files = []) {
     if (!config.leadEndpoint) {
-      return { method: 'telegram', ...openTelegramDraft(payload) };
+      return { method: 'whatsapp', ...openWhatsAppDraft(payload) };
     }
 
     const requestOptions = { method: 'POST' };
@@ -130,17 +130,17 @@
     return { method: 'endpoint', opened: false, url: '', response: responseData };
   }
 
-  function showSubmissionState(node, { title, text, telegramUrl = '' }) {
+  function showSubmissionState(node, { title, text, messengerUrl = '' }) {
     if (!node) return;
     const titleNode = node.querySelector('[data-submission-title]');
     const textNode = node.querySelector('[data-submission-text]');
     const linkNode = node.querySelector('[data-submission-link]');
     if (titleNode) titleNode.textContent = title;
     if (textNode) textNode.textContent = text;
-    node.classList.toggle('is-telegram-fallback', Boolean(telegramUrl));
+    node.classList.toggle('is-messenger-fallback', Boolean(messengerUrl));
     if (linkNode) {
-      linkNode.hidden = !telegramUrl;
-      if (telegramUrl) linkNode.href = telegramUrl;
+      linkNode.hidden = !messengerUrl;
+      if (messengerUrl) linkNode.href = messengerUrl;
     }
     node.hidden = false;
   }
@@ -317,22 +317,22 @@
               });
             } else {
               showSubmissionState(successMsg, {
-                title: result.opened ? 'Открылся Telegram.' : 'Отправьте заявку в Telegram.',
+                title: result.opened ? 'Открылся WhatsApp.' : 'Отправьте заявку в WhatsApp.',
                 text: 'Проверьте сообщение и нажмите «Отправить».',
-                telegramUrl: result.url
+                messengerUrl: result.url
               });
-              reachGoal('lead_telegram_fallback');
+              reachGoal('lead_whatsapp_fallback');
             }
             phoneInput.closest('.quick-lead-field').hidden = true;
           } catch (error) {
              recordDeliveryError(error, payload);
-             const fallback = openTelegramDraft(payload);
+             const fallback = openWhatsAppDraft(payload);
              showSubmissionState(successMsg, {
                title: 'Автоматическая отправка не сработала.',
                text: fallback.url
-                 ? 'Мы открыли Telegram: проверьте сообщение и нажмите «Отправить».'
+                 ? 'Мы открыли WhatsApp: проверьте сообщение и нажмите «Отправить».'
                  : 'Пожалуйста, позвоните нам по номеру в шапке сайта.',
-               telegramUrl: fallback.url
+               messengerUrl: fallback.url
              });
           } finally {
              if (btn) btn.disabled = false;
@@ -486,19 +486,19 @@
               text: 'Менеджер компании свяжется с вами для уточнения информации.'
             });
           } else {
-            reachGoal('lead_telegram_fallback', { service: payload.fields.service });
+            reachGoal('lead_whatsapp_fallback', { service: payload.fields.service });
             showSubmissionState(success, {
-              title: result.opened ? 'Открылся Telegram.' : 'Отправьте заявку в Telegram.',
+              title: result.opened ? 'Открылся WhatsApp.' : 'Отправьте заявку в WhatsApp.',
               text: files.length
                 ? 'Проверьте сообщение, прикрепите выбранные фотографии и нажмите «Отправить».'
                 : 'Проверьте сообщение и нажмите «Отправить».',
-              telegramUrl: result.url
+              messengerUrl: result.url
             });
           }
           form.reset();
         } catch (error) {
           recordDeliveryError(error, payload);
-          const fallback = openTelegramDraft(payload);
+          const fallback = openWhatsAppDraft(payload);
           if (fallback.url) {
             form.querySelectorAll('fieldset').forEach((fieldset) => { fieldset.hidden = true; });
             if (progress) progress.parentElement.hidden = true;
@@ -506,9 +506,9 @@
           showSubmissionState(success, {
             title: 'Автоматическая отправка не сработала.',
             text: fallback.url
-              ? 'Мы открыли Telegram: проверьте сообщение, при необходимости добавьте фотографии и нажмите «Отправить».'
+              ? 'Мы открыли WhatsApp: проверьте сообщение, при необходимости добавьте фотографии и нажмите «Отправить».'
               : 'Пожалуйста, позвоните нам по номеру в шапке сайта или попробуйте еще раз.',
-            telegramUrl: fallback.url
+            messengerUrl: fallback.url
           });
         } finally {
           if (submit) submit.disabled = false;
