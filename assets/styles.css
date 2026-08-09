@@ -659,12 +659,12 @@ textarea {
     border-color: rgba(255,255,255,0.2);
 }
 
-.form-success.is-telegram-fallback {
+.form-success.is-messenger-fallback {
   background: #fff4dd;
   border-color: var(--orange-600);
 }
 
-.quick-lead-success.is-telegram-fallback {
+.quick-lead-success.is-messenger-fallback {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.45);
 }
@@ -1246,6 +1246,7 @@ details p {
 
 .lead-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 24px;
 }
