@@ -157,24 +157,6 @@
   }
 
   function loadIntegrations() {
-    if (metrikaId) {
-      (function (m, e, t, r, i, k, a) {
-        m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
-        m[i].l = 1 * new Date();
-        k = e.createElement(t);
-        a = e.getElementsByTagName(t)[0];
-        k.async = 1;
-        k.src = r;
-        a.parentNode.insertBefore(k, a);
-      })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
-      window.ym(metrikaId, 'init', {
-        clickmap: true,
-        trackLinks: true,
-        accurateTrackBounce: true,
-        webvisor: true
-      });
-    }
-
     if (config.novofonScriptUrl) {
       const script = document.createElement('script');
       script.src = config.novofonScriptUrl;
@@ -206,14 +188,11 @@
     document.addEventListener('click', (event) => {
       const goalNode = event.target.closest('[data-goal]');
       if (goalNode) reachGoal(goalNode.dataset.goal, { href: goalNode.getAttribute('href') });
-      const phone = event.target.closest('a[href^="tel:"]');
-      if (phone) reachGoal('click_phone', { href: phone.getAttribute('href') });
       const formLink = event.target.closest('[data-open-form]');
       if (formLink) {
         const service = formLink.dataset.service;
         const form = document.querySelector('[data-lead-form]');
         selectService(form, service);
-        reachGoal('click_calculate', { service });
       }
     });
   }

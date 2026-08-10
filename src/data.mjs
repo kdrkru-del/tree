@@ -16,7 +16,7 @@ export const site = {
   baseUrl: 'https://zelsrez.ru',
   region: 'Московская область',
   addressNote: 'Работы выполняются на территории заказчика. Офис для приема посетителей не заявлен.',
-  metrikaId: '',
+  metrikaId: 111453743,
   leadEndpoint: '',
   novofonScriptUrl: ''
 };

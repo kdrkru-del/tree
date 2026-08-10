@@ -50,6 +50,27 @@ function telegramHref(fallback = '#lead-form') {
   return hasValue(site.telegramUrl) ? site.telegramUrl : fallback;
 }
 
+function metrikaCounter() {
+  const id = Number.parseInt(site.metrikaId, 10);
+  if (!Number.isFinite(id)) return '';
+  return `<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=${id}', 'ym');
+
+    ym(${id}, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>`;
+}
+
+function metrikaNoScript() {
+  const id = Number.parseInt(site.metrikaId, 10);
+  if (!Number.isFinite(id)) return '';
+  return `<noscript><div><img src="https://mc.yandex.ru/watch/${id}" style="position:absolute; left:-9999px;" alt=""></div></noscript>`;
+}
+
 export function renderPage({ title, description, path = '/', body, jsonLd = [], image = images.hero, leadHref = '#lead-form' }) {
   const canonical = pathUrl(path);
   const fullTitle = title.includes(site.region) ? title : `${title} | ${site.region}`;
@@ -76,9 +97,11 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="preconnect" href="https://commons.wikimedia.org">
   <link rel="stylesheet" href="/assets/styles.css">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
+  ${metrikaCounter()}
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
 </head>
 <body>
+  ${metrikaNoScript()}
   <a class="skip-link" href="#main">Перейти к содержанию</a>
   ${header(leadHref)}
   <main id="main">${body}</main>
@@ -203,7 +226,7 @@ function quickLeadSection() {
         <form class="quick-lead-form" data-quick-lead-form>
           <div class="quick-lead-field">
             <input type="tel" name="quick_phone" id="quick_phone" placeholder="Ваш телефон" required autocomplete="tel" inputmode="tel" minlength="10" maxlength="24" pattern="[+0-9 ()\\-]{10,24}">
-            <button class="btn btn-accent" type="submit" data-goal="lead_phone">Получить расчет</button>
+            <button class="btn btn-accent" type="submit">Получить расчет</button>
           </div>
           <label class="quick-lead-consent"><input type="checkbox" name="quick_consent" required> <span>Согласен на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a></span></label>
           <p class="quick-lead-hint">Телефон — обязательно. Остальное уточним при связи.</p>
@@ -287,7 +310,7 @@ function leadForm(selectedService) {
     <label class="consent"><input type="checkbox" name="consent" required> Нажимая кнопку, я даю согласие на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a></label>
     <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
     <div class="form-buttons">
-      <button class="btn btn-accent btn-full" type="button" data-save-contact data-goal="form_contact_saved">Продолжить</button>
+      <button class="btn btn-accent btn-full" type="button" data-save-contact>Продолжить</button>
     </div>
   </fieldset>
   <fieldset data-step hidden>
