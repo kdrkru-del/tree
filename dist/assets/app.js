@@ -226,6 +226,7 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260811-no-wha
 
           try {
             await deliverLead(config.leadEndpoint, payload);
+            reachGoal('lead_form_success', { service: payload.fields.service });
             reachGoal('lead_phone');
             showSubmissionState(successMsg, {
               title: 'Заявка отправлена.',
@@ -388,6 +389,7 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260811-no-wha
 
         try {
           await deliverLead(config.leadEndpoint, payload, files);
+          reachGoal('lead_form_success', { service: payload.fields.service });
           form.querySelectorAll('fieldset').forEach((fieldset) => { fieldset.hidden = true; });
           if (progress) progress.parentElement.hidden = true;
           reachGoal('lead_form', { service: payload.fields.service });

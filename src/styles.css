@@ -330,7 +330,7 @@ textarea {
   border: none;
 }
 
-.nav-toggle span {
+.nav-toggle > span:not(.sr-only) {
   width: 100%;
   height: 2px;
   background: var(--graphite);
@@ -491,6 +491,14 @@ textarea {
   display: flex;
   gap: 16px;
   margin-bottom: 0;
+}
+
+.hero-cta-note {
+  max-width: 560px;
+  margin: 14px 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  opacity: 0.82;
 }
 
 .hero-prices {

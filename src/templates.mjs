@@ -197,12 +197,13 @@ function heroSection() {
   <div class="container hero-content">
     <div class="hero-copy">
       <p class="hero-badge">Предварительная оценка по фото</p>
-      <h1>Спил и удаление деревьев<br>в Московской области</h1>
+      <h1>Спил и удаление деревьев<br>в Москве и Московской области</h1>
       <p class="hero-lead">Спиливаем аварийные деревья, дробим ветки и пни, расчищаем участки. Работаем возле домов, заборов и коммуникаций. Оценим стоимость по фотографиям до выезда.</p>
       <div class="hero-actions">
         <a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Рассчитать стоимость по фото</a>
         <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
       </div>
+      <p class="hero-cta-note">Для предварительной оценки отправьте фотографию дерева и контактный номер.</p>
     </div>
     <aside class="hero-prices" aria-label="Ориентировочные цены">
       <p class="hero-prices-label">Стартовые цены</p>
