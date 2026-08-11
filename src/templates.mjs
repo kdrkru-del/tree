@@ -108,7 +108,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${footer()}
   ${floatingContacts()}
   ${mobileBar(leadHref)}
-  <script src="/assets/app.js" defer></script>
+  <script src="/assets/app.js" type="module"></script>
 </body>
 </html>`;
 }

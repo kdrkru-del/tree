@@ -664,7 +664,17 @@ textarea {
   border-color: var(--orange-600);
 }
 
+.form-success.is-error {
+  background: #fff4dd;
+  border-color: var(--orange-600);
+}
+
 .quick-lead-success.is-messenger-fallback {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.quick-lead-success.is-error {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.45);
 }

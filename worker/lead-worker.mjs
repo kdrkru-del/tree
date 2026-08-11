@@ -48,20 +48,22 @@ function escapeHtml(value) {
 
 function validatePayload(rawPayload) {
   if (!rawPayload || typeof rawPayload !== 'object' || Array.isArray(rawPayload)) {
-    throw new Error('Некорректная заявка');
+    throw new Error('Invalid JSON');
   }
 
-  const rawFields = rawPayload.fields || {};
+  const rawFields = rawPayload.fields && typeof rawPayload.fields === 'object'
+    ? rawPayload.fields
+    : {};
   const fields = {
-    service: clean(rawFields.service, 120),
-    phone: clean(rawFields.phone, 40),
-    name: clean(rawFields.name, 120),
-    city: clean(rawFields.city, 160),
-    comment: clean(rawFields.comment, 1000)
+    service: clean(rawPayload.service || rawFields.service, 120),
+    phone: clean(rawPayload.phone || rawFields.phone, 40),
+    name: clean(rawPayload.name || rawFields.name, 120),
+    city: clean(rawPayload.city || rawFields.city, 160),
+    comment: clean(rawPayload.comment || rawFields.comment, 1000)
   };
   const phoneDigits = fields.phone.replace(/\D/g, '');
   if (phoneDigits.length < 10 || phoneDigits.length > 15) {
-    throw new Error('Проверьте номер телефона');
+    throw new Error('Введите корректный телефон');
   }
 
   return {
@@ -91,7 +93,18 @@ async function readRequest(request) {
   const contentType = request.headers.get('Content-Type') || '';
   if (contentType.includes('multipart/form-data')) {
     const form = await request.formData();
-    const rawPayload = JSON.parse(String(form.get('payload') || '{}'));
+    const serializedPayload = String(form.get('payload') || '').trim();
+    const rawPayload = serializedPayload ? JSON.parse(serializedPayload) : {};
+    const directFields = [
+      'lead_id', 'phone', 'service', 'name', 'city', 'comment',
+      'created_at', 'source', 'page', 'entry_page'
+    ];
+    directFields.forEach((key) => {
+      if (form.has(key)) rawPayload[key] = String(form.get(key) || '');
+    });
+    if (form.has('utm')) {
+      rawPayload.utm = JSON.parse(String(form.get('utm') || '{}'));
+    }
     return {
       payload: validatePayload(rawPayload),
       photos: validatePhotos(form.getAll('photos'))
@@ -99,7 +112,7 @@ async function readRequest(request) {
   }
 
   if (!contentType.includes('application/json')) {
-    throw new Error('Поддерживается JSON или форма с фотографиями');
+    throw new Error('Unsupported Content-Type');
   }
   return { payload: validatePayload(await request.json()), photos: [] };
 }
@@ -180,6 +193,9 @@ export default {
     }
 
     const url = new URL(request.url);
+    if (request.method === 'GET' && url.pathname === '/') {
+      return json(request, env, 200, { ok: true, service: 'zelsrez-leads', status: 'ready' });
+    }
     if (request.method !== 'POST' || !['/', '/api/lead'].includes(url.pathname)) {
       return json(request, env, 404, { ok: false, error: 'Not found' });
     }
@@ -200,7 +216,7 @@ export default {
       return json(request, env, 200, { ok: true, lead_id: payload.lead_id, photos_sent: photos.length });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Не удалось обработать заявку';
-      const status = /телефон|изображен|размер|JSON|заявк|Поддерживается/i.test(message) ? 400 : 502;
+      const status = /телефон|изображен|размер|JSON|заявк|Unsupported/i.test(message) ? 400 : 502;
       return json(request, env, status, { ok: false, error: message });
     }
   }

@@ -7,7 +7,9 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "serve": "node scripts/serve.mjs",
-    "check": "node --check src/app.js && node --check worker/lead-worker.mjs && node scripts/check.mjs"
+    "check": "node --check src/app.js && node --check src/lead-delivery.mjs && node --check worker/lead-worker.mjs && node scripts/check.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:live-worker": "node scripts/check-live-worker.mjs"
   },
   "engines": {
     "node": ">=20"

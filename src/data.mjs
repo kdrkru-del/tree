@@ -17,7 +17,7 @@ export const site = {
   region: 'Московская область',
   addressNote: 'Работы выполняются на территории заказчика. Офис для приема посетителей не заявлен.',
   metrikaId: 111453743,
-  leadEndpoint: '',
+  leadEndpoint: 'https://zelsrez-leads.roman-k-0b3.workers.dev',
   novofonScriptUrl: ''
 };
 

@@ -74,6 +74,7 @@ async function build() {
 
   await copyFile(path.join(root, 'src', 'styles.css'), path.join(dist, 'assets', 'styles.css'));
   await copyFile(path.join(root, 'src', 'app.js'), path.join(dist, 'assets', 'app.js'));
+  await copyFile(path.join(root, 'src', 'lead-delivery.mjs'), path.join(dist, 'assets', 'lead-delivery.mjs'));
   await copyFile(path.join(root, 'assets', 'logo-zelenyi-srez.png'), path.join(dist, 'assets', 'logo-zelenyi-srez.png'));
   await writeFile(path.join(dist, 'server', 'index.js'), staticWorker, 'utf8');
 
