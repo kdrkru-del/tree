@@ -1,3 +1,5 @@
+import { createLeadId, deliverLead } from './lead-delivery.mjs';
+
 (function () {
   const config = window.TREE_SITE_CONFIG || {};
   const metrikaId = config.metrikaId;
@@ -27,13 +29,6 @@
     } catch {
       return {};
     }
-  }
-
-  function createLeadId() {
-    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
-      return window.crypto.randomUUID();
-    }
-    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
   }
 
   function selectService(form, requestedService) {
@@ -96,41 +91,7 @@
     }
   }
 
-  function openWhatsAppDraft(payload) {
-    const url = whatsappDraftUrl(payload);
-    if (!url) return { opened: false, url: '' };
-    const opened = window.open(url, '_blank', 'noopener,noreferrer');
-    return { opened: Boolean(opened), url };
-  }
-
-  async function deliverLead(payload, files = []) {
-    if (!config.leadEndpoint) {
-      return { method: 'whatsapp', ...openWhatsAppDraft(payload) };
-    }
-
-    const requestOptions = { method: 'POST' };
-    if (files.length) {
-      const body = new FormData();
-      body.append('payload', JSON.stringify(payload));
-      files.forEach((file) => body.append('photos', file, file.name));
-      requestOptions.body = body;
-    } else {
-      requestOptions.headers = { 'Content-Type': 'application/json' };
-      requestOptions.body = JSON.stringify(payload);
-      requestOptions.keepalive = true;
-    }
-
-    const response = await fetch(config.leadEndpoint, requestOptions);
-    const responseData = await response.json().catch(() => null);
-
-    if (!response.ok || (responseData && responseData.ok === false)) {
-      throw new Error(`Сервис заявок ответил с кодом ${response.status}`);
-    }
-
-    return { method: 'endpoint', opened: false, url: '', response: responseData };
-  }
-
-  function showSubmissionState(node, { title, text, messengerUrl = '' }) {
+  function showSubmissionState(node, { title, text, messengerUrl = '', status = 'success' }) {
     if (!node) return;
     const titleNode = node.querySelector('[data-submission-title]');
     const textNode = node.querySelector('[data-submission-text]');
@@ -138,11 +99,18 @@
     if (titleNode) titleNode.textContent = title;
     if (textNode) textNode.textContent = text;
     node.classList.toggle('is-messenger-fallback', Boolean(messengerUrl));
+    node.classList.toggle('is-error', status === 'error');
     if (linkNode) {
       linkNode.hidden = !messengerUrl;
       if (messengerUrl) linkNode.href = messengerUrl;
     }
     node.hidden = false;
+  }
+
+  function hideSubmissionState(node) {
+    if (!node) return;
+    node.hidden = true;
+    node.classList.remove('is-messenger-fallback', 'is-error');
   }
 
   function recordDeliveryError(error, payload) {
@@ -270,8 +238,14 @@
           const phone = phoneInput.value;
           const successMsg = quickForm.querySelector('[data-quick-success]');
 
+          hideSubmissionState(successMsg);
           if (btn) btn.disabled = true;
 
+          const fields = {
+            phone,
+            service: 'Быстрый расчет',
+            comment: 'Заявка из формы "Узнайте стоимость вашего дерева"'
+          };
           const payload = {
               lead_id: createLeadId(),
               created_at: new Date().toISOString(),
@@ -279,39 +253,30 @@
               page: window.location.href,
               entry_page: localStorage.getItem('tree_site_entry_page') || window.location.href,
               utm,
-              fields: {
-                  phone: phone,
-                  service: 'Быстрый расчет',
-                  comment: 'Заявка из формы "Узнайте стоимость вашего дерева"'
-              }
+              phone: fields.phone,
+              service: fields.service,
+              comment: fields.comment,
+              fields
           };
 
           try {
-            const result = await deliverLead(payload);
+            await deliverLead(config.leadEndpoint, payload);
             reachGoal('lead_phone');
-            if (result.method === 'endpoint') {
-              showSubmissionState(successMsg, {
-                title: 'Заявка отправлена.',
-                text: 'Менеджер свяжется с вами.'
-              });
-            } else {
-              showSubmissionState(successMsg, {
-                title: result.opened ? 'Открылся WhatsApp.' : 'Отправьте заявку в WhatsApp.',
-                text: 'Проверьте сообщение и нажмите «Отправить».',
-                messengerUrl: result.url
-              });
-              reachGoal('lead_whatsapp_fallback');
-            }
+            showSubmissionState(successMsg, {
+              title: 'Заявка отправлена.',
+              text: 'Менеджер свяжется с вами.'
+            });
             phoneInput.closest('.quick-lead-field').hidden = true;
           } catch (error) {
              recordDeliveryError(error, payload);
-             const fallback = openWhatsAppDraft(payload);
+             const fallbackUrl = whatsappDraftUrl(payload);
              showSubmissionState(successMsg, {
-               title: 'Автоматическая отправка не сработала.',
-               text: fallback.url
-                 ? 'Мы открыли WhatsApp: проверьте сообщение и нажмите «Отправить».'
-                 : 'Пожалуйста, позвоните нам по номеру в шапке сайта.',
-               messengerUrl: fallback.url
+               title: 'Заявка не отправлена.',
+               text: fallbackUrl
+                 ? 'Данные сохранены. Повторите отправку или отправьте сообщение самостоятельно в WhatsApp.'
+                 : 'Данные сохранены. Проверьте соединение и повторите отправку.',
+               messengerUrl: fallbackUrl,
+               status: 'error'
              });
           } finally {
              if (btn) btn.disabled = false;
@@ -423,6 +388,7 @@
         if (form.website && form.website.value) return;
 
         const submit = form.querySelector('[type="submit"]');
+        hideSubmissionState(success);
         if (submit) submit.disabled = true;
 
         const data = new FormData(form);
@@ -433,6 +399,13 @@
             commentText += `\nПосле работы с ветками: ${data.get('branch_after')}`;
         }
 
+        const fields = {
+          service: data.get('service'),
+          city: data.get('city'),
+          name: data.get('name'),
+          phone: data.get('phone'),
+          comment: commentText.trim()
+        };
         const payload = {
           lead_id: createLeadId(),
           created_at: new Date().toISOString(),
@@ -440,13 +413,12 @@
           page: window.location.href,
           entry_page: data.get('entry_page') || window.location.href,
           utm,
-          fields: {
-            service: data.get('service'),
-            city: data.get('city'),
-            name: data.get('name'),
-            phone: data.get('phone'),
-            comment: commentText.trim()
-          },
+          phone: fields.phone,
+          service: fields.service,
+          city: fields.city,
+          name: fields.name,
+          comment: fields.comment,
+          fields,
           files: files.map((file) => ({ name: file.name, size: file.size, type: file.type })),
           crm: {
             stage: 'новая заявка'
@@ -454,40 +426,26 @@
         };
 
         try {
-          const result = await deliverLead(payload, files);
+          await deliverLead(config.leadEndpoint, payload, files);
           form.querySelectorAll('fieldset').forEach((fieldset) => { fieldset.hidden = true; });
           if (progress) progress.parentElement.hidden = true;
-          if (result.method === 'endpoint') {
-            reachGoal('lead_form', { service: payload.fields.service });
-            reachGoal('form_complete', { service: payload.fields.service });
-            showSubmissionState(success, {
-              title: 'Спасибо! Заявка отправлена.',
-              text: 'Менеджер компании свяжется с вами для уточнения информации.'
-            });
-          } else {
-            reachGoal('lead_whatsapp_fallback', { service: payload.fields.service });
-            showSubmissionState(success, {
-              title: result.opened ? 'Открылся WhatsApp.' : 'Отправьте заявку в WhatsApp.',
-              text: files.length
-                ? 'Проверьте сообщение, прикрепите выбранные фотографии и нажмите «Отправить».'
-                : 'Проверьте сообщение и нажмите «Отправить».',
-              messengerUrl: result.url
-            });
-          }
+          reachGoal('lead_form', { service: payload.fields.service });
+          reachGoal('form_complete', { service: payload.fields.service });
+          showSubmissionState(success, {
+            title: 'Спасибо! Заявка отправлена.',
+            text: 'Менеджер компании свяжется с вами для уточнения информации.'
+          });
           form.reset();
         } catch (error) {
           recordDeliveryError(error, payload);
-          const fallback = openWhatsAppDraft(payload);
-          if (fallback.url) {
-            form.querySelectorAll('fieldset').forEach((fieldset) => { fieldset.hidden = true; });
-            if (progress) progress.parentElement.hidden = true;
-          }
+          const fallbackUrl = whatsappDraftUrl(payload);
           showSubmissionState(success, {
-            title: 'Автоматическая отправка не сработала.',
-            text: fallback.url
-              ? 'Мы открыли WhatsApp: проверьте сообщение, при необходимости добавьте фотографии и нажмите «Отправить».'
-              : 'Пожалуйста, позвоните нам по номеру в шапке сайта или попробуйте еще раз.',
-            messengerUrl: fallback.url
+            title: 'Заявка не отправлена.',
+            text: fallbackUrl
+              ? 'Все поля и фотографии сохранены. Повторите отправку или отправьте сообщение самостоятельно в WhatsApp.'
+              : 'Все поля и фотографии сохранены. Проверьте соединение и повторите отправку.',
+            messengerUrl: fallbackUrl,
+            status: 'error'
           });
         } finally {
           if (submit) submit.disabled = false;
