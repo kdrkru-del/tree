@@ -15,7 +15,7 @@ export const site = {
   hours: 'Ежедневно 09:00 – 21:00',
   baseUrl: 'https://zelsrez.ru',
   region: 'Московская область',
-  addressNote: 'Работы выполняются на территории заказчика. Офис для приема посетителей не заявлен.',
+  addressNote: 'Работы выполняются на территории заказчика.',
   metrikaId: 111453743,
   leadEndpoint: 'https://zelsrez-leads.roman-k-0b3.workers.dev',
   novofonScriptUrl: ''

@@ -104,7 +104,12 @@ test('quick and full form keep data on errors and never count WhatsApp as delive
   assert.equal([...source.matchAll(/phone:\s*fields\.phone/g)].length, 2);
   assert.match(source, /deliverLead\(config\.leadEndpoint, payload\)/);
   assert.match(source, /deliverLead\(config\.leadEndpoint, payload, files\)/);
-  assert.doesNotMatch(source, /openWhatsAppDraft|lead_whatsapp_fallback|window\.open/);
+  assert.doesNotMatch(source, /whatsappDraftUrl|openWhatsAppDraft|lead_whatsapp_fallback|window\.open/);
+
+  const templates = readFileSync(new URL('../src/templates.mjs', import.meta.url), 'utf8');
+  assert.doesNotMatch(templates, /data-submission-link/);
+  assert.match(templates, /app\.js\?v=20260811-no-whatsapp/);
+  assert.match(source, /lead-delivery\.mjs\?v=20260811-no-whatsapp/);
 
   const catches = [...source.matchAll(/\} catch \(error\) \{/g)];
   assert.equal(catches.length, 2);
@@ -112,6 +117,6 @@ test('quick and full form keep data on errors and never count WhatsApp as delive
     const end = source.indexOf('} finally {', match.index);
     const catchBlock = source.slice(match.index, end);
     assert.match(catchBlock, /status:\s*'error'/);
-    assert.doesNotMatch(catchBlock, /form\.reset\(\)|fieldset\.hidden|progress\.parentElement\.hidden/);
+    assert.doesNotMatch(catchBlock, /form\.reset\(\)|fieldset\.hidden|progress\.parentElement\.hidden|messengerUrl|WhatsApp/);
   }
 });

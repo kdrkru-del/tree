@@ -1,4 +1,4 @@
-import { createLeadId, deliverLead } from './lead-delivery.mjs';
+import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260811-no-whatsapp';
 
 (function () {
   const config = window.TREE_SITE_CONFIG || {};
@@ -61,56 +61,21 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs';
     }
   }
 
-  function formatLeadMessage(payload) {
-    const fields = payload.fields || {};
-    const lines = [
-      '🌳 Новая заявка с zelsrez.ru',
-      payload.lead_id ? `Номер: ${payload.lead_id}` : '',
-      fields.service ? `Услуга: ${fields.service}` : '',
-      fields.phone ? `Телефон: ${fields.phone}` : '',
-      fields.name ? `Имя: ${fields.name}` : '',
-      fields.city ? `Населенный пункт: ${fields.city}` : '',
-      fields.comment ? `Комментарий: ${fields.comment}` : '',
-      payload.files && payload.files.length
-        ? `Выбрано фото: ${payload.files.length}. Прикрепите их к сообщению в WhatsApp.`
-        : '',
-      payload.page ? `Страница: ${payload.page}` : ''
-    ];
-    return lines.filter(Boolean).join('\n');
-  }
 
-  function whatsappDraftUrl(payload) {
-    if (!config.messengerUrl) return '';
-    try {
-      const url = new URL(config.messengerUrl, window.location.origin);
-      if (url.hostname !== 'wa.me' && url.hostname !== 'api.whatsapp.com') return '';
-      url.searchParams.set('text', formatLeadMessage(payload));
-      return url.toString();
-    } catch {
-      return '';
-    }
-  }
-
-  function showSubmissionState(node, { title, text, messengerUrl = '', status = 'success' }) {
+  function showSubmissionState(node, { title, text, status = 'success' }) {
     if (!node) return;
     const titleNode = node.querySelector('[data-submission-title]');
     const textNode = node.querySelector('[data-submission-text]');
-    const linkNode = node.querySelector('[data-submission-link]');
     if (titleNode) titleNode.textContent = title;
     if (textNode) textNode.textContent = text;
-    node.classList.toggle('is-messenger-fallback', Boolean(messengerUrl));
     node.classList.toggle('is-error', status === 'error');
-    if (linkNode) {
-      linkNode.hidden = !messengerUrl;
-      if (messengerUrl) linkNode.href = messengerUrl;
-    }
     node.hidden = false;
   }
 
   function hideSubmissionState(node) {
     if (!node) return;
     node.hidden = true;
-    node.classList.remove('is-messenger-fallback', 'is-error');
+    node.classList.remove('is-error');
   }
 
   function recordDeliveryError(error, payload) {
@@ -269,13 +234,9 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs';
             phoneInput.closest('.quick-lead-field').hidden = true;
           } catch (error) {
              recordDeliveryError(error, payload);
-             const fallbackUrl = whatsappDraftUrl(payload);
              showSubmissionState(successMsg, {
                title: 'Заявка не отправлена.',
-               text: fallbackUrl
-                 ? 'Данные сохранены. Повторите отправку или отправьте сообщение самостоятельно в WhatsApp.'
-                 : 'Данные сохранены. Проверьте соединение и повторите отправку.',
-               messengerUrl: fallbackUrl,
+               text: 'Данные сохранены. Проверьте соединение и повторите отправку.',
                status: 'error'
              });
           } finally {
@@ -438,13 +399,9 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs';
           form.reset();
         } catch (error) {
           recordDeliveryError(error, payload);
-          const fallbackUrl = whatsappDraftUrl(payload);
           showSubmissionState(success, {
             title: 'Заявка не отправлена.',
-            text: fallbackUrl
-              ? 'Все поля и фотографии сохранены. Повторите отправку или отправьте сообщение самостоятельно в WhatsApp.'
-              : 'Все поля и фотографии сохранены. Проверьте соединение и повторите отправку.',
-            messengerUrl: fallbackUrl,
+            text: 'Все поля и фотографии сохранены. Проверьте соединение и повторите отправку.',
             status: 'error'
           });
         } finally {

@@ -108,7 +108,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${footer()}
   ${floatingContacts()}
   ${mobileBar(leadHref)}
-  <script src="/assets/app.js" type="module"></script>
+  <script src="/assets/app.js?v=20260811-no-whatsapp" type="module"></script>
 </body>
 </html>`;
 }
@@ -232,7 +232,6 @@ function quickLeadSection() {
           <p class="quick-lead-hint">Телефон — обязательно. Остальное уточним при связи.</p>
           <div class="form-success quick-lead-success" data-quick-success hidden aria-live="polite">
             <strong data-submission-title>Заявка отправлена.</strong> <span data-submission-text>Менеджер свяжется с вами.</span>
-            <a class="submission-link" href="${messengerHref('#lead-form')}" data-submission-link hidden rel="noopener">Открыть WhatsApp</a>
           </div>
         </form>
         ${hasValue(site.messengerUrl) ? `<a class="btn btn-outline" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">Отправить фото в WhatsApp</a>` : ''}
@@ -327,7 +326,7 @@ function leadForm(selectedService) {
       <button class="btn btn-accent" type="submit">Отправить заявку</button>
     </div>
   </fieldset>
-  <div class="form-success" data-form-success hidden aria-live="polite"><h3 data-submission-title>Спасибо! Заявка отправлена.</h3><p data-submission-text>Менеджер компании свяжется с вами для уточнения информации.</p><a class="btn btn-accent submission-link" href="${messengerHref('#lead-form')}" data-submission-link hidden rel="noopener">Открыть WhatsApp</a></div>
+  <div class="form-success" data-form-success hidden aria-live="polite"><h3 data-submission-title>Спасибо! Заявка отправлена.</h3><p data-submission-text>Менеджер компании свяжется с вами для уточнения информации.</p></div>
 </form>`;
 }
 
