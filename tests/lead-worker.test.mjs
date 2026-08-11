@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
 import worker from '../worker/lead-worker.mjs';
@@ -13,9 +14,13 @@ function makePayload(leadId) {
   return {
     lead_id: leadId,
     created_at: '2026-08-10T12:00:00.000Z',
+    source: 'TEST source',
     page: 'https://zelsrez.ru/',
     phone: '+7 999 808-19-51',
-    service: 'Тест Worker'
+    name: 'Иван',
+    service: 'Тест Worker',
+    city: 'Московская область',
+    comment: 'Комментарий клиента\nПосле работы с ветками: Измельчить в щепу'
   };
 }
 
@@ -67,6 +72,12 @@ test('JSON lead sends phone and lead_id to Telegram', async (t) => {
   assert.equal(telegramPayload.chat_id, env.TELEGRAM_CHAT_ID);
   assert.match(telegramPayload.text, /lead-json-1/);
   assert.match(telegramPayload.text, /\+7 999 808-19-51/);
+  for (const label of [
+    'Новая заявка', 'ID', 'Телефон', 'Имя', 'Услуга', 'Адрес / район',
+    'Комментарий', 'После работы с ветками', 'Страница', 'Источник', 'Дата'
+  ]) {
+    assert.ok(telegramPayload.text.includes(label), `Missing Telegram label: ${label}`);
+  }
 });
 
 test('multipart lead sends the payload and photo to Telegram', async (t) => {
@@ -94,6 +105,21 @@ test('multipart lead sends the payload and photo to Telegram', async (t) => {
   assert.ok(calls[1].options.body instanceof FormData);
   assert.equal(calls[1].options.body.get('chat_id'), String(env.TELEGRAM_CHAT_ID));
   assert.equal(calls[1].options.body.get('photo').name, 'tree.png');
+  assert.equal(calls[1].options.body.get('caption'), 'Фото к заявке <code>lead-photo-1</code>');
+});
+
+test('Worker source is strict UTF-8 and contains no mojibake labels', () => {
+  const bytes = readFileSync(new URL('../worker/lead-worker.mjs', import.meta.url));
+  const source = bytes.toString('utf8');
+  assert.ok(Buffer.from(source, 'utf8').equals(bytes), 'Worker source is not strict UTF-8');
+  for (const label of [
+    'Новая заявка', 'ID', 'Телефон', 'Имя', 'Услуга', 'Адрес / район',
+    'Комментарий', 'После работы с ветками', 'Страница', 'Источник', 'Дата',
+    'Фото к заявке'
+  ]) {
+    assert.ok(source.includes(label), `Missing Worker label: ${label}`);
+  }
+  assert.doesNotMatch(source, /РЎ|Рµ|Р°|РЅ|Рё|Р»|Рє|Рѕ|СЃ|СЂ|�/u);
 });
 
 test('multipart lead accepts direct phone and lead_id fields used in production', async (t) => {

@@ -46,6 +46,16 @@ function escapeHtml(value) {
     .replaceAll('"', '&quot;');
 }
 
+function splitBranchAfter(comment) {
+  const value = clean(comment, 1000);
+  const match = value.match(/(?:^|\n)После работы с ветками:\s*([^\n]*)\s*$/u);
+  if (!match) return { comment: value, branchAfter: '' };
+  return {
+    comment: value.slice(0, match.index).trim(),
+    branchAfter: clean(match[1], 160)
+  };
+}
+
 function validatePayload(rawPayload) {
   if (!rawPayload || typeof rawPayload !== 'object' || Array.isArray(rawPayload)) {
     throw new Error('Invalid JSON');
@@ -119,20 +129,24 @@ async function readRequest(request) {
 
 function leadText(payload, photoCount) {
   const fields = payload.fields;
+  const details = splitBranchAfter(fields.comment);
   const utm = Object.entries(payload.utm)
     .slice(0, 6)
     .map(([key, value]) => `${escapeHtml(clean(key, 60))}=${escapeHtml(clean(value, 120))}`)
     .join(', ');
   const lines = [
-    '<b>🌳 Новая заявка с zelsrez.ru</b>',
-    `<b>Номер:</b> <code>${escapeHtml(payload.lead_id)}</code>`,
-    fields.service ? `<b>Услуга:</b> ${escapeHtml(fields.service)}` : '',
+    '<b>🌳 Новая заявка</b>',
+    `<b>ID:</b> <code>${escapeHtml(payload.lead_id)}</code>`,
     `<b>Телефон:</b> ${escapeHtml(fields.phone)}`,
     fields.name ? `<b>Имя:</b> ${escapeHtml(fields.name)}` : '',
-    fields.city ? `<b>Населенный пункт:</b> ${escapeHtml(fields.city)}` : '',
-    fields.comment ? `<b>Комментарий:</b> ${escapeHtml(fields.comment)}` : '',
-    photoCount ? `<b>Фотографии:</b> ${photoCount}` : '',
+    fields.service ? `<b>Услуга:</b> ${escapeHtml(fields.service)}` : '',
+    fields.city ? `<b>Адрес / район:</b> ${escapeHtml(fields.city)}` : '',
+    details.comment ? `<b>Комментарий:</b> ${escapeHtml(details.comment)}` : '',
+    details.branchAfter ? `<b>После работы с ветками:</b> ${escapeHtml(details.branchAfter)}` : '',
     payload.page ? `<b>Страница:</b> ${escapeHtml(payload.page)}` : '',
+    payload.source ? `<b>Источник:</b> ${escapeHtml(payload.source)}` : '',
+    payload.created_at ? `<b>Дата:</b> ${escapeHtml(payload.created_at)}` : '',
+    photoCount ? `<b>Фото к заявке:</b> ${photoCount}` : '',
     utm ? `<b>UTM:</b> ${utm}` : ''
   ];
   return lines.filter(Boolean).join('\n');
@@ -154,7 +168,7 @@ async function telegramRequest(env, method, body) {
 
 async function sendPhotos(env, photos, leadId) {
   if (!photos.length) return;
-  const caption = `Фотографии к заявке <code>${escapeHtml(leadId)}</code>`;
+  const caption = `Фото к заявке <code>${escapeHtml(leadId)}</code>`;
 
   if (photos.length === 1) {
     const body = new FormData();
