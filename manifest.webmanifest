@@ -5,5 +5,17 @@
   "display": "standalone",
   "background_color": "#fbf7ef",
   "theme_color": "#143d2b",
+  "icons": [
+    {
+      "src": "/assets/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
   "lang": "ru"
 }
