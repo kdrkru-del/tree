@@ -75,7 +75,16 @@ async function build() {
   await copyFile(path.join(root, 'src', 'styles.css'), path.join(dist, 'assets', 'styles.css'));
   await copyFile(path.join(root, 'src', 'app.js'), path.join(dist, 'assets', 'app.js'));
   await copyFile(path.join(root, 'src', 'lead-delivery.mjs'), path.join(dist, 'assets', 'lead-delivery.mjs'));
-  await copyFile(path.join(root, 'assets', 'logo-zelenyi-srez.png'), path.join(dist, 'assets', 'logo-zelenyi-srez.png'));
+  for (const asset of [
+    'logo-zelenyi-srez.png',
+    'favicon-32.png',
+    'favicon-192.png',
+    'favicon-512.png',
+    'apple-touch-icon.png'
+  ]) {
+    await copyFile(path.join(root, 'assets', asset), path.join(dist, 'assets', asset));
+  }
+  await copyFile(path.join(root, 'assets', 'favicon.ico'), path.join(dist, 'favicon.ico'));
   await writeFile(path.join(dist, 'server', 'index.js'), staticWorker, 'utf8');
 
   const routes = [];
@@ -120,6 +129,10 @@ Sitemap: ${site.baseUrl}/sitemap.xml
     display: 'standalone',
     background_color: '#fbf7ef',
     theme_color: '#143d2b',
+    icons: [
+      { src: '/assets/favicon-192.png', sizes: '192x192', type: 'image/png' },
+      { src: '/assets/favicon-512.png', sizes: '512x512', type: 'image/png' }
+    ],
     lang: 'ru'
   }, null, 2), 'utf8');
 

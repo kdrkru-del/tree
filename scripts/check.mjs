@@ -23,6 +23,15 @@ function routeToFile(href) {
 
 walk(root);
 const problems = [];
+for (const asset of [
+  'favicon.ico',
+  'assets/favicon-32.png',
+  'assets/favicon-192.png',
+  'assets/favicon-512.png',
+  'assets/apple-touch-icon.png'
+]) {
+  if (!existsSync(path.join(root, asset))) problems.push('missing favicon asset ' + asset);
+}
 
 for (const file of htmlFiles) {
   const html = readFileSync(file, 'utf8');
@@ -42,6 +51,9 @@ for (const file of htmlFiles) {
   }
 
   if (/Lorem|lorem|undefined|\[object Object\]|NaN/.test(html)) problems.push(path.relative(root, file) + ' contains placeholder/debug text');
+  if (!html.includes('rel="icon"') || !html.includes('rel="apple-touch-icon"')) {
+    problems.push(path.relative(root, file) + ' is missing favicon links');
+  }
 }
 
 if (problems.length) {
