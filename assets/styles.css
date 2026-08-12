@@ -1425,6 +1425,7 @@ details p {
   background: var(--green-100);
   border-radius: 16px;
   border: 1px solid var(--green-700);
+  color: var(--green-900);
 }
 
 .form-success h3 {
