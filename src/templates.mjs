@@ -294,7 +294,7 @@ function leadForm(selectedService) {
   return `<form class="lead-form" data-lead-form data-form-id="main-form" id="main-lead-form">
   <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
   <div data-form-fields>
-    <label class="lead-phone-label" for="main_phone">Номер телефона <span class="required">*</span></label>
+    <label class="lead-phone-label" for="main_phone">Номер телефона</label>
     <input id="main_phone" name="phone" type="tel" autocomplete="tel" required placeholder="+7 999 999-99-99" data-phone-input>
     <button class="btn btn-accent btn-full" type="submit" data-submit-btn>Получить расчёт</button>
   </div>
