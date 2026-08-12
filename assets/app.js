@@ -1,5 +1,3 @@
-import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260811-no-whatsapp';
-
 (function () {
   const config = window.TREE_SITE_CONFIG || {};
   const metrikaId = config.metrikaId;
@@ -31,65 +29,36 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260811-no-wha
     }
   }
 
-  function selectService(form, requestedService) {
-    if (!form || !requestedService) return;
-    const radios = [...form.querySelectorAll('input[name="service"]')];
-    const normalized = String(requestedService).toLowerCase();
-    const exact = radios.find((radio) => {
-      const value = radio.value.toLowerCase();
-      return normalized.includes(value) || value.includes(normalized);
-    });
-
-    let match = exact;
-    if (!match) {
-      const mappings = [
-        { words: ['аварийн'], value: 'Аварийное дерево' },
-        { words: ['обрез', 'плодов'], value: 'Обрезать дерево' },
-        { words: ['вывоз'], value: 'Вывоз веток' },
-        { words: ['ветк', 'щеп', 'измельч'], value: 'Измельчить ветки' },
-        { words: ['пень', 'пня', 'пней', 'корч'], value: 'Удалить пень' },
-        { words: ['расчист'], value: 'Расчистить участок' },
-        { words: ['спил', 'сух', 'дерев'], value: 'Спилить дерево' }
-      ];
-      const mapping = mappings.find((item) => item.words.some((word) => normalized.includes(word)));
-      match = radios.find((radio) => radio.value === (mapping ? mapping.value : 'Другое'));
-    }
-
-    if (match) {
-      match.checked = true;
-      match.dispatchEvent(new Event('change', { bubbles: true }));
-    }
+  function generateLeadId() {
+    return 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
   }
 
-
-  function showSubmissionState(node, { title, text, status = 'success' }) {
-    if (!node) return;
-    const titleNode = node.querySelector('[data-submission-title]');
-    const textNode = node.querySelector('[data-submission-text]');
-    if (titleNode) titleNode.textContent = title;
-    if (textNode) textNode.textContent = text;
-    node.classList.toggle('is-error', status === 'error');
-    node.hidden = false;
-  }
-
-  function hideSubmissionState(node) {
-    if (!node) return;
-    node.hidden = true;
-    node.classList.remove('is-error');
-  }
-
-  function recordDeliveryError(error, payload) {
-    const key = 'tree_site_form_errors';
-    const errors = JSON.parse(localStorage.getItem(key) || '[]');
-    errors.push({
-      at: new Date().toISOString(),
-      lead_id: payload.lead_id,
-      message: error instanceof Error ? error.message : String(error)
-    });
-    localStorage.setItem(key, JSON.stringify(errors.slice(-10)));
+  function normalizePhone(raw) {
+    const digits = raw.replace(/\D/g, '');
+    if (digits.length === 11 && digits[0] === '8') return '+7' + digits.slice(1);
+    if (digits.length === 11 && digits[0] === '7') return '+' + digits;
+    if (digits.length === 10) return '+7' + digits;
+    return raw.trim();
   }
 
   function loadIntegrations() {
+    if (metrikaId) {
+      (function (m, e, t, r, i, k, a) {
+        m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
+        m[i].l = 1 * new Date();
+        k = e.createElement(t);
+        a = e.getElementsByTagName(t)[0];
+        k.async = 1;
+        k.src = r;
+        a.parentNode.insertBefore(k, a);
+      })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+      window.ym(metrikaId, 'init', {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true
+      });
+    }
     if (config.novofonScriptUrl) {
       const script = document.createElement('script');
       script.src = config.novofonScriptUrl;
@@ -121,12 +90,8 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260811-no-wha
     document.addEventListener('click', (event) => {
       const goalNode = event.target.closest('[data-goal]');
       if (goalNode) reachGoal(goalNode.dataset.goal, { href: goalNode.getAttribute('href') });
-      const formLink = event.target.closest('[data-open-form]');
-      if (formLink) {
-        const service = formLink.dataset.service;
-        const form = document.querySelector('[data-lead-form]');
-        selectService(form, service);
-      }
+      const phoneLink = event.target.closest('a[href^="tel:"]');
+      if (phoneLink) reachGoal('click_phone', { href: phoneLink.getAttribute('href') });
     });
   }
 
@@ -139,7 +104,7 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260811-no-wha
     document.body.classList.add('motion-ready');
 
     const heroItems = [
-      ...document.querySelectorAll('.hero-copy > .hero-badge, .hero-copy h1, .hero-lead, .hero-actions'),
+      ...document.querySelectorAll('.hero-copy > .hero-badge, .hero-copy h1, .hero-lead, .hero-actions, .hero-benefits'),
       document.querySelector('.hero-prices')
     ].filter(Boolean);
 
@@ -158,8 +123,6 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260811-no-wha
       '.trust-cards > *',
       '#works .section-head',
       '#works .work-card',
-      '#videos .section-head',
-      '#videos .short-card',
       '#prices .section-head',
       '#factors .factor-card',
       '#organizations .org-grid > *',
@@ -167,7 +130,8 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260811-no-wha
       '#areas .area-grid span',
       '#faq .section-head',
       '#faq details',
-      '.lead-section .lead-grid > *'
+      '.lead-section .lead-grid > *',
+      '.branch-upsell-inner > *'
     ].join(','));
 
     revealItems.forEach((item, index) => {
@@ -190,228 +154,102 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260811-no-wha
     revealItems.forEach((item) => observer.observe(item));
   }
 
-  function initQuickLead() {
-      const quickForm = document.querySelector('[data-quick-lead-form]');
-      if(!quickForm) return;
-
-      const utm = getUtm();
-
-      quickForm.addEventListener('submit', async (event) => {
-          event.preventDefault();
-          const btn = quickForm.querySelector('button[type="submit"]');
-          const phoneInput = quickForm.querySelector('input[name="quick_phone"]');
-          const phone = phoneInput.value;
-          const successMsg = quickForm.querySelector('[data-quick-success]');
-
-          hideSubmissionState(successMsg);
-          if (btn) btn.disabled = true;
-
-          const fields = {
-            phone,
-            service: 'Быстрый расчет',
-            comment: 'Заявка из формы "Узнайте стоимость вашего дерева"'
-          };
-          const payload = {
-              lead_id: createLeadId(),
-              created_at: new Date().toISOString(),
-              source: document.referrer || 'direct',
-              page: window.location.href,
-              entry_page: localStorage.getItem('tree_site_entry_page') || window.location.href,
-              utm,
-              phone: fields.phone,
-              service: fields.service,
-              comment: fields.comment,
-              fields
-          };
-
-          try {
-            await deliverLead(config.leadEndpoint, payload);
-            reachGoal('lead_form_success', { service: payload.fields.service });
-            reachGoal('lead_phone');
-            showSubmissionState(successMsg, {
-              title: 'Заявка отправлена.',
-              text: 'Менеджер свяжется с вами.'
-            });
-            phoneInput.closest('.quick-lead-field').hidden = true;
-          } catch (error) {
-             recordDeliveryError(error, payload);
-             showSubmissionState(successMsg, {
-               title: 'Заявка не отправлена.',
-               text: 'Данные сохранены. Проверьте соединение и повторите отправку.',
-               status: 'error'
-             });
-          } finally {
-             if (btn) btn.disabled = false;
-          }
-      });
+  function saveLead(payload) {
+    const key = 'tree_site_leads_backup';
+    const leads = JSON.parse(localStorage.getItem(key) || '[]');
+    leads.push(payload);
+    localStorage.setItem(key, JSON.stringify(leads.slice(-30)));
   }
 
-  function initForms() {
+  function saveError(error) {
+    const key = 'tree_site_form_errors';
+    const errors = JSON.parse(localStorage.getItem(key) || '[]');
+    errors.push(error);
+    localStorage.setItem(key, JSON.stringify(errors.slice(-30)));
+  }
+
+  /* ─── ЕДИНЫЙ ОБРАБОТЧИК ВСЕХ ФОРМ ─── */
+  function initLeadForms() {
     const utm = getUtm();
+
     document.querySelectorAll('[data-lead-form]').forEach((form) => {
-      const steps = [...form.querySelectorAll('[data-step]')];
-      const progress = form.querySelector('[data-progress]');
-      const success = form.querySelector('[data-form-success]');
-      const fileInput = form.querySelector('[data-photo-input]');
-      const fileStatus = form.querySelector('[data-file-status]');
-      const entryPage = form.querySelector('[name="entry_page"]');
-      const branchAfterBlock = form.querySelector('[data-branch-after]');
-      const serviceRadios = form.querySelectorAll('input[name="service"]');
-      let current = 0;
-      let started = false;
-
-      if (entryPage) {
-        entryPage.value = localStorage.getItem('tree_site_entry_page') || window.location.href;
-      }
-
-      // Check URL parameters for requested service
-      const requestedService = new URLSearchParams(window.location.search).get('service');
-      selectService(form, requestedService);
-
-      function updateBranchAfterVisibility() {
-          if (!branchAfterBlock) return;
-          const selected = form.querySelector('input[name="service"]:checked');
-          if (selected && ['Спилить дерево', 'Аварийное дерево', 'Обрезать дерево', 'Расчистить участок'].includes(selected.value)) {
-              branchAfterBlock.hidden = false;
-          } else {
-              branchAfterBlock.hidden = true;
-              const afterInputs = branchAfterBlock.querySelectorAll('input');
-              afterInputs.forEach(i => i.checked = false);
-          }
-      }
-
-      serviceRadios.forEach(radio => radio.addEventListener('change', updateBranchAfterVisibility));
-      updateBranchAfterVisibility(); // Init
-
-      function showStep(index) {
-        current = Math.max(0, Math.min(index, steps.length - 1));
-        steps.forEach((step, stepIndex) => {
-          step.hidden = stepIndex !== current;
-        });
-        if (progress) {
-             progress.style.width = index === 0 ? '50%' : '100%';
-        }
-      }
-
-      function validCurrentStep() {
-        const fields = [...steps[current].querySelectorAll('input, select, textarea')].filter((field) => !field.disabled);
-        return fields.every((field) => field.reportValidity());
-      }
-
-      form.addEventListener('input', () => {
-        if (!started) {
-          started = true;
-          reachGoal('form_start');
-        }
-      }, { once: true });
-
-      // Save contact step
-      const saveContactBtn = form.querySelector('[data-save-contact]');
-      if (saveContactBtn) {
-          saveContactBtn.addEventListener('click', async () => {
-              if (validCurrentStep()) {
-                  reachGoal('form_contact_saved');
-                  reachGoal('form_step_1');
-                  
-                  // Optionally send partial lead here if needed.
-                  // For now, just advance to step 2.
-                  showStep(current + 1);
-              }
-          });
-      }
-
-      form.querySelectorAll('[data-next]').forEach((button) => {
-        button.addEventListener('click', () => {
-          if (validCurrentStep()) showStep(current + 1);
-        });
-      });
-
-      form.querySelectorAll('[data-prev]').forEach((button) => {
-        button.addEventListener('click', () => showStep(current - 1));
-      });
-
-      if (fileInput && fileStatus) {
-        fileInput.addEventListener('change', () => {
-          const files = [...fileInput.files].slice(0, 10);
-          if (fileInput.files.length > 10) {
-            fileInput.value = '';
-            fileStatus.textContent = 'Можно загрузить до 10 файлов';
-            return;
-          }
-          const totalMb = files.reduce((sum, file) => sum + file.size, 0) / 1024 / 1024;
-          fileStatus.textContent = files.length ? `${files.length} файл(ов), ${totalMb.toFixed(1)} МБ` : 'Файлы не выбраны';
-          reachGoal('lead_photo', { count: files.length });
-        });
-      }
+      const phoneInput = form.querySelector('[data-phone-input]');
+      const submitBtn  = form.querySelector('[data-submit-btn]');
+      const successEl  = form.querySelector('[data-form-success]');
+      const errorEl    = form.querySelector('[data-form-error]');
+      if (!phoneInput || !submitBtn) return;
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        if (!validCurrentStep()) return;
-        if (form.website && form.website.value) return;
 
-        const submit = form.querySelector('[type="submit"]');
-        hideSubmissionState(success);
-        if (submit) submit.disabled = true;
+        // honeypot
+        const hp = form.querySelector('[name="website"]');
+        if (hp && hp.value) return;
 
-        const data = new FormData(form);
-        const files = [...(fileInput ? fileInput.files : [])].slice(0, 10);
-        
-        let commentText = data.get('comment') || '';
-        if (data.get('branch_after')) {
-            commentText += `\nПосле работы с ветками: ${data.get('branch_after')}`;
+        const rawPhone = phoneInput.value.trim();
+        const phone    = normalizePhone(rawPhone);
+        const digits   = phone.replace(/\D/g, '');
+
+        if (digits.length < 10) {
+          phoneInput.setCustomValidity('Введите корректный номер телефона');
+          phoneInput.reportValidity();
+          return;
         }
+        phoneInput.setCustomValidity('');
 
-        const fields = {
-          service: data.get('service'),
-          city: data.get('city'),
-          name: data.get('name'),
-          phone: data.get('phone'),
-          comment: commentText.trim()
-        };
+        const leadId  = generateLeadId();
+        const formId  = form.dataset.formId || 'form';
+
         const payload = {
-          lead_id: createLeadId(),
-          created_at: new Date().toISOString(),
-          source: document.referrer || 'direct',
-          page: window.location.href,
-          entry_page: data.get('entry_page') || window.location.href,
+          lead_id:     leadId,
+          created_at:  new Date().toISOString(),
+          source:      document.referrer || 'direct',
+          page:        window.location.href,
+          page_title:  document.title,
+          entry_page:  localStorage.getItem('tree_site_entry_page') || window.location.href,
+          form:        formId,
           utm,
-          phone: fields.phone,
-          service: fields.service,
-          city: fields.city,
-          name: fields.name,
-          comment: fields.comment,
-          fields,
-          files: files.map((file) => ({ name: file.name, size: file.size, type: file.type })),
-          crm: {
-            stage: 'новая заявка'
-          }
+          fields: { phone }
         };
+
+        saveLead(payload);
+
+        // UI: загрузка
+        submitBtn.disabled = true;
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Отправляем…';
+        if (successEl) successEl.hidden = true;
+        if (errorEl)   errorEl.hidden   = true;
 
         try {
-          await deliverLead(config.leadEndpoint, payload, files);
-          reachGoal('lead_form_success', { service: payload.fields.service });
-          form.querySelectorAll('fieldset').forEach((fieldset) => { fieldset.hidden = true; });
-          if (progress) progress.parentElement.hidden = true;
-          reachGoal('lead_form', { service: payload.fields.service });
-          reachGoal('form_complete', { service: payload.fields.service });
-          showSubmissionState(success, {
-            title: 'Спасибо! Заявка отправлена.',
-            text: 'Менеджер компании свяжется с вами для уточнения информации.'
-          });
-          form.reset();
-        } catch (error) {
-          recordDeliveryError(error, payload);
-          showSubmissionState(success, {
-            title: 'Заявка не отправлена.',
-            text: 'Все поля и фотографии сохранены. Проверьте соединение и повторите отправку.',
-            status: 'error'
-          });
+          if (config.leadEndpoint) {
+            const response = await fetch(config.leadEndpoint, {
+              method:    'POST',
+              headers:   { 'Content-Type': 'application/json' },
+              body:      JSON.stringify(payload),
+              keepalive: true
+            });
+            if (!response.ok) {
+              const text = await response.text().catch(() => '');
+              throw new Error('HTTP ' + response.status + ': ' + text);
+            }
+          }
+
+          // Успех — только после реального ответа сервера
+          reachGoal('lead_sent', { form: formId, phone });
+          phoneInput.value = '';
+          if (successEl) successEl.hidden = false;
+          const fields = form.querySelector('[data-form-fields]');
+          if (fields) fields.hidden = true;
+
+        } catch (err) {
+          saveError({ at: new Date().toISOString(), message: err.message, payload });
+          if (errorEl) errorEl.hidden = false;
         } finally {
-          if (submit) submit.disabled = false;
+          submitBtn.disabled   = false;
+          submitBtn.textContent = originalText;
         }
       });
-
-      showStep(0);
     });
   }
 
@@ -419,6 +257,5 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260811-no-wha
   initNav();
   initGoals();
   initHomeAnimations();
-  initQuickLead();
-  initForms();
+  initLeadForms();
 })();
