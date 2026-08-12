@@ -1889,6 +1889,7 @@ details p {
 }
 
 .side-panel {
+  align-self: start;
   position: sticky;
   top: 100px;
   background: var(--white);
