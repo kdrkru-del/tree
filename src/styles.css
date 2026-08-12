@@ -1952,9 +1952,94 @@ details p {
   font-size: 2rem;
   font-weight: 700;
   color: var(--orange-600);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  white-space: nowrap;
 }
 
+.contact-messenger-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.contact-messenger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 20px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 1.5px solid var(--line);
+  color: var(--green-900);
+  background: var(--white);
+  transition: background 0.18s, border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+  min-height: 52px;
+}
+
+.contact-messenger-btn:hover,
+.contact-messenger-btn:active {
+  background: var(--warm-100);
+  border-color: var(--muted);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.contact-messenger-btn--whatsapp:hover,
+.contact-messenger-btn--whatsapp:active {
+  border-color: #25d366;
+  color: #128c3e;
+  background: #f0fbf4;
+}
+
+.contact-messenger-btn--telegram:hover,
+.contact-messenger-btn--telegram:active {
+  border-color: #229ed9;
+  color: #0e6d9a;
+  background: #f0f8fd;
+}
+
+.contact-messenger-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.contact-max-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--green-900);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.contact-email-block {
+  padding-top: 4px;
+}
+
+.contact-email-label {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.contact-email-link {
+  font-weight: 500;
+  color: var(--green-700);
+  word-break: break-all;
+}
+
+.contact-email-link:hover {
+  text-decoration: underline;
+}
 
 body:not(.motion-ready) .hero-motion,
 body:not(.motion-ready) .reveal-item {
