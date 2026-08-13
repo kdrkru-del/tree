@@ -70,8 +70,8 @@ images.stumpGrinding = '/assets/droblenie-main.png';
 images.branches = '/assets/izmelchenie-main.jpg';
 images.clearing = '/assets/raschistka-real.png';
 
-images.workStormBefore = '/assets/works/el-navisaet-nad-domom.jpg';
-images.workStormAfter = '/assets/works/avarijnoe-derevo-do.jpg';
+images.workStormBefore = '/assets/works/avarijnoe-real-do.png';
+images.workStormAfter = '/assets/works/avarijnoe-real-posle.png';
 images.workClearingBefore = '/assets/works/frezerovanie-pnja.jpg';
 images.workClearingAfter = '/assets/works/udalenie-pnja-do-posle.jpg';
 images.workStumpBefore = '/assets/works/spil-sekcionnyj-do.jpg';

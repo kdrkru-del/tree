@@ -112,8 +112,8 @@ async function build() {
     await copyFile(source, target);
   }
   for (const asset of [
-    'el-navisaet-nad-domom.jpg',
-    'avarijnoe-derevo-do.jpg',
+    'avarijnoe-real-do.png',
+    'avarijnoe-real-posle.png',
     'frezerovanie-pnja.jpg',
     'udalenie-pnja-do-posle.jpg',
     'spil-sekcionnyj-do.jpg',
