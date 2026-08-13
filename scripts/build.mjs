@@ -70,6 +70,7 @@ async function build() {
 
   await rm(dist, { recursive: true, force: true });
   await mkdir(path.join(dist, 'assets'), { recursive: true });
+  await mkdir(path.join(dist, 'assets', 'works'), { recursive: true });
   await mkdir(path.join(dist, 'server'), { recursive: true });
 
   await copyFile(path.join(root, 'src', 'styles.css'), path.join(dist, 'assets', 'styles.css'));
@@ -108,6 +109,16 @@ async function build() {
     }
     await mkdir(path.dirname(target), { recursive: true });
     await copyFile(source, target);
+  }
+  for (const asset of [
+    'el-navisaet-nad-domom.jpg',
+    'avarijnoe-derevo-do.jpg',
+    'frezerovanie-pnja.jpg',
+    'udalenie-pnja-do-posle.jpg',
+    'spil-sekcionnyj-do.jpg',
+    'spil-bensopiloj.jpg'
+  ]) {
+    await copyFile(path.join(root, 'assets', 'works', asset), path.join(dist, 'assets', 'works', asset));
   }
   await copyFile(path.join(root, 'assets', 'favicon.ico'), path.join(dist, 'favicon.ico'));
   await writeFile(path.join(dist, 'server', 'index.js'), staticWorker, 'utf8');

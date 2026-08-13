@@ -70,6 +70,13 @@ images.stumpGrinding = '/assets/droblenie-main.png';
 images.branches = '/assets/izmelchenie-main.jpg';
 images.clearing = '/assets/raschistka-main.jpg';
 
+images.workStormBefore = '/assets/works/el-navisaet-nad-domom.jpg';
+images.workStormAfter = '/assets/works/avarijnoe-derevo-do.jpg';
+images.workClearingBefore = '/assets/works/frezerovanie-pnja.jpg';
+images.workClearingAfter = '/assets/works/udalenie-pnja-do-posle.jpg';
+images.workStumpBefore = '/assets/works/spil-sekcionnyj-do.jpg';
+images.workStumpAfter = '/assets/works/spil-bensopiloj.jpg';
+
 export const imageCredits = Object.values(mediaFiles).map(({ title, file }) => ({
   title,
   url: commonsPage(file)
