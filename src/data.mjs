@@ -265,14 +265,87 @@ export const workExamples = [
   }
 ];
 
-export const workVideos = [
-  { local: true, title: 'Процесс спила деревьев', url: '/assets/work-video-1.mp4' },
-  { local: true, title: 'Процесс спила деревьев', url: '/assets/work-video-2.mp4' },
-  { local: true, title: 'Процесс спила деревьев', url: '/assets/work-video-3.mp4' },
-  { local: true, title: 'Измельчение веток дробилкой', url: '/assets/WhatsApp Video 2026-08-11 at 14.26.53.mp4' },
-  { local: true, title: 'Процесс спила деревьев', url: '/assets/work-video-5.mp4' },
-  { local: true, title: 'Процесс спила деревьев', url: '/assets/work-video-6.mp4' }
+const localWorkVideo = (src, title, caption, poster = '') => ({
+  type: 'local',
+  src,
+  poster,
+  title,
+  caption
+});
+
+export const clearingVideos = [
+  localWorkVideo(
+    '/assets/videos/clearing/рас2.mp4',
+    'Расчистка заросшего участка с применением техники',
+    'Расчистка территории техникой',
+    '/assets/video-posters/clearing-machinery.webp'
+  ),
+  localWorkVideo(
+    '/assets/WhatsApp Video 2026-08-11 at 14.26.53.mp4',
+    'Измельчение веток дробилкой после расчистки участка',
+    'Измельчение веток в щепу'
+  ),
+  localWorkVideo(
+    '/assets/work-video-5.mp4',
+    'Удаление пня фрезой после расчистки участка',
+    'Удаление пня после расчистки'
+  ),
+  localWorkVideo(
+    '/assets/work-video-6.mp4',
+    'Измельчение большого объема веток на участке',
+    'Переработка веток после спила'
+  )
 ];
+
+export const complexVideos = [
+  localWorkVideo(
+    '/assets/work-video-1.mp4',
+    'Удаление высокого дерева по частям с подъемом арбориста',
+    'Работа арбориста на высоте'
+  ),
+  localWorkVideo(
+    '/assets/work-video-2.mp4',
+    'Спил дерева по частям рядом с домом',
+    'Спил рядом с домом'
+  ),
+  localWorkVideo(
+    '/assets/work-video-3.mp4',
+    'Удаление пня техникой в ограниченном пространстве',
+    'Работа в стеснённых условиях'
+  ),
+  localWorkVideo(
+    '/assets/videos/complex/без 6.mp4',
+    'Работа с автовышки над проезжей частью',
+    'Работа с автовышки',
+    '/assets/video-posters/complex-lift-road.webp'
+  ),
+  localWorkVideo(
+    '/assets/videos/complex/без 7.mp4',
+    'Удаление высокого дерева с уборкой веток',
+    'Удаление высокого дерева',
+    '/assets/video-posters/complex-tall-tree.webp'
+  ),
+  localWorkVideo(
+    '/assets/videos/complex/без4.mp4',
+    'Расчистка территории после сложного удаления',
+    'Уборка после сложного спила',
+    '/assets/video-posters/complex-site-cleanup.webp'
+  ),
+  localWorkVideo(
+    '/assets/videos/complex/без5.mp4',
+    'Контролируемое удаление дерева возле дома',
+    'Спил дерева возле дома',
+    '/assets/video-posters/complex-near-house.webp'
+  ),
+  localWorkVideo(
+    '/assets/videos/complex/без7.mp4',
+    'Снятие ветвей автовышкой в стесненных условиях',
+    'Спил в ограниченном пространстве',
+    '/assets/video-posters/complex-lift-confined.webp'
+  )
+];
+
+export const workVideos = [...clearingVideos, ...complexVideos];
 
 export const serviceAreas = ['Московская область'];
 

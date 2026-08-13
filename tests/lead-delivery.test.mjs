@@ -97,31 +97,35 @@ test('a hanging Worker times out instead of locking the form forever', async () 
   );
 });
 
-test('quick and full form keep data on errors and never count WhatsApp as delivery', () => {
+test('phone-only forms keep data on errors and never count WhatsApp as delivery', () => {
   const source = readFileSync(new URL('../src/app.js', import.meta.url), 'utf8');
-  assert.equal([...source.matchAll(/lead_id:\s*createLeadId\(\)/g)].length, 2);
+  assert.equal([...source.matchAll(/lead_id:\s*leadId/g)].length, 1);
+  assert.match(source, /const leadId\s+=\s+createLeadId\(\)/);
   assert.match(source, /const fields = \{\s*phone,/);
-  assert.equal([...source.matchAll(/phone:\s*fields\.phone/g)].length, 2);
+  assert.equal([...source.matchAll(/phone:\s+fields\.phone/g)].length, 1);
+  assert.equal([...source.matchAll(/service:\s+fields\.service/g)].length, 1);
   assert.match(source, /deliverLead\(config\.leadEndpoint, payload\)/);
-  assert.match(source, /deliverLead\(config\.leadEndpoint, payload, files\)/);
   assert.equal([
-    ...source.matchAll(/await deliverLead\(config\.leadEndpoint, payload(?:, files)?\);\s*reachGoal\('lead_form_success'/g)
-  ].length, 2);
+    ...source.matchAll(/await deliverLead\(config\.leadEndpoint, payload\);\s*\/\/[^\n]*\s*reachGoal\('lead_form_success'/g)
+  ].length, 1);
   assert.doesNotMatch(source, /whatsappDraftUrl|openWhatsAppDraft|lead_whatsapp_fallback|window\.open/);
+  assert.ok(source.indexOf("await deliverLead(config.leadEndpoint, payload)") < source.indexOf("phoneInput.value = ''"));
 
   const templates = readFileSync(new URL('../src/templates.mjs', import.meta.url), 'utf8');
   assert.doesNotMatch(templates, /data-submission-link/);
   assert.match(templates, /в Москве и Московской области/);
   assert.match(templates, /Для предварительной оценки отправьте фотографию дерева и контактный номер\./);
-  assert.match(templates, /app\.js\?v=20260811-no-whatsapp/);
-  assert.match(source, /lead-delivery\.mjs\?v=20260811-no-whatsapp/);
+  assert.match(templates, /name="service" value="Быстрый расчет"/);
+  assert.match(templates, /name="service" value="\$\{esc\(selectedService\)\}"/);
+  assert.match(templates, /app\.js\?v=20260813-video-sections-4/);
+  assert.match(source, /lead-delivery\.mjs\?v=20260813-video-sections-4/);
 
   const catches = [...source.matchAll(/\} catch \(error\) \{/g)];
-  assert.equal(catches.length, 2);
+  assert.equal(catches.length, 1);
   for (const match of catches) {
     const end = source.indexOf('} finally {', match.index);
     const catchBlock = source.slice(match.index, end);
-    assert.match(catchBlock, /status:\s*'error'/);
-    assert.doesNotMatch(catchBlock, /form\.reset\(\)|fieldset\.hidden|progress\.parentElement\.hidden|messengerUrl|WhatsApp/);
+    assert.match(catchBlock, /errorEl\.hidden = false/);
+    assert.doesNotMatch(catchBlock, /phoneInput\.value|form\.reset\(\)|fields\.hidden|messengerUrl|WhatsApp/);
   }
 });

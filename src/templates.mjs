@@ -1,4 +1,6 @@
 import {
+  clearingVideos,
+  complexVideos,
   faq,
   imageCredits,
   images,
@@ -10,8 +12,7 @@ import {
   services,
   site,
   trustPoints,
-  workExamples,
-  workVideos
+  workExamples
 } from './data.mjs';
 
 const esc = (value) => String(value ?? '')
@@ -99,7 +100,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://commons.wikimedia.org">
-  <link rel="stylesheet" href="/assets/styles.css?v=20260813-1">
+  <link rel="stylesheet" href="/assets/styles.css?v=20260813-video-sections-4">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   ${metrikaCounter()}
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
@@ -112,7 +113,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${footer()}
   ${floatingContacts()}
   ${mobileBar(leadHref)}
-  <script src="/assets/app.js?v=20260811-no-whatsapp" type="module"></script>
+  <script src="/assets/app.js?v=20260813-video-sections-4" type="module"></script>
 </body>
 </html>`;
 }
@@ -230,6 +231,7 @@ function quickLeadSection() {
       <div class="quick-lead-actions">
         <form class="quick-lead-form" data-lead-form data-form-id="quick-lead">
           <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
+          <input type="hidden" name="service" value="Быстрый расчет">
           <div class="quick-lead-field" data-form-fields>
             <input type="tel" name="phone" id="quick_phone" placeholder="+7 999 999-99-99" required autocomplete="tel" data-phone-input>
             <button class="btn btn-accent" type="submit" data-submit-btn>Получить расчёт</button>
@@ -271,16 +273,51 @@ function trustSection() {
 }
 
 function videosSection() {
-  return `<section class="section video-section" id="videos"><div class="container"><div class="section-head"><p class="eyebrow">Процесс</p><h2>Как мы выполняем спил деревьев</h2><p>Реальные кадры с наших объектов. Без монтажа и прикрас — просто показываем, как работаем.</p></div><div class="shorts-grid">${workVideos.map((video) => {
-    if (video.local) {
-      return `<article class="short-card">
-        <video src="${esc(video.url)}" controls preload="metadata" width="360" height="640" style="object-fit: cover; width: 100%; height: 100%; border-radius: 12px;"></video>
-      </article>`;
-    }
-    return `<article class="short-card">
-      <iframe src="https://www.youtube.com/embed/${esc(video.youtubeId)}?rel=0" width="360" height="640" style="border: none; border-radius: 12px; width: 100%; height: 100%;" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-    </article>`;
-  }).join('')}</div></div></section>`;
+  return `${videoGroup({
+    id: 'videos',
+    eyebrow: 'Расчистка участков',
+    title: 'Расчистка участков — смотрите, как мы работаем',
+    text: 'Удаляем деревья, поросль, кустарник и валежник. Расчищаем территорию под строительство, благоустройство и дальнейшее использование.',
+    videos: clearingVideos,
+    ctaTitle: 'Нужно расчистить участок?',
+    ctaText: 'Пришлите фото или оставьте номер телефона — оценим объём работ и предварительную стоимость.',
+    ctaLabel: 'Отправить фото участка',
+    service: 'Расчистка участка'
+  })}${videoGroup({
+    id: 'complex-videos',
+    eyebrow: 'Сложные работы',
+    title: 'Сложные работы выполняем безопасно',
+    text: 'Когда дерево нельзя безопасно повалить целиком, разбираем его по частям и контролируем спуск каждого фрагмента.',
+    videos: complexVideos,
+    muted: true,
+    safety: true,
+    ctaTitle: 'Дерево находится рядом с домом или забором?',
+    ctaText: 'Пришлите фото — определим безопасный способ удаления и предварительную стоимость.',
+    ctaLabel: 'Оценить сложную работу',
+    service: 'Сложное удаление дерева'
+  })}`;
+}
+
+function videoGroup({ id, eyebrow, title, text, videos, muted = false, safety = false, ctaTitle, ctaText, ctaLabel, service }) {
+  return `<section class="section video-section${muted ? ' section-muted' : ''}" id="${esc(id)}"><div class="container"><div class="section-head"><p class="eyebrow">${esc(eyebrow)}</p><h2>${esc(title)}</h2><p>${esc(text)}</p></div><div class="video-grid">${videos.map(videoCard).join('')}</div>${safety ? videoSafety() : ''}<div class="video-cta"><div><h3>${esc(ctaTitle)}</h3><p>${esc(ctaText)}</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="${esc(service)}" data-goal="click_calculate">${esc(ctaLabel)}</a></div></div></section>`;
+}
+
+function videoCard(video) {
+  const poster = video.poster ? ` poster="${esc(video.poster)}"` : '';
+  const preload = video.poster ? 'none' : 'metadata';
+  const media = `<video class="work-video" controls preload="${preload}" playsinline${poster} aria-label="${esc(video.title)}"><source src="${esc(video.src)}" type="video/mp4">Ваш браузер не поддерживает видео. <a href="${esc(video.src)}">Открыть ролик</a>.</video>`;
+  return `<article class="video-card"><div class="video-media">${media}</div><p class="video-caption">${esc(video.caption)}</p></article>`;
+}
+
+function videoSafety() {
+  const points = [
+    'Оцениваем риски до начала работ',
+    'Разбираем дерево по частям',
+    'Используем верёвки и страховочные системы',
+    'Контролируем направление и спуск частей',
+    'Защищаем дом, крышу, забор и имущество заказчика'
+  ];
+  return `<div class="video-safety"><h3>Безопасность на каждом этапе</h3><ul>${points.map((point) => `<li>${esc(point)}</li>`).join('')}</ul></div>`;
 }
 
 function processSection() {
@@ -302,6 +339,7 @@ function leadSection(title, text, selectedService = 'Фото на оценку'
 function leadForm(selectedService) {
   return `<form class="lead-form" data-lead-form data-form-id="main-form" id="main-lead-form">
   <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
+  <input type="hidden" name="service" value="${esc(selectedService)}">
   <div data-form-fields>
     <label class="lead-phone-label" for="main_phone">Номер телефона</label>
     <input id="main_phone" name="phone" type="tel" autocomplete="tel" required placeholder="+7 999 999-99-99" data-phone-input>

@@ -1,7 +1,7 @@
 import { mkdir, rm, writeFile, copyFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { legalPages, services, site } from '../src/data.mjs';
+import { clearingVideos, complexVideos, legalPages, services, site } from '../src/data.mjs';
 import {
   contactsPage,
   faqPage,
@@ -98,6 +98,22 @@ async function build() {
     'work-video-6.mp4'
   ]) {
     await copyFile(path.join(root, 'assets', asset), path.join(dist, 'assets', asset));
+  }
+
+  const videoAssets = [...clearingVideos, ...complexVideos]
+    .filter((video) => video.type === 'local')
+    .flatMap((video) => [video.src, video.poster])
+    .filter(Boolean);
+  for (const asset of new Set(videoAssets)) {
+    const relativeAsset = asset.replace(/^\/+/, '');
+    const source = path.resolve(root, relativeAsset);
+    const target = path.resolve(dist, relativeAsset);
+    const assetsRoot = path.resolve(root, 'assets') + path.sep;
+    if (!source.startsWith(assetsRoot) || !target.startsWith(dist + path.sep)) {
+      throw new Error(`Refusing to copy video asset outside expected directories: ${asset}`);
+    }
+    await mkdir(path.dirname(target), { recursive: true });
+    await copyFile(source, target);
   }
   await copyFile(path.join(root, 'assets', 'favicon.ico'), path.join(dist, 'favicon.ico'));
   await writeFile(path.join(dist, 'server', 'index.js'), staticWorker, 'utf8');
