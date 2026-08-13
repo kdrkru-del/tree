@@ -60,6 +60,8 @@ export const images = Object.fromEntries(
   Object.entries(mediaFiles).map(([key, item]) => [key, commonsFile(item.file, item.width ?? 1200)])
 );
 
+images.spil = '/assets/spil-main.jpg';
+
 export const imageCredits = Object.values(mediaFiles).map(({ title, file }) => ({
   title,
   url: commonsPage(file)
