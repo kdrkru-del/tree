@@ -68,7 +68,7 @@ images.sectionalCut = '/assets/sekcionnyj-main.png';
 images.stumpRemoval = '/assets/korchevanie-main.png';
 images.stumpGrinding = '/assets/droblenie-main.png';
 images.branches = '/assets/izmelchenie-main.jpg';
-images.clearing = '/assets/raschistka-main.jpg';
+images.clearing = '/assets/raschistka-real.png';
 
 images.workStormBefore = '/assets/works/el-navisaet-nad-domom.jpg';
 images.workStormAfter = '/assets/works/avarijnoe-derevo-do.jpg';
