@@ -64,6 +64,7 @@ images.spil = '/assets/spil-main.jpg';
 images.pruning = '/assets/obrezka-main.jpg';
 images.emergency = '/assets/avarijnoe-main.jpg';
 images.dryTree = '/assets/suhoe-main.png';
+images.sectionalCut = '/assets/sekcionnyj-main.png';
 
 export const imageCredits = Object.values(mediaFiles).map(({ title, file }) => ({
   title,
