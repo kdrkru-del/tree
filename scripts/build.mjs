@@ -86,8 +86,10 @@ async function build() {
     'avarijnoe-main.jpg',
     'suhoe-main.jpg',
     'sekcionnyj-main.png',
-    'korchevanie-main.jpg',
-    'droblenie-main.jpg'
+    'korchevanie-main.png',
+    'droblenie-main.png',
+    'izmelchenie-main.jpg',
+    'raschistka-main.jpg'
   ]) {
     await copyFile(path.join(root, 'assets', asset), path.join(dist, 'assets', asset));
   }

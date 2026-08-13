@@ -65,8 +65,10 @@ images.pruning = '/assets/obrezka-main.jpg';
 images.emergency = '/assets/avarijnoe-main.jpg';
 images.dryTree = '/assets/suhoe-main.jpg';
 images.sectionalCut = '/assets/sekcionnyj-main.png';
-images.stumpRemoval = '/assets/korchevanie-main.jpg';
-images.stumpGrinding = '/assets/droblenie-main.jpg';
+images.stumpRemoval = '/assets/korchevanie-main.png';
+images.stumpGrinding = '/assets/droblenie-main.png';
+images.branches = '/assets/izmelchenie-main.jpg';
+images.clearing = '/assets/raschistka-main.jpg';
 
 export const imageCredits = Object.values(mediaFiles).map(({ title, file }) => ({
   title,
