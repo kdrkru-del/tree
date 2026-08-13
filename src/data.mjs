@@ -225,33 +225,33 @@ export const workExamples = [
     service: 'Удаление аварийного дерева',
     beforeLabel: 'До',
     afterLabel: 'Стало',
-    beforeImage: images.workStormBefore,
-    afterImage: images.workStormAfter,
-    beforeAlt: 'Наклоненное дерево после ветра рядом с коммуникациями',
-    afterAlt: 'Дерево разобрано и убрано от коммуникаций',
+    beforeImage: '/assets/works/el-navisaet-nad-domom.jpg',
+    afterImage: '/assets/works/avarijnoe-derevo-do.jpg',
+    beforeAlt: 'Аварийная ель нависает над крышей дачного дома',
+    afterAlt: 'Бригада разбирает упавшее аварийное дерево у забора',
     facts: ['Задача: убрать опасное нависание и освободить доступ', 'Метод: разбор по частям после оценки рисков']
   },
   {
-    area: 'Расчистка заросшего участка',
-    service: 'Расчистка участка и сбор веток',
+    area: 'Удаление пня после спила',
+    service: 'Фрезерование пня',
     beforeLabel: 'До',
     afterLabel: 'Стало',
-    beforeImage: images.workClearingBefore,
-    afterImage: images.workClearingAfter,
-    beforeAlt: 'Сбор веток и поросли перед расчисткой территории',
-    afterAlt: 'Очищенная территория после удаления древесных отходов',
-    facts: ['Задача: убрать поросль, ветки и древесные остатки', 'Метод: ручная расчистка с подготовкой к вывозу']
+    beforeImage: '/assets/works/frezerovanie-pnja.jpg',
+    afterImage: '/assets/works/udalenie-pnja-do-posle.jpg',
+    beforeAlt: 'Фреза измельчает пень ниже уровня земли',
+    afterAlt: 'Пень удалён — газон чистый',
+    facts: ['Задача: убрать выступающий пень и корневой остаток', 'Метод: фрезерование ниже уровня поверхности']
   },
   {
-    area: 'Удаление пня после спила',
-    service: 'Дробление и подготовка места',
+    area: 'Спил сухого дерева по частям',
+    service: 'Секционный спил с подъёмом',
     beforeLabel: 'До',
-    afterLabel: 'Стало',
-    beforeImage: images.workStumpBefore,
-    afterImage: images.workStumpAfter,
-    beforeAlt: 'Пень и корни после падения дерева',
-    afterAlt: 'Измельченный пень после работы фрезой',
-    facts: ['Задача: убрать выступающий пень и корневой остаток', 'Метод: дробление ниже уровня поверхности']
+    afterLabel: 'В работе',
+    beforeImage: '/assets/works/spil-sekcionnyj-do.jpg',
+    afterImage: '/assets/works/spil-bensopiloj.jpg',
+    beforeAlt: 'Арборист поднялся на сухое дерево рядом с домами для секционного спила',
+    afterAlt: 'Работа бензопилой у основания ствола',
+    facts: ['Задача: убрать сухостой вплотную к строениям', 'Метод: секционный спил с контролируемым спуском частей']
   }
 ];
 
