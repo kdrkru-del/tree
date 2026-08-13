@@ -60,7 +60,7 @@ export const images = Object.fromEntries(
   Object.entries(mediaFiles).map(([key, item]) => [key, commonsFile(item.file, item.width ?? 1200)])
 );
 
-images.cutting = '/assets/spil-main.jpg';
+images.spil = '/assets/spil-main.jpg';
 images.pruning = '/assets/obrezka-main.jpg';
 images.emergency = '/assets/avarijnoe-main.jpg';
 images.dryTree = '/assets/suhoe-main.jpg';
