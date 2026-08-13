@@ -66,6 +66,7 @@ images.emergency = '/assets/avarijnoe-main.jpg';
 images.dryTree = '/assets/suhoe-main.png';
 images.sectionalCut = '/assets/sekcionnyj-main.png';
 images.stumpRemoval = '/assets/korchevanie-main.jpg';
+images.stumpGrinding = '/assets/droblenie-main.jpg';
 
 export const imageCredits = Object.values(mediaFiles).map(({ title, file }) => ({
   title,
