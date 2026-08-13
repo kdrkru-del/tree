@@ -1,3 +1,5 @@
+import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-sections-4';
+
 (function () {
   const config = window.TREE_SITE_CONFIG || {};
   const metrikaId = config.metrikaId;
@@ -27,10 +29,6 @@
     } catch {
       return {};
     }
-  }
-
-  function generateLeadId() {
-    return 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
   }
 
   function normalizePhone(raw) {
@@ -123,6 +121,10 @@
       '.trust-cards > *',
       '#works .section-head',
       '#works .work-card',
+      '.video-section .section-head',
+      '.video-section .video-card',
+      '.video-section .video-safety',
+      '.video-section .video-cta',
       '#prices .section-head',
       '#factors .factor-card',
       '#organizations .org-grid > *',
@@ -172,6 +174,13 @@
   function initLeadForms() {
     const utm = getUtm();
 
+    document.querySelectorAll('[data-open-form][data-service]').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const serviceInput = document.querySelector('#main-lead-form [name="service"]');
+        if (serviceInput) serviceInput.value = trigger.dataset.service;
+      });
+    });
+
     document.querySelectorAll('[data-lead-form]').forEach((form) => {
       const phoneInput = form.querySelector('[data-phone-input]');
       const submitBtn  = form.querySelector('[data-submit-btn]');
@@ -197,8 +206,10 @@
         }
         phoneInput.setCustomValidity('');
 
-        const leadId  = generateLeadId();
+        const leadId  = createLeadId();
         const formId  = form.dataset.formId || 'form';
+        const service = form.querySelector('[name="service"]')?.value || 'Заявка с сайта';
+        const fields = { phone, service };
 
         const payload = {
           lead_id:     leadId,
@@ -209,7 +220,9 @@
           entry_page:  localStorage.getItem('tree_site_entry_page') || window.location.href,
           form:        formId,
           utm,
-          fields: { phone }
+          phone:       fields.phone,
+          service:     fields.service,
+          fields
         };
 
         saveLead(payload);
@@ -222,28 +235,18 @@
         if (errorEl)   errorEl.hidden   = true;
 
         try {
-          if (config.leadEndpoint) {
-            const response = await fetch(config.leadEndpoint, {
-              method:    'POST',
-              headers:   { 'Content-Type': 'application/json' },
-              body:      JSON.stringify(payload),
-              keepalive: true
-            });
-            if (!response.ok) {
-              const text = await response.text().catch(() => '');
-              throw new Error('HTTP ' + response.status + ': ' + text);
-            }
-          }
+          await deliverLead(config.leadEndpoint, payload);
 
           // Успех — только после реального ответа сервера
+          reachGoal('lead_form_success', { form: formId, service });
           reachGoal('lead_sent', { form: formId, phone });
           phoneInput.value = '';
           if (successEl) successEl.hidden = false;
           const fields = form.querySelector('[data-form-fields]');
           if (fields) fields.hidden = true;
 
-        } catch (err) {
-          saveError({ at: new Date().toISOString(), message: err.message, payload });
+        } catch (error) {
+          saveError({ at: new Date().toISOString(), message: error.message, payload });
           if (errorEl) errorEl.hidden = false;
         } finally {
           submitBtn.disabled   = false;
