@@ -84,7 +84,7 @@ async function build() {
     'spil-main.jpg',
     'obrezka-main.jpg',
     'avarijnoe-main.jpg',
-    'suhoe-main.png',
+    'suhoe-main.jpg',
     'sekcionnyj-main.png',
     'korchevanie-main.jpg',
     'droblenie-main.jpg'
