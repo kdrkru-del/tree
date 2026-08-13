@@ -81,7 +81,8 @@ async function build() {
     'favicon-192.png',
     'favicon-512.png',
     'apple-touch-icon.png',
-    'spil-main.jpg'
+    'spil-main.jpg',
+    'obrezka-main.jpg'
   ]) {
     await copyFile(path.join(root, 'assets', asset), path.join(dist, 'assets', asset));
   }
