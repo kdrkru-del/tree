@@ -265,38 +265,48 @@ export const workExamples = [
   }
 ];
 
-const localWorkVideo = (src, title, caption, poster = '') => ({
+const localWorkVideo = (src, title, caption, poster = '', description = '', marker = '') => ({
   type: 'local',
   src,
   poster,
   title,
-  caption
+  caption,
+  description,
+  marker
 });
 
 export const clearingVideos = [
   localWorkVideo(
     '/assets/work-video-1.mp4',
     'Измельчение веток дробилкой после расчистки участка',
-    'Измельчение веток в щепу',
-    '/assets/video-posters/clearing-chipping.webp'
+    'Сокращаем объём веток после спила',
+    '/assets/video-posters/clearing-chipping.webp',
+    'Дробилка перерабатывает ветки в щепу и упрощает уборку участка.',
+    'Измельчение на месте'
   ),
   localWorkVideo(
     '/assets/videos/clearing/рас2.mp4',
     'Расчистка заросшего участка с применением техники',
-    'Расчистка территории техникой',
-    '/assets/video-posters/clearing-machinery.webp'
+    'Расчищаем заросшую территорию техникой',
+    '/assets/video-posters/clearing-machinery.webp',
+    'Технику подбираем под объём работ и доступ на участок.',
+    'Комплексная расчистка'
   ),
   localWorkVideo(
     '/assets/work-video-3.mp4',
     'Удаление поросли и сбор веток на участке',
-    'Удаление поросли и веток',
-    '/assets/video-posters/clearing-branches.webp'
+    'Освобождаем участок от поросли',
+    '/assets/video-posters/clearing-branches.webp',
+    'Срезаем молодые деревья и собираем ветки для дальнейшей переработки.',
+    'Подготовка территории'
   ),
   localWorkVideo(
     '/assets/work-video-5.mp4',
     'Удаление пня фрезой после расчистки участка',
-    'Удаление пня после расчистки',
-    '/assets/video-posters/clearing-stump.webp'
+    'Удаляем пни после расчистки',
+    '/assets/video-posters/clearing-stump.webp',
+    'Фреза измельчает выступающую часть пня без большого котлована.',
+    'Дробление пня'
   )
 ];
 
@@ -304,56 +314,79 @@ export const complexVideos = [
   localWorkVideo(
     '/assets/videos/complex/без1.mp4',
     'Удаление высокого дерева арбористом с применением веревок',
-    'Работа арбориста на высоте',
-    '/assets/video-posters/complex-arborist-height.webp'
+    'Разбираем высокое дерево сверху вниз',
+    '/assets/video-posters/complex-arborist-height.webp',
+    'Крупные элементы удаляются последовательно, а не падают неконтролируемо.',
+    'Разбор сверху вниз'
   ),
   localWorkVideo(
     '/assets/videos/complex/без4.mp4',
-    'Разбор дерева по частям рядом с забором',
-    'Спил дерева по частям',
-    '/assets/video-posters/complex-site-cleanup.webp'
+    'Результат удаления деревьев на участке рядом с домом',
+    'Освобождаем участок возле построек',
+    '/assets/video-posters/complex-site-cleanup.webp',
+    'Показываем результат работ рядом с домом и ограждением.',
+    'Результат на участке'
   ),
   localWorkVideo(
     '/assets/WhatsApp Video 2026-08-11 at 14.26.53.mp4',
     'Обрезка дерева с автовышки в безлиственный период',
-    'Работа с автовышки',
-    '/assets/video-posters/complex-lift-winter.webp'
+    'Работа возле забора и построек',
+    '/assets/video-posters/complex-lift-winter.webp',
+    'Учитываем ограниченное пространство и расположение объектов вокруг дерева.',
+    'Работа рядом с постройками'
   ),
   localWorkVideo(
     '/assets/videos/complex/без 6.mp4',
     'Работа с автовышки над проезжей частью',
-    'Спил с автовышки',
-    '/assets/video-posters/complex-lift-road.webp'
+    'Используем автовышку там, где это эффективнее',
+    '/assets/video-posters/complex-lift-road.webp',
+    'Способ работы подбирается под конкретный объект и расположение дерева.',
+    'Автовышка по условиям объекта'
   ),
   localWorkVideo(
     '/assets/videos/complex/без 7.mp4',
     'Удаление высокого дерева с уборкой веток',
-    'Удаление высокого дерева',
-    '/assets/video-posters/complex-tall-tree.webp'
+    'Высокое дерево рядом с постройками',
+    '/assets/video-posters/complex-tall-tree.webp',
+    'Удаляем крупные деревья последовательно, начиная с верхней части кроны.',
+    'Высокое дерево'
   ),
   localWorkVideo(
     '/assets/videos/complex/bez2-vertical.mp4',
     'Контролируемое удаление дерева возле строений',
-    'Работа рядом с домом',
-    '/assets/video-posters/complex-controlled-house.webp'
+    'Работаем непосредственно возле дома',
+    '/assets/video-posters/complex-controlled-house.webp',
+    'Учитываем расположение крыши, фасада и других объектов вокруг дерева.',
+    'Учитываем крышу и фасад'
   ),
   localWorkVideo(
     '/assets/videos/complex/без5.mp4',
     'Контролируемый спил дерева на участке рядом с домом',
-    'Спил дерева возле дома',
-    '/assets/video-posters/complex-near-house.webp'
+    'Контролируем спуск крупных частей',
+    '/assets/video-posters/complex-near-house.webp',
+    'При необходимости используем верёвочные системы и специальное оборудование.',
+    'Контролируем спуск'
   ),
   localWorkVideo(
     '/assets/videos/complex/без7.mp4',
     'Снятие ветвей автовышкой в стесненных условиях',
-    'Спил в ограниченном пространстве',
-    '/assets/video-posters/complex-lift-confined.webp'
+    'Мало места для падения дерева?',
+    '/assets/video-posters/complex-lift-confined.webp',
+    'Подбираем технологию для работы в ограниченном пространстве.',
+    'Ограниченное пространство'
   )
 ];
 
 export const workVideos = [...clearingVideos, ...complexVideos];
 
 export const serviceAreas = ['Московская область'];
+
+export const experienceStats = [
+  { value: '10 лет', label: 'практического опыта' },
+  { value: 'Более 1000', label: 'выполненных заказов' },
+  { value: 'Москва + МО', label: 'выезжаем на объекты' },
+  { value: 'Сложные объекты', label: 'работаем рядом с домами, крышами и заборами' }
+];
 
 export const priceFactors = [
   'Высота дерева', 'Диаметр ствола', 'Состояние дерева',
@@ -385,10 +418,10 @@ export const processSteps = [
 ];
 
 export const trustPoints = [
-  { title: 'Оцениваем до начала работ', text: 'Способ удаления и стоимость определяем до выезда — по фотографиям.' },
-  { title: 'Работаем рядом с постройками', text: 'Убираем деревья возле домов, заборов, коммуникаций и дорог.' },
-  { title: 'Всё в одном заказе', text: 'Спил, распил, измельчение веток, пень и вывоз — можно объединить.' },
-  { title: 'Стоимость согласуем заранее', text: 'Объем работ и итоговая цена фиксируются до начала выполнения.' }
+  { title: '10 лет практического опыта', text: 'Работаем со стандартными и сложными объектами.' },
+  { title: 'Предварительно оцениваем по фото', text: 'По фотографиям определяем возможный способ выполнения и ориентировочную стоимость.' },
+  { title: 'Работаем рядом с постройками', text: 'Спиливаем деревья возле домов, крыш, заборов и других объектов.' },
+  { title: 'Стоимость согласуем заранее', text: 'Объём работ и цена подтверждаются до начала выполнения.' }
 ];
 
 export const faq = [

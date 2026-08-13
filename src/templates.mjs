@@ -1,6 +1,7 @@
 import {
   clearingVideos,
   complexVideos,
+  experienceStats,
   faq,
   imageCredits,
   images,
@@ -183,6 +184,7 @@ export function homePage() {
   ${servicesSection()}
   ${worksPreview()}
   ${trustSection()}
+  ${experienceProofSection()}
   ${videosSection()}
   ${processSection()}
   ${organizationsSection()}
@@ -269,15 +271,19 @@ function worksPreview() {
 }
 
 function trustSection() {
-  return `<section class="section section-muted"><div class="container"><div class="section-head"><p class="eyebrow">Доверие</p><h2>Почему нам доверяют работу возле домов и построек</h2></div><div class="trust-cards">${trustPoints.map((point) => `<div class="trust-card"><h3>${esc(point.title)}</h3><p>${esc(point.text)}</p></div>`).join('')}</div></div></section>`;
+  return `<section class="section section-muted"><div class="container"><div class="section-head"><p class="eyebrow">Доверие</p><h2>Почему нам доверяют</h2></div><div class="trust-cards">${trustPoints.map((point) => `<div class="trust-card"><h3>${esc(point.title)}</h3><p>${esc(point.text)}</p></div>`).join('')}</div></div></section>`;
+}
+
+function experienceProofSection() {
+  return `<section class="section experience-proof" id="videos" aria-labelledby="experience-title"><div class="container"><div class="section-head experience-head"><p class="eyebrow">Опыт в цифрах</p><h2 id="experience-title">10 лет работаем с деревьями любой сложности</h2><p>От одиночного дерева возле дома до комплексной расчистки участков и территорий.</p></div><dl class="experience-stats">${experienceStats.map((stat) => `<div class="experience-stat${stat.placeholder ? ' experience-stat-placeholder' : ''}"><dt>${esc(stat.value)}</dt><dd>${esc(stat.label)}</dd></div>`).join('')}</dl><p class="proof-transition">10 лет опыта лучше всего подтверждают реальные работы</p><div class="video-proof-heading"><p class="eyebrow">Реальные работы</p><h2>Посмотрите, как мы работаем на сложных объектах</h2><p>Не рассказываем о профессионализме — показываем реальную работу: спил по частям, работу над крышами, возле домов, заборов и в ограниченном пространстве.</p></div></div></section>`;
 }
 
 function videosSection() {
   return `${videoGroup({
-    id: 'videos',
-    eyebrow: 'Расчистка участков',
-    title: 'Расчистка участков — смотрите, как мы работаем',
-    text: 'Удаляем деревья, поросль, кустарник и валежник. Расчищаем территорию под строительство, благоустройство и дальнейшее использование.',
+    id: 'clearing-videos',
+    eyebrow: 'Участки',
+    title: 'Расчистка и подготовка территории',
+    text: 'Показываем удаление поросли, работу техники, измельчение веток и пней.',
     videos: clearingVideos,
     ctaTitle: 'Нужно расчистить участок?',
     ctaText: 'Пришлите фото или оставьте номер телефона — оценим объём работ и предварительную стоимость.',
@@ -285,39 +291,39 @@ function videosSection() {
     service: 'Расчистка участка'
   })}${videoGroup({
     id: 'complex-videos',
-    eyebrow: 'Сложные работы',
-    title: 'Сложные работы выполняем безопасно',
-    text: 'Когда дерево нельзя безопасно повалить целиком, разбираем его по частям и контролируем спуск каждого фрагмента.',
+    eyebrow: 'Сложный спил',
+    title: 'Удаление деревьев в сложных условиях',
+    text: 'Показываем, как выбираем способ работы рядом с домами, крышами, заборами и другими объектами.',
     videos: complexVideos,
     muted: true,
     safety: true,
-    ctaTitle: 'Дерево находится рядом с домом или забором?',
-    ctaText: 'Пришлите фото — определим безопасный способ удаления и предварительную стоимость.',
-    ctaLabel: 'Оценить сложную работу',
+    ctaTitle: 'Похожая ситуация на вашем участке?',
+    ctaText: 'Оставьте номер телефона — оценим расположение дерева и предложим подходящий способ выполнения работ.',
+    ctaLabel: 'Рассчитать стоимость',
     service: 'Сложное удаление дерева'
   })}`;
 }
 
 function videoGroup({ id, eyebrow, title, text, videos, muted = false, safety = false, ctaTitle, ctaText, ctaLabel, service }) {
-  return `<section class="section video-section${muted ? ' section-muted' : ''}" id="${esc(id)}"><div class="container"><div class="section-head"><p class="eyebrow">${esc(eyebrow)}</p><h2>${esc(title)}</h2><p>${esc(text)}</p></div><div class="video-grid">${videos.map(videoCard).join('')}</div>${safety ? videoSafety() : ''}<div class="video-cta"><div><h3>${esc(ctaTitle)}</h3><p>${esc(ctaText)}</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="${esc(service)}" data-goal="click_calculate">${esc(ctaLabel)}</a></div></div></section>`;
+  return `<section class="section video-section${muted ? ' section-muted' : ''}" id="${esc(id)}"><div class="container"><div class="section-head video-group-head"><p class="eyebrow">${esc(eyebrow)}</p><h2>${esc(title)}</h2><p>${esc(text)}</p></div><div class="video-grid">${videos.map(videoCard).join('')}</div>${safety ? videoSafety() : ''}<div class="video-cta"><div><h3>${esc(ctaTitle)}</h3><p>${esc(ctaText)}</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="${esc(service)}" data-goal="click_calculate">${esc(ctaLabel)}</a></div></div></section>`;
 }
 
 function videoCard(video) {
   const poster = video.poster ? ` poster="${esc(video.poster)}"` : '';
   const preload = video.poster ? 'none' : 'metadata';
   const media = `<video class="work-video" controls preload="${preload}" playsinline${poster} aria-label="${esc(video.title)}"><source src="${esc(video.src)}" type="video/mp4">Ваш браузер не поддерживает видео. <a href="${esc(video.src)}">Открыть ролик</a>.</video>`;
-  return `<article class="video-card"><div class="video-media">${media}</div><p class="video-caption">${esc(video.caption)}</p></article>`;
+  return `<article class="video-card"><div class="video-media">${media}</div><div class="video-caption"><h3>${esc(video.caption)}</h3><p>${esc(video.description)}</p><span class="video-marker">✓ ${esc(video.marker)}</span></div></article>`;
 }
 
 function videoSafety() {
   const points = [
-    'Оцениваем риски до начала работ',
-    'Разбираем дерево по частям',
-    'Используем верёвки и страховочные системы',
-    'Контролируем направление и спуск частей',
-    'Защищаем дом, крышу, забор и имущество заказчика'
+    ['Оцениваем объект', 'Учитываем состояние дерева, его наклон, свободное пространство и объекты вокруг.'],
+    ['Выбираем способ удаления', 'Определяем, можно ли удалить дерево целиком или требуется разбор по частям.'],
+    ['Разбираем сверху вниз', 'В сложных условиях последовательно удаляем ветви и части ствола.'],
+    ['Контролируем крупные элементы', 'При необходимости используем верёвочные системы и другое оборудование.'],
+    ['Учитываем имущество вокруг', 'Дом, крыша, забор, автомобили и другие объекты учитываются при выборе технологии.']
   ];
-  return `<div class="video-safety"><h3>Безопасность на каждом этапе</h3><ul>${points.map((point) => `<li>${esc(point)}</li>`).join('')}</ul></div>`;
+  return `<div class="video-safety"><div class="video-safety-head"><p class="eyebrow">Технология работы</p><h3>Как мы снижаем риск повреждений</h3></div><div class="video-safety-steps">${points.map(([title, text], index) => `<article><span>${String(index + 1).padStart(2, '0')}</span><h4>${esc(title)}</h4><p>${esc(text)}</p></article>`).join('')}</div></div>`;
 }
 
 function processSection() {
