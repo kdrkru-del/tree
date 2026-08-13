@@ -62,6 +62,7 @@ export const images = Object.fromEntries(
 
 images.spil = '/assets/spil-main.jpg';
 images.pruning = '/assets/obrezka-main.jpg';
+images.emergency = '/assets/avarijnoe-main.jpg';
 
 export const imageCredits = Object.values(mediaFiles).map(({ title, file }) => ({
   title,
