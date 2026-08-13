@@ -1,4 +1,4 @@
-import { mkdir, rm, writeFile, copyFile, readdir, cp } from 'node:fs/promises';
+import { mkdir, rm, writeFile, copyFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { legalPages, services, site } from '../src/data.mjs';
@@ -85,8 +85,6 @@ async function build() {
     await copyFile(path.join(root, 'assets', asset), path.join(dist, 'assets', asset));
   }
   await copyFile(path.join(root, 'assets', 'favicon.ico'), path.join(dist, 'favicon.ico'));
-  // Копируем папку с фотографиями работ
-  await cp(path.join(root, 'assets', 'works'), path.join(dist, 'assets', 'works'), { recursive: true });
   await writeFile(path.join(dist, 'server', 'index.js'), staticWorker, 'utf8');
 
   const routes = [];
