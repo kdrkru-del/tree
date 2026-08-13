@@ -72,8 +72,8 @@ images.clearing = '/assets/raschistka-real.png';
 
 images.workStormBefore = '/assets/works/avarijnoe-real-do.png';
 images.workStormAfter = '/assets/works/avarijnoe-real-posle.png';
-images.workClearingBefore = '/assets/works/frezerovanie-pnja.jpg';
-images.workClearingAfter = '/assets/works/udalenie-pnja-do-posle.jpg';
+images.workClearingBefore = '/assets/works/zarosli-real-do.png';
+images.workClearingAfter = '/assets/works/zarosli-real-posle.png';
 images.workStumpBefore = '/assets/works/spil-sekcionnyj-do.jpg';
 images.workStumpAfter = '/assets/works/spil-bensopiloj.jpg';
 

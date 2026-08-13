@@ -114,6 +114,8 @@ async function build() {
   for (const asset of [
     'avarijnoe-real-do.png',
     'avarijnoe-real-posle.png',
+    'zarosli-real-do.png',
+    'zarosli-real-posle.png',
     'frezerovanie-pnja.jpg',
     'udalenie-pnja-do-posle.jpg',
     'spil-sekcionnyj-do.jpg',
