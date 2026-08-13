@@ -275,48 +275,54 @@ const localWorkVideo = (src, title, caption, poster = '') => ({
 
 export const clearingVideos = [
   localWorkVideo(
+    '/assets/work-video-1.mp4',
+    'Измельчение веток дробилкой после расчистки участка',
+    'Измельчение веток в щепу',
+    '/assets/video-posters/clearing-chipping.webp'
+  ),
+  localWorkVideo(
     '/assets/videos/clearing/рас2.mp4',
     'Расчистка заросшего участка с применением техники',
     'Расчистка территории техникой',
     '/assets/video-posters/clearing-machinery.webp'
   ),
   localWorkVideo(
-    '/assets/WhatsApp Video 2026-08-11 at 14.26.53.mp4',
-    'Измельчение веток дробилкой после расчистки участка',
-    'Измельчение веток в щепу'
+    '/assets/work-video-3.mp4',
+    'Удаление поросли и сбор веток на участке',
+    'Удаление поросли и веток',
+    '/assets/video-posters/clearing-branches.webp'
   ),
   localWorkVideo(
     '/assets/work-video-5.mp4',
     'Удаление пня фрезой после расчистки участка',
-    'Удаление пня после расчистки'
-  ),
-  localWorkVideo(
-    '/assets/work-video-6.mp4',
-    'Измельчение большого объема веток на участке',
-    'Переработка веток после спила'
+    'Удаление пня после расчистки',
+    '/assets/video-posters/clearing-stump.webp'
   )
 ];
 
 export const complexVideos = [
   localWorkVideo(
-    '/assets/work-video-1.mp4',
-    'Удаление высокого дерева по частям с подъемом арбориста',
-    'Работа арбориста на высоте'
+    '/assets/videos/complex/без1.mp4',
+    'Удаление высокого дерева арбористом с применением веревок',
+    'Работа арбориста на высоте',
+    '/assets/video-posters/complex-arborist-height.webp'
   ),
   localWorkVideo(
-    '/assets/work-video-2.mp4',
-    'Спил дерева по частям рядом с домом',
-    'Спил рядом с домом'
+    '/assets/videos/complex/без4.mp4',
+    'Разбор дерева по частям рядом с забором',
+    'Спил дерева по частям',
+    '/assets/video-posters/complex-site-cleanup.webp'
   ),
   localWorkVideo(
-    '/assets/work-video-3.mp4',
-    'Удаление пня техникой в ограниченном пространстве',
-    'Работа в стеснённых условиях'
+    '/assets/WhatsApp Video 2026-08-11 at 14.26.53.mp4',
+    'Обрезка дерева с автовышки в безлиственный период',
+    'Работа с автовышки',
+    '/assets/video-posters/complex-lift-winter.webp'
   ),
   localWorkVideo(
     '/assets/videos/complex/без 6.mp4',
     'Работа с автовышки над проезжей частью',
-    'Работа с автовышки',
+    'Спил с автовышки',
     '/assets/video-posters/complex-lift-road.webp'
   ),
   localWorkVideo(
@@ -326,14 +332,14 @@ export const complexVideos = [
     '/assets/video-posters/complex-tall-tree.webp'
   ),
   localWorkVideo(
-    '/assets/videos/complex/без4.mp4',
-    'Расчистка территории после сложного удаления',
-    'Уборка после сложного спила',
-    '/assets/video-posters/complex-site-cleanup.webp'
+    '/assets/videos/complex/bez2-vertical.mp4',
+    'Контролируемое удаление дерева возле строений',
+    'Работа рядом с домом',
+    '/assets/video-posters/complex-controlled-house.webp'
   ),
   localWorkVideo(
     '/assets/videos/complex/без5.mp4',
-    'Контролируемое удаление дерева возле дома',
+    'Контролируемый спил дерева на участке рядом с домом',
     'Спил дерева возле дома',
     '/assets/video-posters/complex-near-house.webp'
   ),

@@ -89,13 +89,7 @@ async function build() {
     'korchevanie-main.png',
     'droblenie-main.png',
     'izmelchenie-main.jpg',
-    'raschistka-main.jpg',
-    'WhatsApp Video 2026-08-11 at 14.26.53.mp4',
-    'work-video-1.mp4',
-    'work-video-2.mp4',
-    'work-video-3.mp4',
-    'work-video-5.mp4',
-    'work-video-6.mp4'
+    'raschistka-main.jpg'
   ]) {
     await copyFile(path.join(root, 'assets', asset), path.join(dist, 'assets', asset));
   }

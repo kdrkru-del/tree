@@ -22,18 +22,32 @@ test('video sections contain 4 clearing and 8 unique complex-work videos', () =>
     new Set([
       '/assets/WhatsApp Video 2026-08-11 at 14.26.53.mp4',
       '/assets/work-video-1.mp4',
-      '/assets/work-video-2.mp4',
       '/assets/work-video-3.mp4',
       '/assets/work-video-5.mp4',
-      '/assets/work-video-6.mp4',
       '/assets/videos/clearing/рас2.mp4',
       '/assets/videos/complex/без 6.mp4',
       '/assets/videos/complex/без 7.mp4',
+      '/assets/videos/complex/без1.mp4',
       '/assets/videos/complex/без4.mp4',
       '/assets/videos/complex/без5.mp4',
-      '/assets/videos/complex/без7.mp4'
+      '/assets/videos/complex/без7.mp4',
+      '/assets/videos/complex/bez2-vertical.mp4'
     ])
   );
+});
+
+test('clearing and complex sections use work-appropriate videos', () => {
+  assert.deepEqual(
+    clearingVideos.map((video) => video.caption),
+    [
+      'Измельчение веток в щепу',
+      'Расчистка территории техникой',
+      'Удаление поросли и веток',
+      'Удаление пня после расчистки'
+    ]
+  );
+  assert.equal(complexVideos.some((video) => video.src.endsWith('/bez2-vertical.mp4')), true);
+  assert.equal(complexVideos.some((video) => /пн[яе]|измельчение веток|удаление поросли/i.test(video.caption)), false);
 });
 
 test('every video has a short editable caption and every local asset exists', () => {
@@ -60,8 +74,9 @@ test('home page renders captions below all players, deferred loading, safety cop
   assert.equal(cards.length, 12);
   assert.equal((html.match(/class="video-caption"/g) || []).length, 12);
   assert.equal((html.match(/<video class="work-video" controls/g) || []).length, 12);
-  assert.equal((html.match(/preload="none"/g) || []).length, 6);
-  assert.equal((html.match(/preload="metadata"/g) || []).length, 6);
+  assert.equal((html.match(/preload="none"/g) || []).length, 12);
+  assert.equal((html.match(/preload="metadata"/g) || []).length, 0);
+  assert.equal((html.match(/poster="\/assets\/video-posters\//g) || []).length, 12);
   assert.doesNotMatch(html, /youtube(?:-nocookie)?\.com|data-youtube-video=/);
   assert.equal((html.match(/class="video-cta"/g) || []).length, 2);
 
