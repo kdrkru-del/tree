@@ -74,8 +74,8 @@ images.workStormBefore = '/assets/works/avarijnoe-real-do.png';
 images.workStormAfter = '/assets/works/avarijnoe-real-posle.png';
 images.workClearingBefore = '/assets/works/zarosli-real-do.png';
 images.workClearingAfter = '/assets/works/zarosli-real-posle.png';
-images.workStumpBefore = '/assets/works/spil-sekcionnyj-do.jpg';
-images.workStumpAfter = '/assets/works/spil-bensopiloj.jpg';
+images.workStumpBefore = '/assets/works/pen-real-do.png';
+images.workStumpAfter = '/assets/works/pen-real-posle.png';
 
 export const imageCredits = Object.values(mediaFiles).map(({ title, file }) => ({
   title,

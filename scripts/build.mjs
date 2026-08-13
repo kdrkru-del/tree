@@ -116,8 +116,8 @@ async function build() {
     'avarijnoe-real-posle.png',
     'zarosli-real-do.png',
     'zarosli-real-posle.png',
-    'frezerovanie-pnja.jpg',
-    'udalenie-pnja-do-posle.jpg',
+    'pen-real-do.png',
+    'pen-real-posle.png',
     'spil-sekcionnyj-do.jpg',
     'spil-bensopiloj.jpg'
   ]) {
