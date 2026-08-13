@@ -271,7 +271,14 @@ function trustSection() {
 }
 
 function videosSection() {
-  return `<section class="section video-section" id="videos"><div class="container"><div class="section-head"><p class="eyebrow">Процесс</p><h2>Как мы выполняем спил деревьев</h2><p>Реальные кадры с наших объектов. Без монтажа и прикрас — просто показываем, как работаем.</p></div><div class="shorts-grid">${workVideos.map((video) => `<article class="short-card"><a class="yt-facade" href="${esc(video.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(video.title)}" data-goal="click_video"><img src="${esc(video.thumbnail)}" alt="${esc(video.title)}" loading="lazy" width="360" height="640"><span class="yt-play-btn" aria-hidden="true">▶</span></a></article>`).join('')}</div></div></section>`;
+  return `<section class="section video-section" id="videos"><div class="container"><div class="section-head"><p class="eyebrow">Процесс</p><h2>Как мы выполняем спил деревьев</h2><p>Реальные кадры с наших объектов. Без монтажа и прикрас — просто показываем, как работаем.</p></div><div class="shorts-grid">${workVideos.map((video) => {
+    if (video.local) {
+      return \`<article class="short-card">
+        <video src="\${esc(video.url)}" controls preload="metadata" width="360" height="640" style="object-fit: cover; width: 100%; height: 100%; border-radius: 12px;"></video>
+      </article>\`;
+    }
+    return \`<article class="short-card"><a class="yt-facade" href="\${esc(video.url)}" target="_blank" rel="noopener noreferrer" aria-label="\${esc(video.title)}" data-goal="click_video"><img src="\${esc(video.thumbnail)}" alt="\${esc(video.title)}" loading="lazy" width="360" height="640"><span class="yt-play-btn" aria-hidden="true">▶</span></a></article>\`;
+  }).join('')}</div></div></section>`;
 }
 
 function processSection() {
