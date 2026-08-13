@@ -1,4 +1,4 @@
-import {
+﻿import {
   clearingVideos,
   complexVideos,
   experienceStats,
@@ -176,8 +176,8 @@ function mobileBar(leadHref) {
 }
 
 export function homePage() {
-  const title = 'Спил и удаление деревьев в Московской области';
-  const description = 'Спил, удаление и обрезка деревьев, аварийные деревья, пни, расчистка участков и вывоз веток. Предварительная оценка по фотографиям. Московская область.';
+  const title = 'Спил и удаление деревьев в Москве и Московской области';
+  const description = 'Спил, удаление и обрезка деревьев, аварийные деревья, пни, расчистка участков и вывоз веток. Предварительная оценка по фотографиям. Москва и Московская область.';
   const body = `
   ${heroSection()}
   ${quickLeadSection()}
@@ -195,7 +195,7 @@ export function homePage() {
 
 function heroSection() {
   return `<section class="hero">
-  <img class="hero-bg" src="${esc(images.hero)}" alt="Деревья в Московской области" fetchpriority="high">
+  <img class="hero-bg" src="${esc(images.hero)}" alt="Деревья в Москве и Московской области" fetchpriority="high">
   <div class="hero-shade"></div>
   <div class="container hero-content">
     <div class="hero-copy">
@@ -419,7 +419,7 @@ function organizationSchema() {
 }
 
 function professionalServiceSchema() {
-  return { '@context': 'https://schema.org', '@type': 'ProfessionalService', name: site.brand, areaServed: ['Московская область'], telephone: hasValue(site.phone) ? site.phone : undefined, url: site.baseUrl, description: 'Спил, удаление, обрезка деревьев, корчевание пней и расчистка участков.' };
+  return { '@context': 'https://schema.org', '@type': 'ProfessionalService', name: site.brand, areaServed: ['Москва', 'Московская область'], telephone: hasValue(site.phone) ? site.phone : undefined, url: site.baseUrl, description: 'Спил, удаление, обрезка деревьев, корчевание пней и расчистка участков.' };
 }
 
 function serviceSchema(service, path) {

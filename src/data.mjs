@@ -1,4 +1,4 @@
-export const site = {
+﻿export const site = {
   brand: 'Зеленый Срез',
   legalBrand: 'ООО «ЮНАТ»',
   inn: '2536345868',
@@ -14,7 +14,7 @@ export const site = {
   maxUrl: 'https://web.max.ru/',
   hours: 'Ежедневно 09:00 – 21:00',
   baseUrl: 'https://zelsrez.ru',
-  region: 'Московская область',
+  region: 'Москва и Московская область',
   addressNote: 'Работы выполняются на территории заказчика.',
   metrikaId: 111453743,
   leadEndpoint: 'https://zelsrez-leads.roman-k-0b3.workers.dev',
@@ -92,7 +92,7 @@ const serviceData = [
   {
     slug: 'spil-derevev',
     title: 'Спил деревьев',
-    h1: 'Спил деревьев в Московской области',
+    h1: 'Спил деревьев в Москве и Московской области',
     short: 'Удаление дерева целиком или по частям с предварительной оценкой условий.',
     imageKey: 'spil',
     directTitle: 'Спил дерева на участке с оценкой по фото',
@@ -103,7 +103,7 @@ const serviceData = [
   {
     slug: 'obrezka-derevev',
     title: 'Обрезка деревьев',
-    h1: 'Обрезка деревьев в Московской области',
+    h1: 'Обрезка деревьев в Москве и Московской области',
     short: 'Санитарная, формирующая и сезонная обрезка с учетом состояния дерева.',
     imageKey: 'pruning',
     directTitle: 'Обрезка ветвей и кроны на участке',
@@ -114,7 +114,7 @@ const serviceData = [
   {
     slug: 'udalenie-avariynyh-derevev',
     title: 'Удаление аварийных деревьев',
-    h1: 'Удаление аварийных деревьев в Московской области',
+    h1: 'Удаление аварийных деревьев в Москве и Московской области',
     short: 'Наклоненные, треснувшие, сухие и поврежденные деревья после ветра.',
     imageKey: 'emergency',
     directTitle: 'Аварийное дерево на участке или дороге',
@@ -147,7 +147,7 @@ const serviceData = [
   {
     slug: 'korchevanie-pney',
     title: 'Корчевание пней',
-    h1: 'Корчевание пней в Московской области',
+    h1: 'Корчевание пней в Москве и Московской области',
     short: 'Удаление пней, корней и подготовка места под газон, посадки или строительство.',
     imageKey: 'stumpRemoval',
     directTitle: 'Корчевание пня на участке',
@@ -180,7 +180,7 @@ const serviceData = [
   {
     slug: 'izmelchenie-vetok',
     title: 'Измельчение веток (Щепорез)',
-    h1: 'Измельчение веток (Щепорез) в Московской области',
+    h1: 'Измельчение веток (Щепорез) в Москве и Московской области',
     short: 'Измельчение веток после спила, обрезки или расчистки. Щепу можно оставить или вывезти.',
     imageKey: 'branches',
     directTitle: 'Измельчение веток (Щепорез) на вашем участке',
@@ -386,7 +386,7 @@ export const complexVideos = [
 
 export const workVideos = [...clearingVideos, ...complexVideos];
 
-export const serviceAreas = ['Московская область'];
+export const serviceAreas = ['Москва и Московская область'];
 
 export const experienceStats = [
   { value: '10 лет', label: 'практического опыта' },
