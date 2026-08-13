@@ -266,21 +266,13 @@ export const workExamples = [
 ];
 
 export const workVideos = [
-  { youtubeId: 'Bo5lWUE8UAk' },
-  { youtubeId: 'oMOOqb6vgmw' },
-  { youtubeId: 'nvt6iCWwLm4' },
-  { local: true, title: 'Измельчение веток дробилкой', url: '/assets/WhatsApp Video 2026-08-11 at 14.26.53.mp4', thumbnail: '' },
-  { youtubeId: 'TnuufbzdOyQ' },
-  { youtubeId: 'MTZXrfj0UtU' }
-].map((video, index) => {
-  if (video.local) return video;
-  return {
-    youtubeId: video.youtubeId,
-    title: `Процесс спила деревьев — видео ${index + 1}`,
-    url: `https://www.youtube.com/shorts/${video.youtubeId}`,
-    thumbnail: `https://i.ytimg.com/vi/${video.youtubeId}/hqdefault.jpg`
-  };
-});
+  { local: true, title: 'Процесс спила деревьев', url: '/assets/work-video-1.mp4' },
+  { local: true, title: 'Процесс спила деревьев', url: '/assets/work-video-2.mp4' },
+  { local: true, title: 'Процесс спила деревьев', url: '/assets/work-video-3.mp4' },
+  { local: true, title: 'Измельчение веток дробилкой', url: '/assets/WhatsApp Video 2026-08-11 at 14.26.53.mp4' },
+  { local: true, title: 'Процесс спила деревьев', url: '/assets/work-video-5.mp4' },
+  { local: true, title: 'Процесс спила деревьев', url: '/assets/work-video-6.mp4' }
+];
 
 export const serviceAreas = ['Московская область'];
 
