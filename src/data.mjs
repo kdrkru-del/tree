@@ -1,4 +1,4 @@
-﻿export const site = {
+export const site = {
   brand: 'Зеленый Срез',
   legalBrand: 'ООО «ЮНАТ»',
   inn: '2536345868',
@@ -11,7 +11,7 @@
   telegramHandle: '@Romatran',
   messengerUrl: 'https://wa.me/79998081951',
   maxPhone: '8 999 808 19 51',
-  maxUrl: 'https://web.max.ru/',
+  maxUrl: 'https://max.ru/u/f9LHodD0cOK2FZjOMiAfkiTAhKQ6WCesY4Z-rjekiEr9SGF4LtEmUHaAKws',
   hours: 'Ежедневно 09:00 – 21:00',
   baseUrl: 'https://zelsrez.ru',
   region: 'Москва и Московская область',
