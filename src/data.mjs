@@ -6,7 +6,7 @@ export const site = {
   ogrn: '1242500018859',
   phone: '8 999 808 19 51',
   phoneHref: 'tel:+79998081951',
-  email: 'jobstat@bk.ru',
+  email: 'srez.z@yandex.ru',
   telegramUrl: 'https://t.me/Romatran',
   telegramHandle: '@Romatran',
   messengerUrl: 'https://wa.me/79998081951',
