@@ -1,4 +1,5 @@
-import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-sections-4';
+import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260824-metrika-goals-1';
+import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=20260824-metrika-goals-1';
 
 (function () {
   const config = window.TREE_SITE_CONFIG || {};
@@ -13,22 +14,7 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
   }
 
   function getUtm() {
-    const params = new URLSearchParams(window.location.search);
-    const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'yclid'];
-    const current = {};
-    keys.forEach((key) => {
-      const value = params.get(key);
-      if (value) current[key] = value;
-    });
-    if (Object.keys(current).length) {
-      localStorage.setItem('tree_site_utm', JSON.stringify(current));
-      localStorage.setItem('tree_site_entry_page', window.location.href);
-    }
-    try {
-      return JSON.parse(localStorage.getItem('tree_site_utm') || '{}');
-    } catch {
-      return {};
-    }
+    return getFirstTouchAttribution(window.location.href, localStorage);
   }
 
   function normalizePhone(raw) {
@@ -39,24 +25,7 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
     return raw.trim();
   }
 
-  function loadIntegrations() {
-    if (metrikaId) {
-      (function (m, e, t, r, i, k, a) {
-        m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
-        m[i].l = 1 * new Date();
-        k = e.createElement(t);
-        a = e.getElementsByTagName(t)[0];
-        k.async = 1;
-        k.src = r;
-        a.parentNode.insertBefore(k, a);
-      })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
-      window.ym(metrikaId, 'init', {
-        clickmap: true,
-        trackLinks: true,
-        accurateTrackBounce: true,
-        webvisor: true
-      });
-    }
+  function loadOptionalIntegrations() {
     if (config.novofonScriptUrl) {
       const script = document.createElement('script');
       script.src = config.novofonScriptUrl;
@@ -87,9 +56,20 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
   function initGoals() {
     document.addEventListener('click', (event) => {
       const goalNode = event.target.closest('[data-goal]');
-      if (goalNode) reachGoal(goalNode.dataset.goal, { href: goalNode.getAttribute('href') });
       const phoneLink = event.target.closest('a[href^="tel:"]');
-      if (phoneLink) reachGoal('click_phone', { href: phoneLink.getAttribute('href') });
+      const contactLink = event.target.closest('a[href]');
+      const goal = goalNode?.dataset.goal;
+      const href = contactLink?.getAttribute('href') || goalNode?.getAttribute('href') || '';
+
+      if (goal) reachGoal(goal, { href });
+      if (phoneLink && goal !== 'click_phone') {
+        reachGoal('click_phone', { href: phoneLink.getAttribute('href') });
+      }
+
+      const messenger = contactLink ? getMessengerChannel(href, goal) : '';
+      if (messenger && goal !== 'click_messenger') {
+        reachGoal('click_messenger', { channel: messenger, href });
+      }
     });
   }
 
@@ -238,6 +218,7 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
           await deliverLead(config.leadEndpoint, payload);
 
           // Успех — только после реального ответа сервера
+          reachGoal('lead_form', { form: formId, service });
           reachGoal('lead_form_success', { form: formId, service });
           reachGoal('lead_sent', { form: formId, phone });
           phoneInput.value = '';
@@ -256,7 +237,7 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
     });
   }
 
-  loadIntegrations();
+  loadOptionalIntegrations();
   initNav();
   initGoals();
   initHomeAnimations();
