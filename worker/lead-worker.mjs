@@ -1,4 +1,11 @@
-const DEFAULT_ALLOWED_ORIGINS = ['https://zelsrez.ru', 'https://www.zelsrez.ru'];
+const DEFAULT_ALLOWED_ORIGINS = [
+  'https://zelsrez.ru',
+  'https://www.zelsrez.ru',
+  'http://tehuchet24.ru',
+  'https://tehuchet24.ru',
+  'http://www.tehuchet24.ru',
+  'https://www.tehuchet24.ru'
+];
 const MAX_PHOTOS = 10;
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
 const MAX_TOTAL_PHOTO_BYTES = 30 * 1024 * 1024;
@@ -130,12 +137,14 @@ async function readRequest(request) {
 function leadText(payload, photoCount) {
   const fields = payload.fields;
   const details = splitBranchAfter(fields.comment);
+  const isTechuchet = /tehuchet24\.ru/i.test(`${payload.source} ${payload.page}`);
+  const title = isTechuchet ? '<b>🛠 Новая заявка — ТехУчёт</b>' : '<b>🌳 Новая заявка</b>';
   const utm = Object.entries(payload.utm)
     .slice(0, 6)
     .map(([key, value]) => `${escapeHtml(clean(key, 60))}=${escapeHtml(clean(value, 120))}`)
     .join(', ');
   const lines = [
-    '<b>🌳 Новая заявка</b>',
+    title,
     `<b>ID:</b> <code>${escapeHtml(payload.lead_id)}</code>`,
     `<b>Телефон:</b> ${escapeHtml(fields.phone)}`,
     fields.name ? `<b>Имя:</b> ${escapeHtml(fields.name)}` : '',

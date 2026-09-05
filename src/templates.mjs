@@ -154,7 +154,7 @@ function footer() {
     <div><h2>Услуги</h2>${services.slice(0, 7).map((service) => `<a href="/${service.slug}/">${esc(service.title)}</a>`).join('')}</div>
     <div><h2>Контакты</h2>${phoneEl}${emailEl}${messengerEl}<p class="call-note">В целях контроля качества разговор может быть записан.</p></div>
   </div>
-  <div class="container footer-bottom"><span>© ${new Date().getFullYear()} ${esc(site.brand)}</span><a href="/privacy/">Политика конфиденциальности</a><a href="/personal-data-consent/">Согласие на обработку данных</a><a href="/requisites/">Реквизиты</a></div>
+  <div class="container footer-bottom"><span>© ${new Date().getFullYear()} ${esc(site.brand)}</span><a href="/privacy/">Политика конфиденциальности</a><a href="/personal-data-consent/">Согласие на обработку данных</a><a href="/requisites/">Реквизиты</a><a href="https://voltrena.ru" target="_blank" rel="noopener" style="color: #6ee7b7; text-decoration: underline; text-underline-offset: 3px;">Создание и продвижение: voltrena.ru</a></div>
 </footer>`;
 }
 

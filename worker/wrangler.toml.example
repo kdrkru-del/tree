@@ -3,4 +3,4 @@ main = "lead-worker.mjs"
 compatibility_date = "2026-08-01"
 
 [vars]
-ALLOWED_ORIGINS = "https://zelsrez.ru,https://www.zelsrez.ru"
+ALLOWED_ORIGINS = "https://zelsrez.ru,https://www.zelsrez.ru,http://tehuchet24.ru,https://tehuchet24.ru,http://www.tehuchet24.ru,https://www.tehuchet24.ru"
