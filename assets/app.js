@@ -1,5 +1,4 @@
-import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260824-metrika-goals-1';
-import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=20260824-metrika-goals-1';
+import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-sections-4';
 
 (function () {
   const config = window.TREE_SITE_CONFIG || {};
@@ -14,7 +13,22 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
   }
 
   function getUtm() {
-    return getFirstTouchAttribution(window.location.href, localStorage);
+    const params = new URLSearchParams(window.location.search);
+    const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'yclid'];
+    const current = {};
+    keys.forEach((key) => {
+      const value = params.get(key);
+      if (value) current[key] = value;
+    });
+    if (Object.keys(current).length) {
+      localStorage.setItem('tree_site_utm', JSON.stringify(current));
+      localStorage.setItem('tree_site_entry_page', window.location.href);
+    }
+    try {
+      return JSON.parse(localStorage.getItem('tree_site_utm') || '{}');
+    } catch {
+      return {};
+    }
   }
 
   function normalizePhone(raw) {
@@ -25,7 +39,24 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     return raw.trim();
   }
 
-  function loadOptionalIntegrations() {
+  function loadIntegrations() {
+    if (metrikaId) {
+      (function (m, e, t, r, i, k, a) {
+        m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
+        m[i].l = 1 * new Date();
+        k = e.createElement(t);
+        a = e.getElementsByTagName(t)[0];
+        k.async = 1;
+        k.src = r;
+        a.parentNode.insertBefore(k, a);
+      })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+      window.ym(metrikaId, 'init', {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true
+      });
+    }
     if (config.novofonScriptUrl) {
       const script = document.createElement('script');
       script.src = config.novofonScriptUrl;
@@ -56,20 +87,9 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
   function initGoals() {
     document.addEventListener('click', (event) => {
       const goalNode = event.target.closest('[data-goal]');
+      if (goalNode) reachGoal(goalNode.dataset.goal, { href: goalNode.getAttribute('href') });
       const phoneLink = event.target.closest('a[href^="tel:"]');
-      const contactLink = event.target.closest('a[href]');
-      const goal = goalNode?.dataset.goal;
-      const href = contactLink?.getAttribute('href') || goalNode?.getAttribute('href') || '';
-
-      if (goal) reachGoal(goal, { href });
-      if (phoneLink && goal !== 'click_phone') {
-        reachGoal('click_phone', { href: phoneLink.getAttribute('href') });
-      }
-
-      const messenger = contactLink ? getMessengerChannel(href, goal) : '';
-      if (messenger && goal !== 'click_messenger') {
-        reachGoal('click_messenger', { channel: messenger, href });
-      }
+      if (phoneLink) reachGoal('click_phone', { href: phoneLink.getAttribute('href') });
     });
   }
 
@@ -171,6 +191,9 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
+        if (form.dataset.submitting === 'true') return;
+        form.dataset.submitting = 'true';
+
         // honeypot
         const hp = form.querySelector('[name="website"]');
         if (hp && hp.value) return;
@@ -218,7 +241,6 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
           await deliverLead(config.leadEndpoint, payload);
 
           // Успех — только после реального ответа сервера
-          reachGoal('lead_form', { form: formId, service });
           reachGoal('lead_form_success', { form: formId, service });
           reachGoal('lead_sent', { form: formId, phone });
           phoneInput.value = '';
@@ -230,6 +252,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
           saveError({ at: new Date().toISOString(), message: error.message, payload });
           if (errorEl) errorEl.hidden = false;
         } finally {
+          form.dataset.submitting = 'false';
           submitBtn.disabled   = false;
           submitBtn.textContent = originalText;
         }
@@ -237,7 +260,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     });
   }
 
-  loadOptionalIntegrations();
+  loadIntegrations();
   initNav();
   initGoals();
   initHomeAnimations();
