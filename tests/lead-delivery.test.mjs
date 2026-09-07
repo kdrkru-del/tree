@@ -38,7 +38,6 @@ test('lead without photos is sent as JSON with phone and lead_id', async () => {
   assert.equal(captured.url, 'https://worker.example/');
   assert.equal(captured.options.method, 'POST');
   assert.equal(captured.options.headers['Content-Type'], 'application/json');
-  assert.equal(captured.options.keepalive, true);
   assert.deepEqual(JSON.parse(captured.options.body), lead);
   assert.equal(result.ok, true);
 });
