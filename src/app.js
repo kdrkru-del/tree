@@ -191,6 +191,9 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
+        if (form.dataset.submitting === 'true') return;
+        form.dataset.submitting = 'true';
+
         // honeypot
         const hp = form.querySelector('[name="website"]');
         if (hp && hp.value) return;
@@ -249,6 +252,7 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
           saveError({ at: new Date().toISOString(), message: error.message, payload });
           if (errorEl) errorEl.hidden = false;
         } finally {
+          form.dataset.submitting = 'false';
           submitBtn.disabled   = false;
           submitBtn.textContent = originalText;
         }
