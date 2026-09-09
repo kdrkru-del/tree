@@ -176,11 +176,21 @@ function mobileBar(leadHref) {
 }
 
 export function homePage() {
-  const title = 'Спил и удаление деревьев в Москве и Московской области';
-  const description = 'Спил, удаление и обрезка деревьев, аварийные деревья, пни, расчистка участков и вывоз веток. Предварительная оценка по фотографиям. Москва и Московская область.';
+  const title = 'Спил деревьев, расчистка участков, измельчение веток в Москве и МО';
+  const description = 'Профессиональный спил деревьев любой сложности, комплексная расчистка участков и измельчение веток щепорезом с оператором. Москва и Московская область.';
+  const homeLeadOptions = {
+    withPhoto: true,
+    submitText: 'Получить расчёт по фото',
+    commentPlaceholder: 'Какая задача: спил дерева, расчистка участка или ветки...',
+    photoHint: [
+      '1. Фото дерева, участка или кучи веток',
+      '2. Объекты рядом (дом, забор, провода, постройки)',
+      '3. Адрес или район Московской области'
+    ]
+  };
+
   const body = `
   ${heroSection()}
-  ${quickLeadSection()}
   ${commercialHubSection()}
   ${servicesSection()}
   ${worksPreview()}
@@ -190,21 +200,21 @@ export function homePage() {
   ${processSection()}
   ${organizationsSection()}
   ${faqSection(faq)}
-  ${leadSection('Получите расчет по фотографиям', 'Пришлите 2–3 фотографии. Обычно по ним уже можно определить способ работы и ориентировочную стоимость.')}`;
+  ${leadSection('Получите расчет по фотографиям', 'Пришлите 2–3 фотографии дерева, участка или веток. Оценим способ работы и назовем ориентировочную стоимость до выезда.', 'Фото на оценку', homeLeadOptions)}`;
   return renderPage({ title, description, path: '/', body, jsonLd: [professionalServiceSchema(), faqSchema(faq), breadcrumbSchema([{ name: 'Главная', url: '/' }])] });
 }
 
 function heroSection() {
   return `<section class="hero">
-  <img class="hero-bg" src="${esc(images.hero)}" alt="Деревья в Москве и Московской области" fetchpriority="high">
+  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев, расчистка участков и щепорез в Москве и МО" fetchpriority="high">
   <div class="hero-shade"></div>
   <div class="container hero-content">
     <div class="hero-copy">
-      <p class="hero-badge">Предварительная оценка по фото</p>
-      <h1>Спил и удаление деревьев<br>в Москве и Московской области</h1>
-      <p class="hero-lead">Спиливаем аварийные деревья, дробим ветки и пни, расчищаем участки. Работаем возле домов, заборов и коммуникаций. Оценим стоимость по фотографиям до выезда.</p>
+      <p class="hero-badge">Предварительная оценка по фото за 15 минут</p>
+      <h1>Спил деревьев, расчистка участков<br>и измельчение веток в Москве и МО</h1>
+      <p class="hero-lead">Работаем на сложных участках возле домов, заборов и проводов. Собственная спецтехника, сертифицированные арбористы, щепорез с оператором. Предварительный расчет по фото до выезда.</p>
       <div class="hero-actions">
-        <a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Отправить фото и узнать стоимость</a>
+        <a class="btn btn-hero-primary" href="#main-directions" data-goal="click_calculate">Выбрать задачу и рассчитать</a>
         <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
       </div>
       <div class="trust-bar" aria-label="Преимущества">
@@ -218,15 +228,15 @@ function heroSection() {
       </div>
       <p class="hero-cta-note">Для предварительной оценки отправьте фотографию дерева и контактный номер.</p>
     </div>
-    <aside class="hero-prices" aria-label="Ориентировочные цены">
-      <p class="hero-prices-label">Стартовые цены</p>
+    <aside class="hero-prices" aria-label="3 ключевых направления">
+      <p class="hero-prices-label">3 основных направления</p>
       <ul>
-        <li><span>Спил дерева</span><strong>от 1 000 ₽</strong></li>
-        <li><span>По частям</span><strong>от 3 500 ₽</strong></li>
-        <li><span>Аварийное дерево</span><strong>от 4 000 ₽</strong></li>
+        <li><span>1. Спил дерева</span><strong>от 1 000 ₽</strong></li>
+        <li><span>2. Расчистка участка</span><strong>от 5 000 ₽</strong></li>
+        <li><span>3. Измельчение веток</span><strong>от 2 500 ₽</strong></li>
       </ul>
-      <p class="hero-prices-note">Точная стоимость зависит от высоты, диаметра, доступа и объектов рядом.</p>
-      <a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Узнать стоимость</a>
+      <p class="hero-prices-note">Фиксируем способ работы и диапазон стоимости по фото до выезда на объект.</p>
+      <a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Рассчитать по фото</a>
     </aside>
   </div>
 </section>`;
@@ -432,6 +442,7 @@ function leadSection(title, text, selectedService = 'Фото на оценку'
 function leadForm(selectedService, options = {}) {
   const btnText = options.submitText || 'Получить расчёт';
   const formId = options.formId || 'main-form';
+  const commentPlaceholder = options.commentPlaceholder || 'Количество деревьев, примерная высота...';
   const extendedFields = options.withPhoto ? `
     <div class="lead-file-box">
       <label class="lead-file-trigger" for="lead_photos">
@@ -449,7 +460,7 @@ function leadForm(selectedService, options = {}) {
       </div>
       <div class="lead-field-group">
         <label class="lead-sub-label" for="lead_comment">Комментарий (необязательно)</label>
-        <input id="lead_comment" name="comment" type="text" placeholder="Количество деревьев, примерная высота...">
+        <input id="lead_comment" name="comment" type="text" placeholder="${esc(commentPlaceholder)}">
       </div>
     </div>` : '';
 
@@ -646,6 +657,7 @@ export function spilLandingPage(service) {
   const leadOptions = {
     withPhoto: true,
     submitText: 'Отправить фото и узнать стоимость',
+    commentPlaceholder: 'Количество деревьев, диаметр ствола, что находится рядом...',
     photoHint: [
       '1. Дерево целиком (чтобы видеть высоту, наклон и форму кроны)',
       '2. Ствол и нижнюю часть дерева',
@@ -851,6 +863,7 @@ export function raschistkaLandingPage(service) {
   const leadOptions = {
     withPhoto: true,
     submitText: 'Отправить фото участка',
+    commentPlaceholder: 'Площадь участка в сотках, что требуется расчистить...',
     photoHint: [
       '1. Общий вид участка с 2–3 точек',
       '2. Наиболее заросшие места и характер кустарника',
@@ -1030,6 +1043,7 @@ export function izmelchenieLandingPage(service) {
   const leadOptions = {
     withPhoto: true,
     submitText: 'Отправить фото веток и узнать стоимость',
+    commentPlaceholder: 'Примерный объём кучи веток, условия подъезда...',
     photoHint: [
       '1. Фото всей кучи веток целиком (чтобы оценить объем)',
       '2. Пример толщины наиболее крупных веток',
