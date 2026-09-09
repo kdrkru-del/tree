@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
+import { site } from '../src/data.mjs';
 
 const root = path.resolve('dist');
 const htmlFiles = [];
@@ -35,8 +36,22 @@ for (const asset of [
 
 for (const file of htmlFiles) {
   const html = readFileSync(file, 'utf8');
+  const relativeFile = path.relative(root, file);
   const h1Count = [...html.matchAll(/<h1[\s>]/g)].length;
-  if (h1Count !== 1) problems.push(path.relative(root, file) + ' has ' + h1Count + ' h1 tags');
+  if (h1Count !== 1) problems.push(relativeFile + ' has ' + h1Count + ' h1 tags');
+
+  const metrikaLoaderCount = [...html.matchAll(/mc\.yandex\.ru\/metrika\/tag\.js\?id=/g)].length;
+  const metrikaInitCount = [...html.matchAll(/ym\(\d+,\s*'init'/g)].length;
+  const metrikaNoscriptCount = [...html.matchAll(/mc\.yandex\.ru\/watch\/\d+/g)].length;
+  const metrikaIds = new Set([
+    ...html.matchAll(/mc\.yandex\.ru\/(?:metrika\/tag\.js\?id=|watch\/)(\d+)/g)
+  ].map((match) => match[1]));
+  if (metrikaLoaderCount !== 1 || metrikaInitCount !== 1 || metrikaNoscriptCount !== 1) {
+    problems.push(`${relativeFile} must initialize exactly one Metrika counter`);
+  }
+  if (metrikaIds.size !== 1 || !metrikaIds.has(String(site.metrikaId))) {
+    problems.push(`${relativeFile} uses unexpected Metrika counter IDs: ${[...metrikaIds].join(', ')}`);
+  }
 
   for (const match of html.matchAll(/href=\"(\/[^\"]*)\"/g)) {
     const href = match[1];
@@ -50,9 +65,9 @@ for (const file of htmlFiles) {
     if (id && !html.includes('id=\"' + id + '\"')) problems.push(path.relative(root, file) + ' links to missing anchor #' + id);
   }
 
-  if (/Lorem|lorem|undefined|\[object Object\]|NaN/.test(html)) problems.push(path.relative(root, file) + ' contains placeholder/debug text');
+  if (/Lorem|lorem|undefined|\[object Object\]|NaN/.test(html)) problems.push(relativeFile + ' contains placeholder/debug text');
   if (!html.includes('rel="icon"') || !html.includes('rel="apple-touch-icon"')) {
-    problems.push(path.relative(root, file) + ' is missing favicon links');
+    problems.push(relativeFile + ' is missing favicon links');
   }
 }
 

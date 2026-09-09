@@ -1,4 +1,5 @@
-import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-sections-4';
+import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260824-metrika-goals-1';
+import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=20260824-metrika-goals-1';
 
 (function () {
   const config = window.TREE_SITE_CONFIG || {};
@@ -13,22 +14,7 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
   }
 
   function getUtm() {
-    const params = new URLSearchParams(window.location.search);
-    const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'yclid'];
-    const current = {};
-    keys.forEach((key) => {
-      const value = params.get(key);
-      if (value) current[key] = value;
-    });
-    if (Object.keys(current).length) {
-      localStorage.setItem('tree_site_utm', JSON.stringify(current));
-      localStorage.setItem('tree_site_entry_page', window.location.href);
-    }
-    try {
-      return JSON.parse(localStorage.getItem('tree_site_utm') || '{}');
-    } catch {
-      return {};
-    }
+    return getFirstTouchAttribution(window.location.href, localStorage);
   }
 
   function normalizePhone(raw) {
@@ -40,23 +26,6 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
   }
 
   function loadIntegrations() {
-    if (metrikaId) {
-      (function (m, e, t, r, i, k, a) {
-        m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
-        m[i].l = 1 * new Date();
-        k = e.createElement(t);
-        a = e.getElementsByTagName(t)[0];
-        k.async = 1;
-        k.src = r;
-        a.parentNode.insertBefore(k, a);
-      })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
-      window.ym(metrikaId, 'init', {
-        clickmap: true,
-        trackLinks: true,
-        accurateTrackBounce: true,
-        webvisor: true
-      });
-    }
     if (config.novofonScriptUrl) {
       const script = document.createElement('script');
       script.src = config.novofonScriptUrl;
@@ -87,9 +56,14 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
   function initGoals() {
     document.addEventListener('click', (event) => {
       const goalNode = event.target.closest('[data-goal]');
-      if (goalNode) reachGoal(goalNode.dataset.goal, { href: goalNode.getAttribute('href') });
+      const goal = goalNode ? goalNode.dataset.goal : '';
+      if (goal && goal !== 'click_phone' && goal !== 'click_messenger') {
+        reachGoal(goal, { href: goalNode.getAttribute('href') });
+      }
       const phoneLink = event.target.closest('a[href^="tel:"]');
       if (phoneLink) reachGoal('click_phone', { href: phoneLink.getAttribute('href') });
+      const messengerChannel = goalNode ? getMessengerChannel(goalNode.getAttribute('href'), goal) : '';
+      if (messengerChannel) reachGoal('click_messenger', { channel: messengerChannel });
     });
   }
 
@@ -186,7 +160,22 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
       const submitBtn  = form.querySelector('[data-submit-btn]');
       const successEl  = form.querySelector('[data-form-success]');
       const errorEl    = form.querySelector('[data-form-error]');
+      const fileInput  = form.querySelector('[data-photos-input]');
+      const fileStatus = form.querySelector('[data-file-chosen]');
       if (!phoneInput || !submitBtn) return;
+
+      if (fileInput && fileStatus) {
+        fileInput.addEventListener('change', () => {
+          const count = fileInput.files ? fileInput.files.length : 0;
+          if (count > 0) {
+            fileStatus.textContent = `✓ Выбрано файлов: ${count}`;
+            fileStatus.hidden = false;
+          } else {
+            fileStatus.textContent = '';
+            fileStatus.hidden = true;
+          }
+        });
+      }
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -212,7 +201,11 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
         const leadId  = createLeadId();
         const formId  = form.dataset.formId || 'form';
         const service = form.querySelector('[name="service"]')?.value || 'Заявка с сайта';
+        const address = form.querySelector('[name="address"]')?.value?.trim() || '';
+        const comment = form.querySelector('[name="comment"]')?.value?.trim() || '';
         const fields = { phone, service };
+        if (address) fields.address = address;
+        if (comment) fields.comment = comment;
 
         const payload = {
           lead_id:     leadId,
@@ -227,6 +220,8 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
           service:     fields.service,
           fields
         };
+        if (address) payload.city = address;
+        if (comment) payload.comment = comment;
 
         saveLead(payload);
 
@@ -238,12 +233,20 @@ import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260813-video-
         if (errorEl)   errorEl.hidden   = true;
 
         try {
-          await deliverLead(config.leadEndpoint, payload);
+          const fileInput = form.querySelector('input[type="file"][name="photos"]');
+          const photoFiles = fileInput && fileInput.files ? Array.from(fileInput.files) : [];
+          if (photoFiles.length) {
+            await deliverLead(config.leadEndpoint, payload, photoFiles);
+          } else {
+            await deliverLead(config.leadEndpoint, payload);
+          }
 
           // Успех — только после реального ответа сервера
+          reachGoal('lead_form', { form: formId, service });
           reachGoal('lead_form_success', { form: formId, service });
           reachGoal('lead_sent', { form: formId, phone });
           phoneInput.value = '';
+          if (fileInput) fileInput.value = '';
           if (successEl) successEl.hidden = false;
           const fields = form.querySelector('[data-form-fields]');
           if (fields) fields.hidden = true;

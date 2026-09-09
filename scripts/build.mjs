@@ -6,11 +6,14 @@ import {
   contactsPage,
   faqPage,
   homePage,
+  izmelchenieLandingPage,
   legalPage,
   notFoundPage,
   pagePath,
   pricesPage,
+  raschistkaLandingPage,
   servicePage,
+  spilLandingPage,
   worksPage
 } from '../src/templates.mjs';
 
@@ -76,6 +79,7 @@ async function build() {
   await copyFile(path.join(root, 'src', 'styles.css'), path.join(dist, 'assets', 'styles.css'));
   await copyFile(path.join(root, 'src', 'app.js'), path.join(dist, 'assets', 'app.js'));
   await copyFile(path.join(root, 'src', 'lead-delivery.mjs'), path.join(dist, 'assets', 'lead-delivery.mjs'));
+  await copyFile(path.join(root, 'src', 'tracking.mjs'), path.join(dist, 'assets', 'tracking.mjs'));
   for (const asset of [
     'logo-zelenyi-srez.png',
     'favicon-32.png',
@@ -142,7 +146,15 @@ async function build() {
   await writeFile(path.join(dist, '404.html'), notFoundHtml, 'utf8');
 
   for (const service of services) {
-    await add(service.slug, servicePage(service));
+    if (service.slug === 'spil-derevev') {
+      await add(service.slug, spilLandingPage(service));
+    } else if (service.slug === 'raschistka-uchastkov') {
+      await add(service.slug, raschistkaLandingPage(service));
+    } else if (service.slug === 'izmelchenie-vetok') {
+      await add(service.slug, izmelchenieLandingPage(service));
+    } else {
+      await add(service.slug, servicePage(service));
+    }
   }
 
   for (const page of legalPages) {

@@ -38,6 +38,7 @@ test('lead without photos is sent as JSON with phone and lead_id', async () => {
   assert.equal(captured.url, 'https://worker.example/');
   assert.equal(captured.options.method, 'POST');
   assert.equal(captured.options.headers['Content-Type'], 'application/json');
+  assert.equal(captured.options.keepalive, undefined);
   assert.deepEqual(JSON.parse(captured.options.body), lead);
   assert.equal(result.ok, true);
 });
@@ -104,9 +105,11 @@ test('phone-only forms keep data on errors and never count WhatsApp as delivery'
   assert.equal([...source.matchAll(/phone:\s+fields\.phone/g)].length, 1);
   assert.equal([...source.matchAll(/service:\s+fields\.service/g)].length, 1);
   assert.match(source, /deliverLead\(config\.leadEndpoint, payload\)/);
-  assert.equal([
-    ...source.matchAll(/await deliverLead\(config\.leadEndpoint, payload\);\s*\/\/[^\n]*\s*reachGoal\('lead_form_success'/g)
-  ].length, 1);
+  assert.equal([...source.matchAll(/reachGoal\('lead_form',/g)].length, 1);
+  assert.equal([...source.matchAll(/reachGoal\('lead_form_success',/g)].length, 1);
+  assert.equal([...source.matchAll(/reachGoal\('lead_sent',/g)].length, 1);
+  assert.ok(source.indexOf("await deliverLead(config.leadEndpoint, payload)") < source.indexOf("reachGoal('lead_form',"));
+  assert.ok(source.indexOf("reachGoal('lead_form',") < source.indexOf("reachGoal('lead_form_success',"));
   assert.doesNotMatch(source, /whatsappDraftUrl|openWhatsAppDraft|lead_whatsapp_fallback|window\.open/);
   assert.ok(source.indexOf("await deliverLead(config.leadEndpoint, payload)") < source.indexOf("phoneInput.value = ''"));
 
@@ -116,8 +119,8 @@ test('phone-only forms keep data on errors and never count WhatsApp as delivery'
   assert.match(templates, /Для предварительной оценки отправьте фотографию дерева и контактный номер\./);
   assert.match(templates, /name="service" value="Быстрый расчет"/);
   assert.match(templates, /name="service" value="\$\{esc\(selectedService\)\}"/);
-  assert.match(templates, /app\.js\?v=20260813-video-sections-4/);
-  assert.match(source, /lead-delivery\.mjs\?v=20260813-video-sections-4/);
+  assert.match(templates, /app\.js\?v=20260824-metrika-goals-1/);
+  assert.match(source, /lead-delivery\.mjs\?v=20260824-metrika-goals-1/);
 
   const catches = [...source.matchAll(/\} catch \(error\) \{/g)];
   assert.equal(catches.length, 1);
