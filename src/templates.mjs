@@ -407,17 +407,49 @@ function videoCard(video) {
 
 function videoSafety() {
   const points = [
-    ['Оцениваем объект', 'Учитываем состояние дерева, его наклон, свободное пространство и объекты вокруг.'],
-    ['Выбираем способ удаления', 'Определяем, можно ли удалить дерево целиком или требуется разбор по частям.'],
-    ['Разбираем сверху вниз', 'В сложных условиях последовательно удаляем ветви и части ствола.'],
-    ['Контролируем крупные элементы', 'При необходимости используем верёвочные системы и другое оборудование.'],
-    ['Учитываем имущество вокруг', 'Дом, крыша, забор, автомобили и другие объекты учитываются при выборе технологии.']
+    { title: 'Оцениваем объект', text: 'Учитываем состояние дерева, его наклон, свободное пространство и объекты вокруг.', tag: 'Осмотр и наклон' },
+    { title: 'Выбираем способ удаления', text: 'Определяем, можно ли удалить дерево целиком или требуется разбор по частям.', tag: 'Выбор метода' },
+    { title: 'Разбираем сверху вниз', text: 'В сложных условиях последовательно удаляем ветви и части ствола.', tag: 'Спил фрагментов' },
+    { title: 'Контролируем крупные элементы', text: 'При необходимости используем верёвочные системы и другое оборудование.', tag: 'Спуск на верёвках' },
+    { title: 'Учитываем имущество вокруг', text: 'Дом, крыша, забор, автомобили и другие объекты учитываются при выборе технологии.', tag: 'Защита имущества' }
   ];
-  return `<div class="video-safety"><div class="video-safety-head"><p class="eyebrow">Технология работы</p><h3>Как мы снижаем риск повреждений</h3></div><div class="video-safety-steps">${points.map(([title, text], index) => `<article><span>${String(index + 1).padStart(2, '0')}</span><h4>${esc(title)}</h4><p>${esc(text)}</p></article>`).join('')}</div></div>`;
+  return `<div class="video-safety">
+    <div class="video-safety-head">
+      <p class="eyebrow">Технология работы</p>
+      <h3>Как мы снижаем риск повреждений</h3>
+    </div>
+    <div class="video-safety-steps">${points.map((point, index) => {
+      const isLast = index === points.length - 1;
+      const arrowHtml = isLast
+        ? `<span class="safety-flow-done" aria-label="Безопасный финал" title="Безопасный финал" aria-hidden="true">✓</span>`
+        : `<span class="safety-flow-arrow" aria-label="Переход к следующему этапу" title="Переход к следующему этапу" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>`;
+      return `<article><span class="safety-step-flow"><span class="safety-flow-badge">${esc(point.tag)}</span>${arrowHtml}</span><h4>${esc(point.title)}</h4><p>${esc(point.text)}</p></article>`;
+    }).join('')}</div>
+  </div>`;
 }
 
 function processSection() {
-  return `<section class="section" id="process"><div class="container"><div class="section-head"><p class="eyebrow">Порядок работы</p><h2>Как мы работаем</h2></div><div class="timeline">${processSteps.map(([title, text], index) => `<article><span>${String(index + 1).padStart(2, '0')}</span><h3>${esc(title)}</h3><p>${esc(text)}</p></article>`).join('')}</div><div class="process-cta"><p>Есть фото дерева? Узнайте стоимость сейчас.</p><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Отправить фото</a></div></div></section>`;
+  const stepIcons = [
+    `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
+    `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+    `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
+    `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+  ];
+
+  return `<section class="section" id="process"><div class="container"><div class="section-head"><p class="eyebrow">Порядок работы</p><h2>Как мы работаем</h2></div><div class="timeline">${processSteps.map(([title, text], index) => {
+    const isLast = index === processSteps.length - 1;
+    const connector = isLast
+      ? `<div class="timeline-flow-connector is-final" aria-hidden="true"><span class="flow-track"></span><span class="flow-badge-done">Готово</span></div>`
+      : `<div class="timeline-flow-connector" aria-hidden="true"><span class="flow-track"></span><svg class="flow-arrow-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>`;
+    return `<article class="timeline-step-card">
+      <div class="timeline-step-header">
+        <div class="timeline-icon-bubble" aria-hidden="true">${stepIcons[index]}</div>
+        ${connector}
+      </div>
+      <h3>${esc(title)}</h3>
+      <p>${esc(text)}</p>
+    </article>`;
+  }).join('')}</div><div class="process-cta"><p>Есть фото дерева? Узнайте стоимость сейчас.</p><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Отправить фото</a></div></div></section>`;
 }
 
 function organizationsSection() {
@@ -495,7 +527,7 @@ export function servicePage(service) {
   const path = route(service.slug);
   const related = services.filter((item) => item.slug !== service.slug).slice(0, 4);
   const isChipping = service.slug === 'izmelchenie-vetok';
-  const body = `${innerHero(service.h1, service.lead, service.image, 'Услуга', service.title)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Услуги', url: '/#services' }, { name: service.title, url: path }])}<h2>Что входит в работу</h2><ul class="rich-list">${service.includes.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><div class="honest-note">${esc(service.warning)}</div><h2>Что влияет на расчет</h2><div class="factor-cloud">${service.priceFactors.map((factor) => `<span>${esc(factor)}</span>`).join('')}</div>${isChipping ? `<h2>Что делать со щепой после измельчения?</h2><div class="branch-what-block"><div><strong>Оставить</strong><p>Щепа остается заказчику.</p></div><div><strong>Измельчить</strong><p>Переработаем ветки в щепу.</p></div><div><strong>Вывезти</strong><p>Подготовим и организуем вывоз.</p></div></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Измельчение веток в щепу" data-goal="click_branch_chipping">Рассчитать работу под ключ</a>` : ''}<h2>Как проходит заявка</h2><div class="mini-steps">${processSteps.map(([step, text], index) => `<article><span>${index + 1}</span><h3>${esc(step)}</h3><p>${esc(text)}</p></article>`).join('')}</div></article><aside class="side-panel"><h2>Расчет стоимости</h2><p>${esc(service.directTitle)}. Передайте фотографии, адрес объекта и желаемый результат.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать</a><a class="btn btn-ghost btn-full" href="${phoneHref()}" data-goal="click_phone">Позвонить</a></aside></div></section><section class="section section-muted"><div class="container"><div class="section-head"><p class="eyebrow">Связанные услуги</p><h2>Может понадобиться вместе с услугой</h2></div><div class="service-grid compact">${related.map(serviceCard).join('')}</div></div></section>${faqSection([...service.faq, ...faq.slice(0, 4)])}${leadSection('Получите предварительный расчет по фотографиям', 'Опишите задачу, укажите адрес объекта и приложите фотографии дерева, ствола, кроны и территории вокруг.', service.title)}`;
+  const body = `${innerHero(service.h1, service.lead, service.image, 'Услуга', service.title)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Услуги', url: '/#services' }, { name: service.title, url: path }])}<h2>Что входит в работу</h2><ul class="rich-list">${service.includes.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><div class="honest-note">${esc(service.warning)}</div><h2>Что влияет на расчет</h2><div class="factor-cloud">${service.priceFactors.map((factor) => `<span>${esc(factor)}</span>`).join('')}</div>${isChipping ? `<h2>Что делать со щепой после измельчения?</h2><div class="branch-what-block"><div><strong>Оставить</strong><p>Щепа остается заказчику.</p></div><div><strong>Измельчить</strong><p>Переработаем ветки в щепу.</p></div><div><strong>Вывезти</strong><p>Подготовим и организуем вывоз.</p></div></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Измельчение веток в щепу" data-goal="click_branch_chipping">Рассчитать работу под ключ</a>` : ''}<h2>Как проходит заявка</h2><div class="mini-steps">${processSteps.map(([step, text], index) => `<article><span class="mini-step-arrow" aria-hidden="true">${index < processSteps.length - 1 ? '→' : '✓'}</span><h3>${esc(step)}</h3><p>${esc(text)}</p></article>`).join('')}</div></article><aside class="side-panel"><h2>Расчет стоимости</h2><p>${esc(service.directTitle)}. Передайте фотографии, адрес объекта и желаемый результат.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать</a><a class="btn btn-ghost btn-full" href="${phoneHref()}" data-goal="click_phone">Позвонить</a></aside></div></section><section class="section section-muted"><div class="container"><div class="section-head"><p class="eyebrow">Связанные услуги</p><h2>Может понадобиться вместе с услугой</h2></div><div class="service-grid compact">${related.map(serviceCard).join('')}</div></div></section>${faqSection([...service.faq, ...faq.slice(0, 4)])}${leadSection('Получите предварительный расчет по фотографиям', 'Опишите задачу, укажите адрес объекта и приложите фотографии дерева, ствола, кроны и территории вокруг.', service.title)}`;
   return renderPage({ title: service.h1, description: `${service.short} Предварительная оценка по фото.`, path, image: service.image, body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: service.title, url: path }]), serviceSchema(service, path), faqSchema(service.faq)] });
 }
 
@@ -1086,7 +1118,16 @@ export function izmelchenieLandingPage(service) {
 
 export function legalPage(page) {
   const path = route(page.slug);
-  const body = `${simpleHero(page.h1, 'Юридическая информация сайта и порядок обработки обращений.')}<section class="section"><div class="container text-page">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: page.title, url: path }])}${page.sections.map(([heading, text]) => `<section><h2>${esc(heading)}</h2><p>${esc(text)}</p></section>`).join('')}</div></section>`;
+  const renderParagraphs = (content) => {
+    if (Array.isArray(content)) {
+      return content.map((item) => `<p>${esc(item)}</p>`).join('');
+    }
+    return String(content)
+      .split('\n\n')
+      .map((item) => `<p>${esc(item.trim())}</p>`)
+      .join('');
+  };
+  const body = `${simpleHero(page.h1, 'Официальная юридическая информация сервиса «Зеленый Срез».')}<section class="section"><div class="container text-page">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: page.title, url: path }])}${page.sections.map(([heading, text]) => `<section><h2>${esc(heading)}</h2>${renderParagraphs(text)}</section>`).join('')}</div></section>`;
   return renderPage({ title: page.title, description: `${page.title}: условия обработки данных и обращений.`, path, body, leadHref: '/#lead-form', jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: page.title, url: path }])] });
 }
 
