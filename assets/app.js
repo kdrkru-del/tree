@@ -183,38 +183,37 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
   function initLeadForms() {
     const utm = getUtm();
 
-    document.querySelectorAll('[data-open-form][data-service]').forEach((trigger) => {
+    document.querySelectorAll('[data-open-form]').forEach((trigger) => {
       trigger.addEventListener('click', () => {
-        const serviceInput = document.querySelector('#main-lead-form [name="service"]');
-        if (serviceInput) serviceInput.value = trigger.dataset.service;
+        if (trigger.dataset.service) {
+          document.querySelectorAll('[data-lead-form] [name="service"]').forEach((input) => {
+            input.value = trigger.dataset.service;
+          });
+        }
+        const targetHref = trigger.getAttribute('href');
+        if (targetHref && targetHref.startsWith('#')) {
+          const target = document.querySelector(targetHref);
+          if (target) {
+            const phoneInTarget = target.querySelector('[data-phone-input]');
+            if (phoneInTarget) {
+              setTimeout(() => phoneInTarget.focus(), 200);
+            }
+          }
+        }
       });
     });
 
     document.querySelectorAll('[data-lead-form]').forEach((form) => {
       const phoneInput = form.querySelector('[data-phone-input]');
+      const nameInput  = form.querySelector('[name="name"]');
       const submitBtn  = form.querySelector('[data-submit-btn]');
       const successEl  = form.querySelector('[data-form-success]');
       const errorEl    = form.querySelector('[data-form-error]');
-      const fileInput  = form.querySelector('[data-photos-input]');
-      const fileStatus = form.querySelector('[data-file-chosen]');
       if (!phoneInput || !submitBtn) return;
 
       phoneInput.addEventListener('input', () => {
         phoneInput.setCustomValidity('');
       });
-
-      if (fileInput && fileStatus) {
-        fileInput.addEventListener('change', () => {
-          const count = fileInput.files ? fileInput.files.length : 0;
-          if (count > 0) {
-            fileStatus.textContent = `✓ Выбрано файлов: ${count}`;
-            fileStatus.hidden = false;
-          } else {
-            fileStatus.textContent = '';
-            fileStatus.hidden = true;
-          }
-        });
-      }
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -239,11 +238,9 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         const leadId  = createLeadId();
         const formId  = form.dataset.formId || 'form';
         const service = form.querySelector('[name="service"]')?.value || 'Заявка с сайта';
-        const address = form.querySelector('[name="address"]')?.value?.trim() || '';
-        const comment = form.querySelector('[name="comment"]')?.value?.trim() || '';
+        const name    = nameInput ? nameInput.value.trim() : '';
         const fields = { phone, service };
-        if (address) fields.address = address;
-        if (comment) fields.comment = comment;
+        if (name) fields.name = name;
 
         const payload = {
           lead_id:     leadId,
@@ -258,8 +255,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
           service:     fields.service,
           fields
         };
-        if (address) payload.city = address;
-        if (comment) payload.comment = comment;
+        if (name) payload.name = name;
 
         saveLead(payload);
 
@@ -271,23 +267,19 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         if (errorEl)   errorEl.hidden   = true;
 
         try {
-          const fileInput = form.querySelector('input[type="file"][name="photos"]');
-          const photoFiles = fileInput && fileInput.files ? Array.from(fileInput.files) : [];
-          if (photoFiles.length) {
-            await deliverLead(config.leadEndpoint, payload, photoFiles);
-          } else {
-            await deliverLead(config.leadEndpoint, payload);
-          }
+          await deliverLead(config.leadEndpoint, payload);
 
           // Успех — только после реального ответа сервера
           reachGoal('lead_form', { form: formId, service });
           reachGoal('lead_form_success', { form: formId, service });
           reachGoal('lead_sent', { form: formId, phone });
           phoneInput.value = '';
-          if (fileInput) fileInput.value = '';
+          if (nameInput) nameInput.value = '';
           if (successEl) successEl.hidden = false;
-          const fields = form.querySelector('[data-form-fields]');
-          if (fields) fields.hidden = true;
+          const fieldsWrap = form.querySelector('[data-form-fields]');
+          if (fieldsWrap) fieldsWrap.hidden = true;
+          const consent = form.querySelector('.form-consent');
+          if (consent) consent.hidden = true;
 
         } catch (error) {
           saveError({ at: new Date().toISOString(), message: error.message, payload });
