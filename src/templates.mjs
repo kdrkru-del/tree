@@ -70,13 +70,16 @@ function metrikaCounter() {
 function metrikaNoScript() {
   const id = Number.parseInt(site.metrikaId, 10);
   if (!Number.isFinite(id)) return '';
-  return `<noscript><div><img src="https://mc.yandex.ru/watch/${id}" style="position:absolute; left:-9999px;" alt=""></div></noscript>`;
+  return `<noscript><div><img src="https://mc.yandex.ru/watch/${id}" style="position:absolute; left:-9999px;" width="1" height="1" alt=""></div></noscript>`;
 }
 
 export function renderPage({ title, description, path = '/', body, jsonLd = [], image = images.hero, leadHref = '#lead-form' }) {
   const canonical = pathUrl(path);
   const fullTitle = title.includes(site.region) ? title : `${title} | ${site.region}`;
   const schemas = [organizationSchema(), ...jsonLd];
+  const absoluteImage = image.startsWith('http') ? image : `${site.baseUrl}${image}`;
+  const usesWikimedia = image.includes('commons.wikimedia.org') || body.includes('commons.wikimedia.org');
+  const wikimediaPreconnect = usesWikimedia ? '\n  <link rel="preconnect" href="https://commons.wikimedia.org">' : '';
   return `<!doctype html>
 <html lang="ru">
 <head>
@@ -89,7 +92,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <meta property="og:title" content="${esc(fullTitle)}">
   <meta property="og:description" content="${esc(description)}">
   <meta property="og:url" content="${esc(canonical)}">
-  <meta property="og:image" content="${esc(image)}">
+  <meta property="og:image" content="${esc(absoluteImage)}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#143d2b">
   <link rel="icon" href="/favicon.ico?v=20260811-tree" sizes="32x32">
@@ -99,8 +102,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="preconnect" href="https://commons.wikimedia.org">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">${wikimediaPreconnect}
   <link rel="stylesheet" href="/assets/styles.css?v=20260813-video-sections-4">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   ${metrikaCounter()}
@@ -126,7 +128,7 @@ function header(leadHref) {
   return `<header class="site-header" data-header>
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="${esc(site.brand)}">
-      <img src="/assets/logo-zelenyi-srez.png" alt="${esc(site.brand)}" class="brand-logo brand-logo-header" width="178" height="59">
+      <img src="/assets/logo-zelenyi-srez.png" alt="${esc(site.brand)}" class="brand-logo brand-logo-header" width="177" height="59">
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-nav-toggle>
       <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
@@ -206,7 +208,7 @@ export function homePage() {
 
 function heroSection() {
   return `<section class="hero">
-  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев, расчистка участков и щепорез в Москве и МО" fetchpriority="high">
+  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев, расчистка участков и щепорез в Москве и МО" width="1024" height="768" fetchpriority="high">
   <div class="hero-shade"></div>
   <div class="container hero-content">
     <div class="hero-copy">
@@ -253,7 +255,7 @@ function commercialHubSection() {
     <div class="hub-grid">
       <article class="hub-card">
         <div class="hub-card-image">
-          <img src="/assets/spil-main.jpg" alt="Спил и удаление деревьев" loading="lazy">
+          <img src="/assets/spil-main.jpg" alt="Спил и удаление деревьев" width="1024" height="768" loading="lazy">
           <span class="hub-card-price">от 1 000 ₽</span>
         </div>
         <div class="hub-card-body">
@@ -272,7 +274,7 @@ function commercialHubSection() {
 
       <article class="hub-card">
         <div class="hub-card-image">
-          <img src="/assets/raschistka-real.png" alt="Расчистка участков" loading="lazy">
+          <img src="/assets/raschistka-real.png" alt="Расчистка участков" width="1086" height="1448" loading="lazy">
           <span class="hub-card-price">от 5 000 ₽</span>
         </div>
         <div class="hub-card-body">
@@ -291,7 +293,7 @@ function commercialHubSection() {
 
       <article class="hub-card">
         <div class="hub-card-image">
-          <img src="/assets/izmelchenie-main.jpg" alt="Измельчение веток щепорезом" loading="lazy">
+          <img src="/assets/izmelchenie-main.jpg" alt="Измельчение веток щепорезом" width="1024" height="768" loading="lazy">
           <span class="hub-card-price">от 2 500 ₽</span>
         </div>
         <div class="hub-card-body">
@@ -353,11 +355,11 @@ function servicesSection() {
 }
 
 function serviceCard(service) {
-  return `<article class="service-card"><img src="${esc(service.image)}" alt="${esc(service.title)}" loading="lazy"><div><h3>${esc(service.title)}</h3><p>${esc(service.short)}</p><p class="card-note">Цена зависит от: ${service.priceFactors.slice(0, 3).map(esc).join(', ')}.</p><div class="card-actions"><a class="btn btn-small btn-accent" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать стоимость</a><a class="link-more" href="/${service.slug}/">Подробнее об услуге</a></div></div></article>`;
+  return `<article class="service-card"><img src="${esc(service.image)}" alt="${esc(service.title)}" width="1024" height="768" loading="lazy"><div><h3>${esc(service.title)}</h3><p>${esc(service.short)}</p><p class="card-note">Цена зависит от: ${service.priceFactors.slice(0, 3).map(esc).join(', ')}.</p><div class="card-actions"><a class="btn btn-small btn-accent" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать стоимость</a><a class="link-more" href="/${service.slug}/">Подробнее об услуге</a></div></div></article>`;
 }
 
 function worksPreview() {
-  return `<section class="section" id="works"><div class="container"><div class="section-head"><p class="eyebrow">До / стало</p><h2>Типовые задачи</h2></div><div class="work-grid">${workExamples.map((work) => `<article class="work-card"><div class="before-after" aria-label="Сравнение до и стало"><figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure><figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure></div><h3>${esc(work.area)}</h3><p>${esc(work.service)}</p><ul>${work.facts.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="${esc(work.service)}" data-goal="click_calculate">Рассчитать похожую работу</a></article>`).join('')}</div><a class="btn btn-ghost" href="/works/">Открыть раздел работ</a></div></section>`;
+  return `<section class="section" id="works"><div class="container"><div class="section-head"><p class="eyebrow">До / стало</p><h2>Типовые задачи</h2></div><div class="work-grid">${workExamples.map((work) => `<article class="work-card"><div class="before-after" aria-label="Сравнение до и стало"><figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure><figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure></div><h3>${esc(work.area)}</h3><p>${esc(work.service)}</p><ul>${work.facts.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="${esc(work.service)}" data-goal="click_calculate">Рассчитать похожую работу</a></article>`).join('')}</div><a class="btn btn-ghost" href="/works/">Открыть раздел работ</a></div></section>`;
 }
 
 function trustSection() {
@@ -474,7 +476,7 @@ function leadSection(title, text, selectedService = 'Фото на оценку'
 function leadForm(selectedService, options = {}) {
   const btnText = options.submitText || 'Получить расчёт';
   const formId = options.formId || 'main-form';
-  const commentPlaceholder = options.commentPlaceholder || 'Количество деревьев, примерная высота...';
+  const commentPlaceholder = options.commentPlaceholder || 'Опишите задачу, примерный объём работ и особенности подъезда...';
   const extendedFields = options.withPhoto ? `
     <div class="lead-file-box">
       <label class="lead-file-trigger" for="lead_photos">
@@ -516,7 +518,7 @@ function breadcrumbs(items) {
 }
 
 function innerHero(title, text, image, eyebrow, label) {
-  return `<section class="inner-hero"><img src="${esc(image)}" alt="${esc(label)}" loading="eager"><div class="inner-hero-shade"></div><div class="container inner-hero-content"><p class="eyebrow">${esc(eyebrow)}</p><h1>${esc(title)}</h1><p>${esc(text)}</p></div></section>`;
+  return `<section class="inner-hero"><img src="${esc(image)}" alt="${esc(label)}" width="1024" height="768" loading="eager"><div class="inner-hero-shade"></div><div class="container inner-hero-content"><p class="eyebrow">${esc(eyebrow)}</p><h1>${esc(title)}</h1><p>${esc(text)}</p></div></section>`;
 }
 
 function simpleHero(title, text) {
@@ -558,7 +560,7 @@ export function spilLandingPage(service) {
       </div>
       <aside class="landing-hero-card" aria-label="Стартовые цены">
         <div class="landing-hero-media">
-          <img src="/assets/sekcionnyj-main.png" alt="Спил дерева возле дома арбористом" fetchpriority="high">
+          <img src="/assets/sekcionnyj-main.png" alt="Спил дерева возле дома арбористом" width="519" height="905" fetchpriority="high">
           <span class="landing-hero-tag">Сложный спил возле строений</span>
         </div>
         <div class="landing-hero-prices">
@@ -666,8 +668,8 @@ export function spilLandingPage(service) {
         ${workExamples.map((work) => `
           <article class="work-card">
             <div class="before-after" aria-label="Сравнение до и стало">
-              <figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure>
-              <figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure>
+              <figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure>
+              <figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure>
             </div>
             <h3>${esc(work.area)}</h3>
             <p>${esc(work.service)}</p>
@@ -756,7 +758,7 @@ export function raschistkaLandingPage(service) {
       </div>
       <aside class="landing-hero-card" aria-label="Ориентир стоимости">
         <div class="landing-hero-media">
-          <img src="/assets/raschistka-real.png" alt="Расчистка заросшего участка техникой" fetchpriority="high">
+          <img src="/assets/raschistka-real.png" alt="Расчистка заросшего участка техникой" width="1086" height="1448" fetchpriority="high">
           <span class="landing-hero-tag">Комплексная расчистка под ключ</span>
         </div>
         <div class="landing-hero-prices">
@@ -837,11 +839,11 @@ export function raschistkaLandingPage(service) {
       <div class="clearing-showcase">
         <div class="clearing-before-after">
           <figure>
-            <img src="/assets/works/zarosli-real-do.png" alt="Заросший участок до расчистки" loading="lazy">
+            <img src="/assets/works/zarosli-real-do.png" alt="Заросший участок до расчистки" width="1024" height="1536" loading="lazy">
             <figcaption>До расчистки: сплошные заросли кустарника и поросли</figcaption>
           </figure>
           <figure>
-            <img src="/assets/works/zarosli-real-posle.png" alt="Расчищенный участок после работы" loading="lazy">
+            <img src="/assets/works/zarosli-real-posle.png" alt="Расчищенный участок после работы" width="1024" height="1536" loading="lazy">
             <figcaption>После расчистки: чистое пространство, готовое к строительству</figcaption>
           </figure>
         </div>
@@ -967,7 +969,7 @@ export function izmelchenieLandingPage(service) {
       </div>
       <aside class="landing-hero-card" aria-label="Стоимость измельчения">
         <div class="landing-hero-media">
-          <img src="/assets/izmelchenie-main.jpg" alt="Измельчение веток дробилкой в щепу" fetchpriority="high">
+          <img src="/assets/izmelchenie-main.jpg" alt="Измельчение веток дробилкой в щепу" width="1024" height="768" fetchpriority="high">
           <span class="landing-hero-tag">Щепорез высокой производительности</span>
         </div>
         <div class="landing-hero-prices">
@@ -1131,18 +1133,24 @@ export function legalPage(page) {
   return renderPage({ title: page.title, description: `${page.title}: условия обработки данных и обращений.`, path, body, leadHref: '/#lead-form', jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: page.title, url: path }])] });
 }
 
+const universalLeadOptions = {
+  withPhoto: true,
+  submitText: 'Получить расчёт',
+  commentPlaceholder: 'Опишите задачу, примерный объём работ и особенности подъезда...'
+};
+
 export function pricesPage() {
-  const body = `${simpleHero('Стоимость спила, обрезки и расчистки участков', 'Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.')}${priceTableSection()}${priceFactorsSection()}${leadSection('Получите расчет под ваш объект', 'Прикрепите фотографии, укажите адрес объекта и опишите, что требуется сделать.')}`;
+  const body = `${simpleHero('Стоимость спила, обрезки и расчистки участков', 'Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.')}${priceTableSection()}${priceFactorsSection()}${leadSection('Получите расчет под ваш объект', 'Прикрепите фотографии, укажите адрес объекта и опишите, что требуется сделать.', 'Фото на оценку', universalLeadOptions)}`;
   return renderPage({ title: 'Цены на спил и обрезку деревьев', description: 'От чего зависит стоимость спила, обрезки, удаления пней, расчистки участка и вывоза веток.', path: '/prices/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Цены', url: '/prices/' }])] });
 }
 
 export function worksPage() {
-  const body = `${simpleHero('Фото до и стало', 'Подобранные фотопары показывают типовые задачи: аварийное дерево, расчистка территории и удаление пня.')}${worksPreview()}${leadSection('Хотите оценить похожую задачу?', 'Отправьте фотографии объекта, и менеджер компании уточнит детали для предварительного расчета.')}`;
+  const body = `${simpleHero('Фото до и стало', 'Подобранные фотопары показывают типовые задачи: аварийное дерево, расчистка территории и удаление пня.')}${worksPreview()}${leadSection('Хотите оценить похожую задачу?', 'Отправьте фотографии объекта, и менеджер компании уточнит детали для предварительного расчета.', 'Фото на оценку', universalLeadOptions)}`;
   return renderPage({ title: 'Фото до и стало по работам с деревьями', description: 'Фото до и стало по типовым задачам: аварийное дерево, расчистка участка, удаление пня.', path: '/works/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'До / стало', url: '/works/' }])] });
 }
 
 export function faqPage() {
-  const body = `${simpleHero('Частые вопросы', 'Подробные ответы о расчете по фото, разрешениях, уборке, вывозе, пнях, сезонности и работе с организациями.')}${faqSection(faq)}${leadSection('Остался вопрос по вашему участку?', 'Опишите ситуацию и приложите фотографии, чтобы менеджер компании понял задачу быстрее.')}`;
+  const body = `${simpleHero('Частые вопросы', 'Подробные ответы о расчете по фото, разрешениях, уборке, вывозе, пнях, сезонности и работе с организациями.')}${faqSection(faq)}${leadSection('Остался вопрос по вашему участку?', 'Опишите ситуацию и приложите фотографии, чтобы менеджер компании понял задачу быстрее.', 'Фото на оценку', universalLeadOptions)}`;
   return renderPage({ title: 'Вопросы о спиле и обрезке деревьев', description: 'Ответы на частые вопросы о спиле, обрезке, разрешениях, вывозе веток, удалении пней и расчете стоимости.', path: '/faq/', body, jsonLd: [faqSchema(faq), breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Вопросы', url: '/faq/' }])] });
 }
 
@@ -1153,7 +1161,7 @@ export function contactsPage() {
     hasValue(site.telegramUrl) ? `<a class="contact-messenger-btn contact-messenger-btn--telegram" href="${telegramHref()}" target="_blank" rel="noopener" data-goal="click_telegram"><svg class="contact-messenger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>Telegram</a>` : ''
   ].filter(Boolean).join('');
   const emailBlock = hasValue(site.email) ? `<div class="contact-email-block"><p class="contact-email-label">Электронная почта</p><a class="contact-email-link" href="mailto:${esc(site.email)}">${esc(site.email)}</a></div>` : '';
-  const body = `${simpleHero('Контакты компании', 'Позвоните, отправьте фотографии или оставьте заявку на предварительный расчет.')}<section class="section"><div class="container contact-grid"><div class="contact-card contact-card--contacts"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : ''}<div class="contact-messenger-btns">${messengerBtns}</div>${emailBlock}</div><div class="contact-card"><h2>Что подготовить</h2><ul class="rich-list"><li>фото дерева целиком</li><li>фото ствола и кроны</li><li>фото препятствий рядом</li><li>адрес объекта и желаемый результат</li></ul></div></div></section>${leadSection('Отправьте заявку', 'Чем подробнее фотографии и описание, тем точнее предварительный расчет.')}`;
+  const body = `${simpleHero('Контакты компании', 'Позвоните, отправьте фотографии или оставьте заявку на предварительный расчет.')}<section class="section"><div class="container contact-grid"><div class="contact-card contact-card--contacts"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : ''}<div class="contact-messenger-btns">${messengerBtns}</div>${emailBlock}</div><div class="contact-card"><h2>Что подготовить</h2><ul class="rich-list"><li>фото дерева целиком</li><li>фото ствола и кроны</li><li>фото препятствий рядом</li><li>адрес объекта и желаемый результат</li></ul></div></div></section>${leadSection('Отправьте заявку', 'Чем подробнее фотографии и описание, тем точнее предварительный расчет.', 'Фото на оценку', universalLeadOptions)}`;
   return renderPage({ title: 'Контакты', description: 'Контакты компании по уходу за деревьями: телефон, email и форма заявки.', path: '/contacts/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Контакты', url: '/contacts/' }])] });
 }
 

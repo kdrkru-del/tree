@@ -19,10 +19,20 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
 
   function normalizePhone(raw) {
     const digits = raw.replace(/\D/g, '');
-    if (digits.length === 11 && digits[0] === '8') return '+7' + digits.slice(1);
-    if (digits.length === 11 && digits[0] === '7') return '+' + digits;
-    if (digits.length === 10) return '+7' + digits;
+    if (digits.length === 11 && (digits[0] === '7' || digits[0] === '8')) {
+      return '+7' + digits.slice(1);
+    }
+    if (digits.length === 10 && digits[0] !== '7' && digits[0] !== '8') {
+      return '+7' + digits;
+    }
     return raw.trim();
+  }
+
+  function isValidPhone(raw) {
+    const digits = raw.replace(/\D/g, '');
+    if (digits.length === 11 && (digits[0] === '7' || digits[0] === '8')) return true;
+    if (digits.length === 10 && digits[0] !== '7' && digits[0] !== '8') return true;
+    return false;
   }
 
   function loadIntegrations() {
@@ -38,17 +48,42 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     const toggle = document.querySelector('[data-nav-toggle]');
     const nav = document.querySelector('[data-nav]');
     if (!toggle || !nav) return;
+
+    function closeNav() {
+      toggle.setAttribute('aria-expanded', 'false');
+      nav.classList.remove('is-open');
+      document.body.classList.remove('nav-open');
+    }
+
     toggle.addEventListener('click', () => {
       const open = toggle.getAttribute('aria-expanded') !== 'true';
       toggle.setAttribute('aria-expanded', String(open));
       nav.classList.toggle('is-open', open);
       document.body.classList.toggle('nav-open', open);
     });
+
     nav.addEventListener('click', (event) => {
       if (event.target.closest('a')) {
-        toggle.setAttribute('aria-expanded', 'false');
-        nav.classList.remove('is-open');
-        document.body.classList.remove('nav-open');
+        closeNav();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && nav.classList.contains('is-open')) {
+        closeNav();
+        toggle.focus();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (nav.classList.contains('is-open') && !nav.contains(event.target) && !toggle.contains(event.target)) {
+        closeNav();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768 && nav.classList.contains('is-open')) {
+        closeNav();
       }
     });
   }
@@ -164,6 +199,10 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       const fileStatus = form.querySelector('[data-file-chosen]');
       if (!phoneInput || !submitBtn) return;
 
+      phoneInput.addEventListener('input', () => {
+        phoneInput.setCustomValidity('');
+      });
+
       if (fileInput && fileStatus) {
         fileInput.addEventListener('change', () => {
           const count = fileInput.files ? fileInput.files.length : 0;
@@ -181,22 +220,21 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         event.preventDefault();
 
         if (form.dataset.submitting === 'true') return;
-        form.dataset.submitting = 'true';
 
         // honeypot
         const hp = form.querySelector('[name="website"]');
         if (hp && hp.value) return;
 
         const rawPhone = phoneInput.value.trim();
-        const phone    = normalizePhone(rawPhone);
-        const digits   = phone.replace(/\D/g, '');
-
-        if (digits.length < 10) {
+        if (!isValidPhone(rawPhone)) {
           phoneInput.setCustomValidity('Введите корректный номер телефона');
           phoneInput.reportValidity();
           return;
         }
         phoneInput.setCustomValidity('');
+
+        const phone = normalizePhone(rawPhone);
+        form.dataset.submitting = 'true';
 
         const leadId  = createLeadId();
         const formId  = form.dataset.formId || 'form';

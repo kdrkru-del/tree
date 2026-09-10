@@ -358,6 +358,7 @@ textarea {
     align-items: stretch;
     width: 100%;
     height: calc(100vh - 72px);
+    height: calc(100dvh - 72px);
     gap: 0;
     padding: 24px 20px;
     background: var(--warm-50);
@@ -2114,7 +2115,7 @@ details p {
     display: flex;
     background: var(--white);
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
-    padding: calc(env(safe-area-inset-bottom) + 8px) 8px 8px;
+    padding: 8px 8px calc(env(safe-area-inset-bottom, 0px) + 8px);
     gap: 8px;
   }
 
@@ -2149,7 +2150,7 @@ details p {
   }
   
   .site-footer {
-      padding-bottom: 100px;
+    padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -3255,7 +3256,7 @@ body:not(.motion-ready) .reveal-item {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--warm-50);
-  font-size: 0.92rem;
+  font-size: 1rem;
 }
 
 .lead-form [data-form-fields] input[type="text"]:focus {
