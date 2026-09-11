@@ -47,6 +47,17 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
   function initNav() {
     const toggle = document.querySelector('[data-nav-toggle]');
     const nav = document.querySelector('[data-nav]');
+    const siteHeader = document.querySelector('[data-header]');
+
+    // Scroll-based header style
+    if (siteHeader) {
+      const onScroll = () => {
+        siteHeader.classList.toggle('is-scrolled', window.scrollY > 40);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+
     if (!toggle || !nav) return;
 
     function closeNav() {
