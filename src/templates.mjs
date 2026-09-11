@@ -202,7 +202,7 @@ export function homePage() {
 
 function heroSection() {
   return `<section class="hero">
-  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев, расчистка участков и щепорез в Москве и МО" width="1024" height="768" fetchpriority="high">
+  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев, расчистка участков и щепорез в Москве и МО" fetchpriority="high">
   <div class="hero-shade"></div>
   <div class="container hero-content">
     <div class="hero-copy">
