@@ -242,7 +242,6 @@ function commercialHubSection() {
   return `<section class="section commercial-hub" id="main-directions">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">3 основных направления</p>
       <h2>Выберите задачу для точного расчета стоимости</h2>
       <p>Специализированные бригады и профессиональная техника под каждую задачу в Москве и Московской области.</p>
     </div>
@@ -336,16 +335,16 @@ function quickLeadSection() {
 }
 
 function priceTableSection() {
-  return `<section class="section section-muted" id="prices"><div class="container"><div class="section-head"><p class="eyebrow">Стоимость</p><h2>Сколько стоит спил дерева</h2><p>Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.</p></div><div class="price-table-wrap"><table class="price-table"><thead><tr><th>Услуга</th><th>Цена</th><th>Что влияет</th></tr></thead><tbody>${priceRows.map(([service, price, factors]) => `<tr><td>${esc(service)}</td><td class="price-cell">${esc(price)}</td><td class="price-factors-cell">${esc(factors)}</td></tr>`).join('')}</tbody></table></div><div class="price-cta"><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Узнать стоимость моего дерева</a><p class="price-cta-note">Пришлите фотографии — предварительно рассчитаем стоимость до выезда.</p></div></div></section>`;
+  return `<section class="section section-muted" id="prices"><div class="container"><div class="section-head"><h2>Сколько стоит спил дерева</h2><p>Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.</p></div><div class="price-table-wrap"><table class="price-table"><thead><tr><th>Услуга</th><th>Цена</th><th>Что влияет</th></tr></thead><tbody>${priceRows.map(([service, price, factors]) => `<tr><td>${esc(service)}</td><td class="price-cell">${esc(price)}</td><td class="price-factors-cell">${esc(factors)}</td></tr>`).join('')}</tbody></table></div><div class="price-cta"><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Узнать стоимость моего дерева</a><p class="price-cta-note">Пришлите фотографии — предварительно рассчитаем стоимость до выезда.</p></div></div></section>`;
 }
 
 function priceFactorsSection() {
   const icons = ['📏', '🌲', '⚠️', '🏠', '🚗', '🍃'];
-  return `<section class="section" id="factors"><div class="container"><div class="section-head"><p class="eyebrow">Ценообразование</p><h2>От чего зависит цена</h2></div><div class="factors-grid">${priceFactors.map((factor, i) => `<div class="factor-card"><span class="factor-icon" aria-hidden="true">${icons[i] || '•'}</span><span>${esc(factor)}</span></div>`).join('')}</div></div></section>`;
+  return `<section class="section" id="factors"><div class="container"><div class="section-head"><h2>От чего зависит цена</h2></div><div class="factors-grid">${priceFactors.map((factor, i) => `<div class="factor-card"><span class="factor-icon" aria-hidden="true">${icons[i] || '•'}</span><span>${esc(factor)}</span></div>`).join('')}</div></div></section>`;
 }
 
 function servicesSection() {
-  return `<section class="section section-muted" id="services"><div class="container"><div class="section-head"><p class="eyebrow">Основные услуги</p><h2>Работы с деревьями, пнями и участками</h2><p>Каждая услуга рассчитывается индивидуально. Вывоз и уборка включаются только если они согласованы.</p></div><div class="service-grid">${services.slice(0, 9).map(serviceCard).join('')}</div></div></section>`;
+  return `<section class="section section-muted" id="services"><div class="container"><div class="section-head"><h2>Работы с деревьями, пнями и участками</h2><p>Каждая услуга рассчитывается индивидуально. Вывоз и уборка включаются только если они согласованы.</p></div><div class="service-grid">${services.slice(0, 9).map(serviceCard).join('')}</div></div></section>`;
 }
 
 function serviceCard(service) {
@@ -353,21 +352,20 @@ function serviceCard(service) {
 }
 
 function worksPreview() {
-  return `<section class="section" id="works"><div class="container"><div class="section-head"><p class="eyebrow">До / стало</p><h2>Типовые задачи</h2></div><div class="work-grid">${workExamples.map((work) => `<article class="work-card"><div class="before-after" aria-label="Сравнение до и стало"><figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure><figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure></div><h3>${esc(work.area)}</h3><p>${esc(work.service)}</p><ul>${work.facts.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="${esc(work.service)}" data-goal="click_calculate">Рассчитать стоимость</a></article>`).join('')}</div><a class="btn btn-ghost" href="/works/">Открыть раздел работ</a></div></section>`;
+  return `<section class="section" id="works"><div class="container"><div class="section-head"><h2>Типовые задачи</h2></div><div class="work-grid">${workExamples.map((work) => `<article class="work-card"><div class="before-after" aria-label="Сравнение до и стало"><figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure><figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure></div><h3>${esc(work.area)}</h3><p>${esc(work.service)}</p><ul>${work.facts.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="${esc(work.service)}" data-goal="click_calculate">Рассчитать стоимость</a></article>`).join('')}</div><a class="btn btn-ghost" href="/works/">Открыть раздел работ</a></div></section>`;
 }
 
 function trustSection() {
-  return `<section class="section section-muted"><div class="container"><div class="section-head"><p class="eyebrow">Доверие</p><h2>Почему нам доверяют</h2></div><div class="trust-cards">${trustPoints.map((point) => `<div class="trust-card"><h3>${esc(point.title)}</h3><p>${esc(point.text)}</p></div>`).join('')}</div></div></section>`;
+  return `<section class="section section-muted"><div class="container"><div class="section-head"><h2>Почему нам доверяют</h2></div><div class="trust-cards">${trustPoints.map((point) => `<div class="trust-card"><h3>${esc(point.title)}</h3><p>${esc(point.text)}</p></div>`).join('')}</div></div></section>`;
 }
 
 function experienceProofSection() {
-  return `<section class="section experience-proof" id="videos" aria-labelledby="experience-title"><div class="container"><div class="section-head experience-head"><p class="eyebrow">Опыт в цифрах</p><h2 id="experience-title">10 лет работаем с деревьями любой сложности</h2><p>От одиночного дерева возле дома до комплексной расчистки участков и территорий.</p></div><dl class="experience-stats">${experienceStats.map((stat) => `<div class="experience-stat${stat.placeholder ? ' experience-stat-placeholder' : ''}"><dt>${esc(stat.value)}</dt><dd>${esc(stat.label)}</dd></div>`).join('')}</dl><p class="proof-transition">10 лет опыта лучше всего подтверждают реальные работы</p><div class="video-proof-heading"><p class="eyebrow">Реальные работы</p><h2>Посмотрите, как мы работаем на сложных объектах</h2><p>Не рассказываем о профессионализме — показываем реальную работу: спил по частям, работу над крышами, возле домов, заборов и в ограниченном пространстве.</p></div></div></section>`;
+  return `<section class="section experience-proof" id="videos" aria-labelledby="experience-title"><div class="container"><div class="section-head experience-head"><h2 id="experience-title">10 лет работаем с деревьями любой сложности</h2><p>От одиночного дерева возле дома до комплексной расчистки участков и территорий.</p></div><dl class="experience-stats">${experienceStats.map((stat) => `<div class="experience-stat${stat.placeholder ? ' experience-stat-placeholder' : ''}"><dt>${esc(stat.value)}</dt><dd>${esc(stat.label)}</dd></div>`).join('')}</dl><p class="proof-transition">10 лет опыта лучше всего подтверждают реальные работы</p><div class="video-proof-heading"><h2>Посмотрите, как мы работаем на сложных объектах</h2><p>Не рассказываем о профессионализме — показываем реальную работу: спил по частям, работу над крышами, возле домов, заборов и в ограниченном пространстве.</p></div></div></section>`;
 }
 
 function videosSection() {
   return `${videoGroup({
     id: 'clearing-videos',
-    eyebrow: 'Участки',
     title: 'Расчистка и подготовка территории',
     text: 'Показываем удаление поросли, работу техники, измельчение веток и пней.',
     videos: clearingVideos,
@@ -377,7 +375,6 @@ function videosSection() {
     service: 'Расчистка участка'
   })}${videoGroup({
     id: 'complex-videos',
-    eyebrow: 'Сложный спил',
     title: 'Удаление деревьев в сложных условиях',
     text: 'Показываем, как выбираем способ работы рядом с домами, крышами, заборами и другими объектами.',
     videos: complexVideos,
@@ -390,8 +387,8 @@ function videosSection() {
   })}`;
 }
 
-function videoGroup({ id, eyebrow, title, text, videos, muted = false, safety = false, ctaTitle, ctaText, ctaLabel, service }) {
-  return `<section class="section video-section${muted ? ' section-muted' : ''}" id="${esc(id)}"><div class="container"><div class="section-head video-group-head"><p class="eyebrow">${esc(eyebrow)}</p><h2>${esc(title)}</h2><p>${esc(text)}</p></div><div class="video-grid">${videos.map(videoCard).join('')}</div>${safety ? videoSafety() : ''}<div class="video-cta"><div><h3>${esc(ctaTitle)}</h3><p>${esc(ctaText)}</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="${esc(service)}" data-goal="click_calculate">${esc(ctaLabel)}</a></div></div></section>`;
+function videoGroup({ id, title, text, videos, muted = false, safety = false, ctaTitle, ctaText, ctaLabel, service }) {
+  return `<section class="section video-section${muted ? ' section-muted' : ''}" id="${esc(id)}"><div class="container"><div class="section-head video-group-head"><h2>${esc(title)}</h2><p>${esc(text)}</p></div><div class="video-grid">${videos.map(videoCard).join('')}</div>${safety ? videoSafety() : ''}<div class="video-cta"><div><h3>${esc(ctaTitle)}</h3><p>${esc(ctaText)}</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="${esc(service)}" data-goal="click_calculate">${esc(ctaLabel)}</a></div></div></section>`;
 }
 
 function videoCard(video) {
@@ -411,7 +408,6 @@ function videoSafety() {
   ];
   return `<div class="video-safety">
     <div class="video-safety-head">
-      <p class="eyebrow">Технология работы</p>
       <h3>Как мы снижаем риск повреждений</h3>
     </div>
     <div class="video-safety-steps">${points.map((point, index) => {
@@ -432,7 +428,7 @@ function processSection() {
     `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
   ];
 
-  return `<section class="section" id="process"><div class="container"><div class="section-head"><p class="eyebrow">Порядок работы</p><h2>Как мы работаем</h2></div><div class="timeline">${processSteps.map(([title, text], index) => {
+  return `<section class="section" id="process"><div class="container"><div class="section-head"><h2>Как мы работаем</h2></div><div class="timeline">${processSteps.map(([title, text], index) => {
     const isLast = index === processSteps.length - 1;
     const connector = isLast
       ? `<div class="timeline-flow-connector is-final" aria-hidden="true"><span class="flow-track"></span><span class="flow-badge-done">Готово</span></div>`
@@ -449,11 +445,11 @@ function processSection() {
 }
 
 function organizationsSection() {
-  return `<section class="section section-dark" id="organizations"><div class="container org-grid"><div><p class="eyebrow">Для организаций</p><h2>Работаем с организациями</h2><p>Выполняем разовые и регулярные работы для территорий СНТ, коттеджных поселков, управляющих компаний, складов, производственных площадок и коммерческих объектов.</p><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Расчет для организации" data-goal="organization_lead">Получить расчет для организации</a></div><ul><li>СНТ и коттеджные поселки</li><li>УК, ТСЖ и дворовые территории</li><li>Склады и производственные площадки</li><li>Базы отдыха и коммерческие объекты</li><li>Договор и смета по условиям компании</li><li>Безналичная оплата</li></ul></div></section>`;
+  return `<section class="section section-dark" id="organizations"><div class="container org-grid"><div><h2>Работаем с организациями</h2><p>Выполняем разовые и регулярные работы для территорий СНТ, коттеджных поселков, управляющих компаний, складов, производственных площадок и коммерческих объектов.</p><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Расчет для организации" data-goal="organization_lead">Получить расчет для организации</a></div><ul><li>СНТ и коттеджные поселки</li><li>УК, ТСЖ и дворовые территории</li><li>Склады и производственные площадки</li><li>Базы отдыха и коммерческие объекты</li><li>Договор и смета по условиям компании</li><li>Безналичная оплата</li></ul></div></section>`;
 }
 
 function faqSection(items) {
-  return `<section class="section section-muted" id="faq"><div class="container"><div class="section-head"><p class="eyebrow">Вопросы</p><h2>Частые вопросы</h2></div><div class="faq-list">${items.map(([question, answer]) => `<details><summary>${esc(question)}</summary><p>${esc(answer)}</p></details>`).join('')}</div></div></section>`;
+  return `<section class="section section-muted" id="faq"><div class="container"><div class="section-head"><h2>Частые вопросы</h2></div><div class="faq-list">${items.map(([question, answer]) => `<details><summary>${esc(question)}</summary><p>${esc(answer)}</p></details>`).join('')}</div></div></section>`;
 }
 
 function leadSection(title, text, selectedService = 'Фото на оценку', options = {}) {
@@ -463,7 +459,7 @@ function leadSection(title, text, selectedService = 'Фото на оценку'
     submitText: options.submitText || 'Рассчитать стоимость'
   };
 
-  return `<section class="section lead-section" id="lead-form"><div class="container lead-grid"><div><p class="eyebrow">Заявка</p><h2>${esc(title)}</h2><p>${esc(text)}</p><div class="lead-actions">${hasValue(site.phone) ? `<a class="btn btn-light" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>` : ''}${hasValue(site.messengerUrl) ? `<a class="btn btn-ghost-dark" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : ''}${hasValue(site.maxUrl) ? `<a class="btn btn-ghost-dark" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX</a>` : ''}${hasValue(site.telegramUrl) ? `<a class="btn btn-ghost-dark" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram</a>` : ''}</div><p class="call-note">В целях контроля качества разговор может быть записан.</p></div>${leadForm(selectedService, formOptions)}</div></section>`;
+  return `<section class="section lead-section" id="lead-form"><div class="container lead-grid"><div><h2>${esc(title)}</h2><p>${esc(text)}</p><div class="lead-actions">${hasValue(site.phone) ? `<a class="btn btn-light" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>` : ''}${hasValue(site.messengerUrl) ? `<a class="btn btn-ghost-dark" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : ''}${hasValue(site.maxUrl) ? `<a class="btn btn-ghost-dark" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX</a>` : ''}${hasValue(site.telegramUrl) ? `<a class="btn btn-ghost-dark" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram</a>` : ''}</div><p class="call-note">В целях контроля качества разговор может быть записан.</p></div>${leadForm(selectedService, formOptions)}</div></section>`;
 }
 
 function leadForm(selectedService, options = {}) {
@@ -507,19 +503,19 @@ function breadcrumbs(items) {
   return `<nav class="breadcrumbs" aria-label="Хлебные крошки">${items.map((item, index) => index === items.length - 1 ? `<span>${esc(item.name)}</span>` : `<a href="${item.url}">${esc(item.name)}</a>`).join('<span>/</span>')}</nav>`;
 }
 
-function innerHero(title, text, image, eyebrow, label) {
-  return `<section class="inner-hero"><img src="${esc(image)}" alt="${esc(label)}" width="1024" height="768" loading="eager"><div class="inner-hero-shade"></div><div class="container inner-hero-content"><p class="eyebrow">${esc(eyebrow)}</p><h1>${esc(title)}</h1><p>${esc(text)}</p></div></section>`;
+function innerHero(title, text, image, label) {
+  return `<section class="inner-hero"><img src="${esc(image)}" alt="${esc(label)}" width="1024" height="768" loading="eager"><div class="inner-hero-shade"></div><div class="container inner-hero-content"><h1>${esc(title)}</h1><p>${esc(text)}</p></div></section>`;
 }
 
 function simpleHero(title, text) {
-  return `<section class="simple-hero"><div class="container"><p class="eyebrow">${esc(site.brand)}</p><h1>${esc(title)}</h1><p>${esc(text)}</p></div></section>`;
+  return `<section class="simple-hero"><div class="container"><h1>${esc(title)}</h1><p>${esc(text)}</p></div></section>`;
 }
 
 export function servicePage(service) {
   const path = route(service.slug);
   const related = services.filter((item) => item.slug !== service.slug).slice(0, 4);
   const isChipping = service.slug === 'izmelchenie-vetok';
-  const body = `${innerHero(service.h1, service.lead, service.image, 'Услуга', service.title)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Услуги', url: '/#services' }, { name: service.title, url: path }])}<h2>Что входит в работу</h2><ul class="rich-list">${service.includes.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><div class="honest-note">${esc(service.warning)}</div><h2>Что влияет на расчет</h2><div class="factor-cloud">${service.priceFactors.map((factor) => `<span>${esc(factor)}</span>`).join('')}</div>${isChipping ? `<h2>Что делать со щепой после измельчения?</h2><div class="branch-what-block"><div><strong>Оставить</strong><p>Щепа остается заказчику.</p></div><div><strong>Измельчить</strong><p>Переработаем ветки в щепу.</p></div><div><strong>Вывезти</strong><p>Подготовим и организуем вывоз.</p></div></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Измельчение веток в щепу" data-goal="click_branch_chipping">Рассчитать работу под ключ</a>` : ''}<h2>Как проходит заявка</h2><div class="mini-steps">${processSteps.map(([step, text], index) => `<article><span class="mini-step-arrow" aria-hidden="true">${index < processSteps.length - 1 ? '→' : '✓'}</span><h3>${esc(step)}</h3><p>${esc(text)}</p></article>`).join('')}</div></article><aside class="side-panel"><h2>Расчет стоимости</h2><p>${esc(service.directTitle)}. Передайте фотографии, адрес объекта и желаемый результат.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать</a><a class="btn btn-ghost btn-full" href="${phoneHref()}" data-goal="click_phone">Позвонить</a></aside></div></section><section class="section section-muted"><div class="container"><div class="section-head"><p class="eyebrow">Связанные услуги</p><h2>Может понадобиться вместе с услугой</h2></div><div class="service-grid compact">${related.map(serviceCard).join('')}</div></div></section>${faqSection([...service.faq, ...faq.slice(0, 4)])}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', service.title, { submitText: 'Рассчитать стоимость' })}`;
+  const body = `${innerHero(service.h1, service.lead, service.image, service.title)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Услуги', url: '/#services' }, { name: service.title, url: path }])}<h2>Что входит в работу</h2><ul class="rich-list">${service.includes.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><div class="honest-note">${esc(service.warning)}</div><h2>Что влияет на расчет</h2><div class="factor-cloud">${service.priceFactors.map((factor) => `<span>${esc(factor)}</span>`).join('')}</div>${isChipping ? `<h2>Что делать со щепой после измельчения?</h2><div class="branch-what-block"><div><strong>Оставить</strong><p>Щепа остается заказчику.</p></div><div><strong>Измельчить</strong><p>Переработаем ветки в щепу.</p></div><div><strong>Вывезти</strong><p>Подготовим и организуем вывоз.</p></div></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Измельчение веток в щепу" data-goal="click_branch_chipping">Рассчитать работу под ключ</a>` : ''}<h2>Как проходит заявка</h2><div class="mini-steps">${processSteps.map(([step, text], index) => `<article><span class="mini-step-arrow" aria-hidden="true">${index < processSteps.length - 1 ? '→' : '✓'}</span><h3>${esc(step)}</h3><p>${esc(text)}</p></article>`).join('')}</div></article><aside class="side-panel"><h2>Расчет стоимости</h2><p>${esc(service.directTitle)}. Передайте фотографии, адрес объекта и желаемый результат.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать</a><a class="btn btn-ghost btn-full" href="${phoneHref()}" data-goal="click_phone">Позвонить</a></aside></div></section><section class="section section-muted"><div class="container"><div class="section-head"><h2>Может понадобиться вместе с услугой</h2></div><div class="service-grid compact">${related.map(serviceCard).join('')}</div></div></section>${faqSection([...service.faq, ...faq.slice(0, 4)])}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', service.title, { submitText: 'Рассчитать стоимость' })}`;
   return renderPage({ title: service.h1, description: `${service.short} Предварительная оценка по фото.`, path, image: service.image, body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: service.title, url: path }]), serviceSchema(service, path), faqSchema(service.faq)] });
 }
 
@@ -536,7 +532,6 @@ export function spilLandingPage(service) {
   <section class="landing-hero landing-hero--spil">
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
-        <p class="hero-badge">Спил деревьев в Москве и МО</p>
         <h1>Спил и удаление деревьев<br><span class="hero-subline">в Москве и Московской области</span></h1>
         <p class="hero-lead">Спиливаем деревья целиком и по частям, в том числе возле домов, заборов и коммуникаций. Предварительно рассчитаем стоимость по фотографии.</p>
         <div class="landing-hero-actions">
@@ -580,7 +575,6 @@ export function spilLandingPage(service) {
   <section class="section section-what-we-do" id="what-we-do">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Задачи и ситуации</p>
         <h2>Что конкретно мы сделаем</h2>
         <p class="section-subhead">Подберём подходящий способ спила под вашу ситуацию и условия на участке.</p>
       </div>
@@ -626,7 +620,6 @@ export function spilLandingPage(service) {
   <section class="section section-works-lp" id="real-works">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Реальные работы</p>
         <h2>Примеры выполненного спила деревьев</h2>
         <p>Показываем реальные кейсы аккуратного удаления деревьев в стеснённых условиях и возле домов.</p>
       </div>
@@ -662,7 +655,6 @@ export function spilLandingPage(service) {
   <section class="section section-pricing-lp" id="pricing-spil">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Стоимость</p>
         <h2>Цена спила и от чего она зависит</h2>
         <p class="section-subhead">Показываем реальные стартовые цены. Окончательный расчет зависит от параметров задачи.</p>
       </div>
@@ -706,7 +698,6 @@ export function spilLandingPage(service) {
   <section class="section section-muted section-trust-spil" id="trust-spil">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Почему нам доверяют</p>
         <h2>10 лет спиливаем деревья любой сложности</h2>
         <p>Работаем с частными участками, СНТ и коттеджными поселками по всей Москве и Подмосковью.</p>
       </div>
@@ -749,7 +740,6 @@ export function spilLandingPage(service) {
   <section class="section section-scenarios" id="scenarios">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Технологии работы</p>
         <h2>Как удалим дерево: 3 способа</h2>
         <p class="section-subhead">Способ работы определяем после оценки дерева и пространства вокруг.</p>
       </div>
@@ -798,7 +788,6 @@ export function spilLandingPage(service) {
     <section class="section section-muted section-related-bottom">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Другие услуги</p>
           <h2>Также выполняем на объектах</h2>
         </div>
         <div class="service-grid compact">${related.map(serviceCard).join('')}</div>
@@ -828,7 +817,6 @@ export function raschistkaLandingPage(service) {
   <section class="landing-hero landing-hero--clearing">
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
-        <p class="hero-badge">Расчистка участков в Москве и МО</p>
         <h1>Расчистка участков в Москве и МО<br><span class="hero-subline">от деревьев, кустарника и поросли</span></h1>
         <p class="hero-lead">Уберём деревья, кустарник и поросль. Подготовим участок к дальнейшим работам, строительству или продаже. Измельчим ветки, вывоз — по согласованию.</p>
         <div class="landing-hero-actions">
@@ -872,7 +860,6 @@ export function raschistkaLandingPage(service) {
   <section class="section section-what-we-do" id="what-we-do-clearing">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Задачи и сценарии</p>
         <h2>Что конкретно мы сделаем</h2>
         <p class="section-subhead">Приведём в порядок заросшую территорию под ключ или выполним отдельные операции.</p>
       </div>
@@ -918,7 +905,6 @@ export function raschistkaLandingPage(service) {
   <section class="section section-muted section-clearing-proof" id="clearing-proof">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Результат работы</p>
         <h2>Реальный результат расчистки: до и стало</h2>
         <p>Показываем, как участок из непроходимых зарослей превращается в чистую территорию под строительство.</p>
       </div>
@@ -962,7 +948,6 @@ export function raschistkaLandingPage(service) {
   <section class="section section-pricing-lp" id="pricing-clearing">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Стоимость</p>
         <h2>Цена расчистки и от чего она зависит</h2>
         <p class="section-subhead">Показываем реальные стартовые цены. Точный расчет сметы формируем по вашим фотографиям.</p>
       </div>
@@ -1006,7 +991,6 @@ export function raschistkaLandingPage(service) {
   <section class="section section-clearing-includes" id="includes">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Состав работ</p>
         <h2>Что входит в расчистку участка</h2>
         <p>Выполняем комплексную подготовку территории под ключ или отдельные операции по вашей задаче.</p>
       </div>
@@ -1071,7 +1055,6 @@ export function raschistkaLandingPage(service) {
     <section class="section section-muted section-related-bottom">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Другие услуги</p>
           <h2>Также выполняем на объектах</h2>
         </div>
         <div class="service-grid compact">${related.map(serviceCard).join('')}</div>
@@ -1148,7 +1131,6 @@ export function izmelchenieLandingPage(service) {
   <section class="section section-what-we-do" id="what-we-do-chipping">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Задачи и сценарии</p>
         <h2>Что конкретно мы сделаем</h2>
         <p class="section-subhead">Быстро переработаем любые объёмы веток прямо на вашем участке.</p>
       </div>
@@ -1194,7 +1176,6 @@ export function izmelchenieLandingPage(service) {
   <section class="section" id="chipping-proof">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Видео работы</p>
         <h2>Посмотрите, как быстро щепорез перерабатывает ветки</h2>
         <p>Оператор непрерывно подает ветки в приемный бункер, на выходе получается чистая однородная мульча.</p>
       </div>
@@ -1211,7 +1192,6 @@ export function izmelchenieLandingPage(service) {
   <section class="section section-pricing-lp" id="pricing-chipping">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Стоимость</p>
         <h2>Цена работы щепореза и от чего она зависит</h2>
         <p class="section-subhead">Показываем реальную стартовую цену. Точный расчет смены делаем по фото кучи веток.</p>
       </div>
@@ -1255,7 +1235,6 @@ export function izmelchenieLandingPage(service) {
   <section class="section section-muted" id="chipping-dest">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Применение</p>
         <h2>Что происходит со щепой: 3 сценария</h2>
         <p>Вы сами выбираете, как поступить с полученной щепой после переработки.</p>
       </div>
@@ -1308,7 +1287,6 @@ export function izmelchenieLandingPage(service) {
     <section class="section section-muted section-related-bottom">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Другие услуги</p>
           <h2>Также выполняем на объектах</h2>
         </div>
         <div class="service-grid compact">${related.map(serviceCard).join('')}</div>
