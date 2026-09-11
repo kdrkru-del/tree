@@ -207,14 +207,47 @@ textarea {
   gap: 8px;
 }
 
+/* ──────────────────────────────────────────────
+   HEADER — modern glass / frosted look
+   ────────────────────────────────────────────── */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 100;
-  background: rgba(251, 247, 239, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid rgba(255,255,255,0.35);
+  box-shadow: 0 1px 0 rgba(12,36,25,0.06), 0 4px 24px rgba(12,36,25,0.06);
+  transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+/* Scrolled state — toggled via JS class .is-scrolled */
+.site-header.is-scrolled {
+  background: rgba(18, 53, 38, 0.92);
+  border-bottom-color: rgba(255,255,255,0.08);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+}
+
+.site-header.is-scrolled .main-nav a,
+.site-header.is-scrolled .phone-link,
+.site-header.is-scrolled .header-contact span {
+  color: rgba(255,255,255,0.88);
+}
+
+.site-header.is-scrolled .main-nav a:hover {
+  color: #ffffff;
+}
+
+.site-header.is-scrolled .nav-toggle > span:not(.sr-only) {
+  background: rgba(255,255,255,0.9);
+}
+
+/* Push page content below fixed header */
+body {
+  padding-top: 72px;
 }
 
 .header-inner {
@@ -266,20 +299,44 @@ textarea {
   color: var(--muted);
 }
 
+/* Navigation links */
 .main-nav {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 4px;
 }
 
 .main-nav a {
-  font-size: 0.92rem;
+  position: relative;
+  font-size: 0.9rem;
   font-weight: 500;
   white-space: nowrap;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: var(--graphite);
+  transition: color 0.2s, background 0.2s;
+}
+
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: var(--green-700);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transition: transform 0.22s ease;
 }
 
 .main-nav a:hover {
   color: var(--green-700);
+  background: rgba(34, 97, 69, 0.07);
+}
+
+.main-nav a:hover::after {
+  transform: scaleX(1);
 }
 
 .header-actions {
@@ -302,6 +359,7 @@ textarea {
   font-weight: 700;
   font-size: 1.05rem;
   white-space: nowrap;
+  transition: color 0.2s;
 }
 
 .header-actions .btn {
@@ -312,6 +370,7 @@ textarea {
 .header-contact span {
   font-size: 0.8rem;
   color: var(--muted);
+  transition: color 0.2s;
 }
 
 /* Hide empty placeholders */
@@ -354,7 +413,7 @@ textarea {
     position: fixed;
     top: 72px;
     left: 0;
-    z-index: 99;
+    z-index: 199;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -363,18 +422,34 @@ textarea {
     height: calc(100dvh - 72px);
     gap: 0;
     padding: 24px 20px;
-    background: var(--warm-50);
+    background: rgba(18, 53, 38, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     overflow-y: auto;
   }
 
   .main-nav.is-open a {
     padding: 12px 0;
     font-size: 1.1rem;
-    border-bottom: 1px solid var(--line);
+    color: rgba(255,255,255,0.9);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .main-nav.is-open a:hover {
+    color: #ffffff;
+    background: transparent;
+  }
+
+  .main-nav.is-open a::after {
+    display: none;
   }
 }
 
 @media (max-width: 768px) {
+  body {
+    padding-top: 64px;
+  }
+
   .header-inner {
     height: 64px;
     gap: 16px;
@@ -401,20 +476,23 @@ textarea {
     position: fixed;
     top: 64px;
     left: 0;
-    z-index: 99;
+    z-index: 199;
     display: flex;
     flex-direction: column;
     width: 100%;
     height: calc(100vh - 64px);
     padding: 32px 20px;
-    background: var(--warm-50);
+    background: rgba(18, 53, 38, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     overflow-y: auto;
   }
 
   .main-nav.is-open a {
     font-size: 1.25rem;
     padding: 12px 0;
-    border-bottom: 1px solid var(--line);
+    color: rgba(255,255,255,0.9);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
   }
 }
 
