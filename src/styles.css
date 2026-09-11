@@ -208,7 +208,7 @@ textarea {
 }
 
 /* ──────────────────────────────────────────────
-   HEADER — modern glass / frosted look
+   HEADER — modern frosted glass, always light
    ────────────────────────────────────────────── */
 .site-header {
   position: fixed;
@@ -216,33 +216,19 @@ textarea {
   left: 0;
   right: 0;
   z-index: 200;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border-bottom: 1px solid rgba(255,255,255,0.35);
-  box-shadow: 0 1px 0 rgba(12,36,25,0.06), 0 4px 24px rgba(12,36,25,0.06);
-  transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: none;
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-/* Scrolled state — toggled via JS class .is-scrolled */
+/* Scrolled state — более непрозрачная, с тенью, текст не меняется */
 .site-header.is-scrolled {
-  background: rgba(18, 53, 38, 0.92);
-  border-bottom-color: rgba(255,255,255,0.08);
-  box-shadow: 0 4px 32px rgba(0,0,0,0.25);
-}
-
-.site-header.is-scrolled .main-nav a,
-.site-header.is-scrolled .phone-link,
-.site-header.is-scrolled .header-contact span {
-  color: rgba(255,255,255,0.88);
-}
-
-.site-header.is-scrolled .main-nav a:hover {
-  color: #ffffff;
-}
-
-.site-header.is-scrolled .nav-toggle > span:not(.sr-only) {
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 24px rgba(12, 36, 25, 0.1);
 }
 
 /* Push page content below fixed header */
@@ -422,7 +408,7 @@ body {
     height: calc(100dvh - 72px);
     gap: 0;
     padding: 24px 20px;
-    background: rgba(18, 53, 38, 0.96);
+    background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     overflow-y: auto;
@@ -431,12 +417,12 @@ body {
   .main-nav.is-open a {
     padding: 12px 0;
     font-size: 1.1rem;
-    color: rgba(255,255,255,0.9);
-    border-bottom: 1px solid rgba(255,255,255,0.12);
+    color: var(--graphite);
+    border-bottom: 1px solid var(--line);
   }
 
   .main-nav.is-open a:hover {
-    color: #ffffff;
+    color: var(--green-700);
     background: transparent;
   }
 
@@ -482,7 +468,7 @@ body {
     width: 100%;
     height: calc(100vh - 64px);
     padding: 32px 20px;
-    background: rgba(18, 53, 38, 0.96);
+    background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     overflow-y: auto;
@@ -491,8 +477,8 @@ body {
   .main-nav.is-open a {
     font-size: 1.25rem;
     padding: 12px 0;
-    color: rgba(255,255,255,0.9);
-    border-bottom: 1px solid rgba(255,255,255,0.12);
+    color: var(--graphite);
+    border-bottom: 1px solid var(--line);
   }
 }
 
