@@ -3909,24 +3909,55 @@ body:not(.motion-ready) .reveal-item {
   transform: translateY(-2px);
 }
 
-/* Кнопки в первом экране */
+/* Кнопки в первом экране — симметричная сетка 2+3 */
 .hero-direct .hero-actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 12px;
+  margin-bottom: 22px;
+  max-width: 540px;
+}
+
+.hero-actions-primary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.hero-actions-primary .btn {
+  height: 52px;
+  padding: 0 18px;
+  display: inline-flex;
   align-items: center;
-  margin-bottom: 20px;
+  justify-content: center;
+  text-align: center;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 1rem;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.hero-actions-messengers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
 .btn-hero-messenger {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 14px 20px;
+  height: 48px;
+  padding: 0 12px;
   border-radius: var(--radius);
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--white);
+  text-decoration: none;
+  white-space: nowrap;
+  box-sizing: border-box;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
@@ -3950,6 +3981,32 @@ body:not(.motion-ready) .reveal-item {
   background: #0077b5;
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(0, 136, 204, 0.4);
+}
+
+.btn-hero-max {
+  background: #5b21b6;
+  border: 1px solid rgba(147, 51, 234, 0.6);
+}
+
+.btn-hero-max:hover {
+  background: #4c1d95;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(109, 40, 217, 0.4);
+}
+
+.hero-max-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  color: #5b21b6;
+  border-radius: 5px;
+  font-weight: 800;
+  font-size: 0.78rem;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 /* Строка ключевых преимуществ */
@@ -4084,7 +4141,7 @@ body:not(.motion-ready) .reveal-item {
 
 /* Карточка успеха в Hero-форме */
 .hero-form .form-success {
-  padding: 22px 20px;
+  padding: 22px 18px;
   background: #f0fdf4;
   border: 1.5px solid #86efac;
   border-radius: 14px;
@@ -4109,13 +4166,14 @@ body:not(.motion-ready) .reveal-item {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 11px 6px;
+  padding: 10px 4px;
   border-radius: 8px;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 600;
   text-decoration: none;
   min-height: 44px;
   white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .hero-form .btn-channel svg {
@@ -4861,15 +4919,18 @@ body:not(.motion-ready) .reveal-item {
     padding: 10px 16px;
   }
 
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
+  .hero-direct .hero-actions {
+    max-width: 100%;
   }
 
-  .hero-actions .btn {
-    width: 100%;
-    justify-content: center;
-    text-align: center;
+  .hero-actions-primary {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .hero-actions-messengers {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
 
   .trust-bar-grid {
@@ -4936,6 +4997,24 @@ body:not(.motion-ready) .reveal-item {
 
   .hero-task-chips {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero-actions-primary {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .hero-actions-primary .btn {
+    width: 100%;
+  }
+
+  .hero-actions-messengers {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .hero-actions-messengers .btn-hero-max {
+    grid-column: 1 / -1;
   }
 
   .hero-form-card {
