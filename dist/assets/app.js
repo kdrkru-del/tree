@@ -105,7 +105,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     const hero = document.getElementById('hero') || document.querySelector('.hero, .landing-hero, .inner-hero, .simple-hero');
     const updateRail = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
-      const threshold = hero ? Math.max(450, hero.offsetTop + hero.offsetHeight - 200) : 500;
+      const threshold = hero ? Math.max(600, hero.offsetTop + hero.offsetHeight - 80) : 600;
       rail.classList.toggle('is-visible', scrollY > threshold);
     };
     window.addEventListener('scroll', updateRail, { passive: true });
