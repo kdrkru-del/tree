@@ -99,6 +99,19 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     });
   }
 
+  function initFloatingRail() {
+    const rail = document.querySelector('.floating-contact-rail');
+    if (!rail) return;
+    const hero = document.getElementById('hero') || document.querySelector('.hero, .landing-hero, .inner-hero, .simple-hero');
+    const updateRail = () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+      const threshold = hero ? Math.max(450, hero.offsetTop + hero.offsetHeight - 200) : 500;
+      rail.classList.toggle('is-visible', scrollY > threshold);
+    };
+    window.addEventListener('scroll', updateRail, { passive: true });
+    updateRail();
+  }
+
   function initGoals() {
     document.addEventListener('click', (event) => {
       const goalNode = event.target.closest('[data-goal]');
@@ -360,6 +373,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
 
   loadIntegrations();
   initNav();
+  initFloatingRail();
   initGoals();
   initHomeAnimations();
   initLeadForms();

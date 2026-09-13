@@ -229,10 +229,13 @@ function heroSection() {
           <a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать стоимость</a>
           <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
         </div>
-        <div class="hero-actions-messengers">
-          ${hasValue(site.messengerUrl) ? `<a class="btn-hero-messenger btn-hero-wa" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp" title="Написать в WhatsApp"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
-          ${hasValue(site.telegramUrl) ? `<a class="btn-hero-messenger btn-hero-tg" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram" title="Написать в Telegram"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
-          ${hasValue(site.maxUrl) ? `<a class="btn-hero-messenger btn-hero-max" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max" title="Открыть профиль в MAX"><span class="hero-max-badge" aria-hidden="true">M</span><span>MAX</span></a>` : ''}
+        <div class="hero-messengers-compact" aria-label="Написать в мессенджер">
+          <span class="hero-msgr-label">Написать:</span>
+          <div class="hero-msgr-links">
+            ${hasValue(site.messengerUrl) ? `<a class="hero-msgr-chip hero-msgr-wa" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp" title="Написать в WhatsApp"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
+            ${hasValue(site.telegramUrl) ? `<a class="hero-msgr-chip hero-msgr-tg" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram" title="Написать в Telegram"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
+            ${hasValue(site.maxUrl) ? `<a class="hero-msgr-chip hero-msgr-max" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max" title="Открыть профиль в MAX"><span class="hero-max-badge-sm" aria-hidden="true">M</span><span>MAX</span></a>` : ''}
+          </div>
         </div>
       </div>
 
@@ -284,9 +287,9 @@ function heroSection() {
               </div>
             </div>
             <div class="form-success-channels">
-              ${hasValue(site.messengerUrl) ? `<a class="btn-channel btn-channel-whatsapp" href="${messengerHref()}" target="_blank" rel="noopener" data-goal="click_whatsapp"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
-              ${hasValue(site.telegramUrl) ? `<a class="btn-channel btn-channel-telegram" href="${telegramHref()}" target="_blank" rel="noopener" data-goal="click_telegram"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
-              ${hasValue(site.maxUrl) ? `<a class="btn-channel btn-channel-max" href="${maxHref()}" target="_blank" rel="noopener" data-goal="click_max"><span class="channel-max-badge" aria-hidden="true">M</span><span>MAX</span></a>` : ''}
+              ${hasValue(site.messengerUrl) ? `<a class="btn-channel btn-channel-chip btn-channel-wa" href="${messengerHref()}" target="_blank" rel="noopener" data-goal="click_whatsapp"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
+              ${hasValue(site.telegramUrl) ? `<a class="btn-channel btn-channel-chip btn-channel-tg" href="${telegramHref()}" target="_blank" rel="noopener" data-goal="click_telegram"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
+              ${hasValue(site.maxUrl) ? `<a class="btn-channel btn-channel-chip btn-channel-max" href="${maxHref()}" target="_blank" rel="noopener" data-goal="click_max"><span class="channel-max-badge-sm" aria-hidden="true">M</span><span>MAX</span></a>` : ''}
             </div>
           </div>
           <div class="form-error" data-form-error hidden>Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
