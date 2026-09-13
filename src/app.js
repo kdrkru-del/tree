@@ -105,12 +105,44 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       const goal = goalNode ? goalNode.dataset.goal : '';
       if (goal && goal !== 'click_phone' && goal !== 'click_messenger') {
         reachGoal(goal, { href: goalNode.getAttribute('href') });
+        if (goal === 'click_telegram') {
+          reachGoal('telegram_click', { href: goalNode.getAttribute('href') });
+        }
       }
       const phoneLink = event.target.closest('a[href^="tel:"]');
-      if (phoneLink) reachGoal('click_phone', { href: phoneLink.getAttribute('href') });
+      if (phoneLink) {
+        reachGoal('click_phone', { href: phoneLink.getAttribute('href') });
+        reachGoal('phone_click', { href: phoneLink.getAttribute('href') });
+      }
       const messengerChannel = goalNode ? getMessengerChannel(goalNode.getAttribute('href'), goal) : '';
-      if (messengerChannel) reachGoal('click_messenger', { channel: messengerChannel });
+      if (messengerChannel) {
+        reachGoal('click_messenger', { channel: messengerChannel });
+        if (messengerChannel === 'telegram') {
+          reachGoal('telegram_click', { channel: 'telegram' });
+        }
+      }
     });
+
+    document.addEventListener('play', (event) => {
+      if (event.target && event.target.tagName === 'VIDEO') {
+        reachGoal('video_play', { src: event.target.currentSrc || event.target.src });
+      }
+    }, true);
+
+    const priceSection = document.getElementById('prices');
+    if (priceSection && 'IntersectionObserver' in window) {
+      let priceViewed = false;
+      const priceObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !priceViewed) {
+            priceViewed = true;
+            reachGoal('price_view');
+            priceObserver.disconnect();
+          }
+        });
+      }, { threshold: 0.25 });
+      priceObserver.observe(priceSection);
+    }
   }
 
   function initHomeAnimations() {
@@ -214,6 +246,21 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       });
     });
 
+    document.querySelectorAll('.hero-task-chips').forEach((chipGroup) => {
+      const form = chipGroup.closest('form');
+      if (!form) return;
+      const serviceInput = form.querySelector('[name="service"]');
+      chipGroup.addEventListener('click', (event) => {
+        const chip = event.target.closest('[data-set-service]');
+        if (!chip) return;
+        chipGroup.querySelectorAll('[data-set-service]').forEach((c) => c.classList.remove('is-active'));
+        chip.classList.add('is-active');
+        if (serviceInput) {
+          serviceInput.value = chip.dataset.setService;
+        }
+      });
+    });
+
     document.querySelectorAll('[data-lead-form]').forEach((form) => {
       const phoneInput = form.querySelector('[data-phone-input]');
       const nameInput  = form.querySelector('[name="name"]');
@@ -225,6 +272,13 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       phoneInput.addEventListener('input', () => {
         phoneInput.setCustomValidity('');
       });
+
+      phoneInput.addEventListener('focus', () => {
+        if (!form.dataset.started) {
+          form.dataset.started = 'true';
+          reachGoal('lead_form_start', { form: form.dataset.formId || 'form' });
+        }
+      }, { once: true });
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();

@@ -1,17 +1,21 @@
 import {
   clearingVideos,
+  complexSteps,
   complexVideos,
   experienceStats,
   faq,
+  homeFaq,
   imageCredits,
   images,
   nav,
   priceFactors,
   priceRows,
   processSteps,
+  scenarioCards,
   serviceAreas,
   services,
   site,
+  trustGroups,
   trustPoints,
   workExamples
 } from './data.mjs';
@@ -136,7 +140,7 @@ function header(leadHref) {
     <nav class="main-nav" id="main-nav" data-nav>${nav.map((item) => `<a href="${item.href}">${esc(item.label)}</a>`).join('')}</nav>
     <div class="header-actions">
       ${phoneEl ? `<div class="header-contact">${phoneEl}</div>` : ''}
-      <a class="btn btn-small btn-ghost" href="${leadHref}" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать</a>
+      <a class="btn btn-small btn-accent" href="${leadHref}" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать стоимость</a>
     </div>
   </div>
 </header>`;
@@ -146,7 +150,7 @@ function footer() {
   const phoneEl = hasValue(site.phone) ? `<a class="phone-link" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : '';
   const emailEl = hasValue(site.email) ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : '';
   const messengerEl = hasValue(site.messengerUrl) ? `<a href="${messengerHref('/#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : '';
-  return `<footer class="site-footer">
+  return `<footer class="site-footer" id="contacts">
   <div class="container footer-grid">
     <div>
       <a class="brand footer-brand" href="/" aria-label="${esc(site.brand)}"><img src="/assets/logo-zelenyi-srez.png" alt="${esc(site.brand)}" class="brand-logo brand-logo-footer" width="210" height="70"></a>
@@ -173,135 +177,467 @@ function floatingContacts() {
 function mobileBar(leadHref) {
   const callBtn = `<a class="mobile-btn mobile-btn-call" href="${phoneHref()}" data-goal="click_phone"><span class="mobile-btn-icon">📞</span><span>Позвонить</span></a>`;
   const calcBtn = `<a class="mobile-btn mobile-btn-calc" href="${leadHref}" data-open-form data-service="Расчет стоимости" data-goal="click_calculate"><span class="mobile-btn-icon">📷</span><span>Рассчитать</span></a>`;
-  const messengerBtn = hasValue(site.messengerUrl) ? `<a class="mobile-btn mobile-btn-msg" href="${messengerHref(leadHref)}" data-goal="click_whatsapp"><span class="mobile-btn-icon">✉</span><span>WhatsApp</span></a>` : '';
+  const messengerBtn = hasValue(site.messengerUrl) ? `<a class="mobile-btn mobile-btn-msg" href="${messengerHref(leadHref)}" data-goal="click_whatsapp"><span class="mobile-btn-icon">✉</span><span>Написать</span></a>` : '';
   return `<div class="mobile-action-bar" aria-label="Быстрые действия">${callBtn}${calcBtn}${messengerBtn}</div>`;
 }
 
 export function homePage() {
-  const title = 'Спил деревьев, расчистка участков, измельчение веток в Москве и МО';
-  const description = 'Профессиональный спил деревьев любой сложности, комплексная расчистка участков и измельчение веток щепорезом с оператором. Москва и Московская область.';
+  const title = 'Спил деревьев, расчистка участков и измельчение веток в Москве и МО — Зеленый Срез';
+  const description = 'Спиливаем деревья целиком и по частям, расчищаем участки, измельчаем ветки щепорезом, дробим пни и выполняем обрезку. Фиксированная цена по фото, материальная ответственность по договору. Москва и МО.';
   const homeLeadOptions = {
-    formId: 'main-lead-form',
-    submitText: 'Рассчитать стоимость'
+    formId: 'bottom-lead-form',
+    submitText: 'Получить расчёт'
   };
 
   const body = `
   ${heroSection()}
-  ${commercialHubSection()}
-  ${servicesSection()}
+  ${trustBarSection()}
+  ${mainServicesSection()}
+  ${scenariosSection()}
+  ${safetySection()}
   ${worksPreview()}
-  ${trustSection()}
-  ${experienceProofSection()}
-  ${videosSection()}
+  ${beforeAfterSection()}
+  ${complexSection()}
+  ${priceTableSection()}
+  ${whyTrustSection()}
   ${processSection()}
   ${organizationsSection()}
-  ${faqSection(faq)}
-  ${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Фото на оценку', homeLeadOptions)}`;
-  return renderPage({ title, description, path: '/', body, jsonLd: [professionalServiceSchema(), faqSchema(faq), breadcrumbSchema([{ name: 'Главная', url: '/' }])] });
+  ${experienceProofSection()}
+  ${videosSection()}
+  ${faqSection(homeFaq)}
+  ${leadSection('Покажите задачу — рассчитаем стоимость', 'Можно начать с фотографии. После согласования фиксируем цену и выполняем работы с оплатой по факту.', 'Фото на оценку', homeLeadOptions)}
+  ${seoContentSection()}`;
+  return renderPage({ title, description, path: '/', body, jsonLd: [professionalServiceSchema(), faqSchema(homeFaq), breadcrumbSchema([{ name: 'Главная', url: '/' }])] });
 }
 
 function heroSection() {
-  return `<section class="hero">
-  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев, расчистка участков и щепорез в Москве и МО" fetchpriority="high">
+  return `<section class="hero hero-direct" id="hero">
+  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев, расчистка участков и измельчение веток в Москве и МО" fetchpriority="high">
   <div class="hero-shade"></div>
   <div class="container hero-content">
     <div class="hero-copy">
-      <p class="hero-badge">Предварительная оценка по фото до выезда</p>
-      <h1>Спил деревьев, расчистка участков<br>и измельчение веток в Москве и МО</h1>
-      <p class="hero-lead">Работаем на сложных участках возле домов, заборов и проводов. Собственная спецтехника, сертифицированные арбористы, щепорез с оператором. Предварительный расчет по фото до выезда.</p>
-      <div class="hero-actions">
-        <a class="btn btn-hero-primary" href="#main-directions" data-goal="click_calculate">Выбрать задачу и рассчитать</a>
-        <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
+      <p class="hero-badge">Москва и Московская область • Работаем ежедневно</p>
+      <h1>Спил деревьев, расчистка участков и&nbsp;измельчение веток</h1>
+      <p class="hero-lead">Спиливаем деревья целиком и по частям, расчищаем участки, измельчаем ветки, дробим пни и выполняем обрезку.</p>
+
+      <div class="hero-price-anchors" aria-label="Стартовые ценовые ориентиры">
+        <a href="#spil" class="hero-price-pill"><span>Спил дерева</span><strong>от 1 000 ₽</strong></a>
+        <a href="#raschistka" class="hero-price-pill"><span>Расчистка участка</span><strong>от 5 000 ₽</strong></a>
+        <a href="#izmelchenie" class="hero-price-pill"><span>Измельчение веток</span><strong>от 2 500 ₽</strong></a>
       </div>
-      <div class="trust-bar" aria-label="Преимущества">
-        <span>10 лет опыта</span>
-        <span class="trust-bar-dot">·</span>
-        <span>Более 1000 заказов</span>
-        <span class="trust-bar-dot">·</span>
-        <span>Москва и МО</span>
-        <span class="trust-bar-dot">·</span>
-        <span>Своя техника</span>
+
+      <div class="hero-actions">
+        <a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать стоимость</a>
+        <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
+        ${hasValue(site.messengerUrl) ? `<a class="btn btn-hero-messenger btn-hero-wa" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp" title="Написать в WhatsApp"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
+        ${hasValue(site.telegramUrl) ? `<a class="btn btn-hero-messenger btn-hero-tg" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram" title="Написать в Telegram"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
+      </div>
+
+      <div class="hero-key-benefits" aria-label="Преимущества">
+        <span>✓ Фиксированная цена по фото</span>
+        <span class="benefit-dot">·</span>
+        <span>✓ Выезд от 2 часов</span>
+        <span class="benefit-dot">·</span>
+        <span>✓ Оплата по факту</span>
       </div>
       <p class="hero-cta-note">Для предварительной оценки отправьте фотографию дерева и контактный номер.</p>
     </div>
-    <aside class="hero-prices" aria-label="3 ключевых направления">
-      <p class="hero-prices-label">3 основных направления</p>
-      <ul>
-        <li><span>1. Спил дерева</span><strong>от 1 000 ₽</strong></li>
-        <li><span>2. Расчистка участка</span><strong>от 5 000 ₽</strong></li>
-        <li><span>3. Измельчение веток</span><strong>от 2 500 ₽</strong></li>
-      </ul>
-      <p class="hero-prices-note">Фиксируем способ работы и диапазон стоимости по фото до выезда на объект.</p>
-      <a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Рассчитать стоимость</a>
-    </aside>
+
+    <div class="hero-form-panel">
+      <div class="hero-form-card">
+        <div class="hero-form-head">
+          <span class="hero-form-badge">Оценка по фото до выезда</span>
+          <h3>Узнайте стоимость работ</h3>
+          <p>Назовём ориентир цены и зафиксируем её до начала работ</p>
+        </div>
+        <form class="lead-form hero-form" data-lead-form data-form-id="hero-lead-form" id="hero-lead-form">
+          <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
+          <input type="hidden" name="service" value="Спил деревьев">
+          <div data-form-fields>
+            <div class="hero-task-chips" role="radiogroup" aria-label="Быстрый выбор задачи">
+              <button type="button" class="task-chip is-active" data-set-service="Спил деревьев">Спил</button>
+              <button type="button" class="task-chip" data-set-service="Расчистка участка">Расчистка</button>
+              <button type="button" class="task-chip" data-set-service="Измельчение веток">Ветки</button>
+              <button type="button" class="task-chip" data-set-service="Комплекс / Другое">Другое</button>
+            </div>
+            <div class="lead-field-group">
+              <label class="lead-field-label sr-only" for="hero_name">Ваше имя</label>
+              <input id="hero_name" name="name" type="text" autocomplete="name" placeholder="Ваше имя (необязательно)">
+            </div>
+            <div class="lead-field-group">
+              <label class="lead-field-label sr-only" for="hero_phone">Номер телефона</label>
+              <input id="hero_phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" data-phone-input>
+            </div>
+            <button class="btn btn-accent btn-full" type="submit" data-submit-btn>Получить расчёт</button>
+            <p class="hero-photo-note">Фото можно отправить после заявки через Telegram, WhatsApp или MAX.</p>
+          </div>
+          <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку данных</a>.</p>
+          <div class="form-success" data-form-success hidden>
+            <div class="form-success-header">
+              <span class="form-success-badge" aria-hidden="true">✓</span>
+              <p class="form-success-title"><strong>Заявка принята!</strong> Чтобы точнее оценить работу, можете прислать фото удобным способом:</p>
+            </div>
+            <div class="form-success-channels">
+              ${hasValue(site.messengerUrl) ? `<a class="btn-channel btn-channel-whatsapp" href="${messengerHref()}" target="_blank" rel="noopener" data-goal="click_whatsapp"><span>WhatsApp</span></a>` : ''}
+              ${hasValue(site.telegramUrl) ? `<a class="btn-channel btn-channel-telegram" href="${telegramHref()}" target="_blank" rel="noopener" data-goal="click_telegram"><span>Telegram</span></a>` : ''}
+            </div>
+          </div>
+          <div class="form-error" data-form-error hidden>Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
+        </form>
+      </div>
+    </div>
   </div>
 </section>`;
 }
 
-function commercialHubSection() {
-  return `<section class="section commercial-hub" id="main-directions">
+function trustBarSection() {
+  return `<section class="trust-bar-section" aria-label="Гарантии и факты">
+  <div class="container">
+    <div class="trust-bar-grid">
+      <article class="trust-bar-card">
+        <span class="trust-bar-card-icon" aria-hidden="true">📄</span>
+        <div>
+          <h3>Материальная ответственность по договору</h3>
+          <p>Отвечаем за сохранность имущества при выполнении работ</p>
+        </div>
+      </article>
+      <article class="trust-bar-card">
+        <span class="trust-bar-card-icon" aria-hidden="true">🛡️</span>
+        <div>
+          <h3>100% сохранность имущества</h3>
+          <p>Дом, забор, постройки и территория защищены при выполнении работ</p>
+        </div>
+      </article>
+      <article class="trust-bar-card">
+        <span class="trust-bar-card-icon" aria-hidden="true">🚜</span>
+        <div>
+          <h3>Свой парк техники</h3>
+          <p>Используем собственную технику и щепорез</p>
+        </div>
+      </article>
+      <article class="trust-bar-card">
+        <span class="trust-bar-card-icon" aria-hidden="true">🧗</span>
+        <div>
+          <h3>Обученные арбористы</h3>
+          <p>Работы выполняют подготовленные специалисты</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>`;
+}
+
+function mainServicesSection() {
+  const mainCards = [
+    {
+      id: 'spil',
+      title: 'Спил и удаление деревьев',
+      slug: 'spil-derevev',
+      image: '/assets/spil-main.jpg',
+      result: 'Безопасный спил целиком или разбор по частям рядом с домом, забором и проводами.',
+      price: 'от 1 000 ₽',
+      service: 'Спил и удаление деревьев'
+    },
+    {
+      id: 'avariynye',
+      title: 'Аварийные и сложные деревья',
+      slug: 'udalenie-avariynyh-derevev',
+      image: '/assets/avarijnoe-main.jpg',
+      result: 'Срочный демонтаж опасных, наклонённых, сухих и треснувших стволов после ветра.',
+      price: 'от 4 000 ₽',
+      service: 'Удаление аварийных деревьев'
+    },
+    {
+      id: 'raschistka',
+      title: 'Расчистка участков',
+      slug: 'raschistka-uchastkov',
+      image: '/assets/raschistka-real.png',
+      result: 'Комплексная расчистка от деревьев, кустарника, поросли и бурьяна под ключ.',
+      price: 'от 5 000 ₽',
+      service: 'Расчистка участков'
+    },
+    {
+      id: 'izmelchenie',
+      title: 'Измельчение веток (Щепорез)',
+      slug: 'izmelchenie-vetok',
+      image: '/assets/izmelchenie-main.jpg',
+      result: 'Переработка веток мощным щепорезом с нашим оператором в чистую щепу на месте.',
+      price: 'от 2 500 ₽',
+      service: 'Измельчение веток'
+    },
+    {
+      id: 'pni',
+      title: 'Дробление и удаление пней',
+      slug: 'droblenie-pney',
+      image: '/assets/droblenie-main.png',
+      result: 'Измельчение пня фрезой ниже уровня грунта без раскопки ям и повреждения газона.',
+      price: 'от 1 500 ₽',
+      service: 'Дробление пней'
+    },
+    {
+      id: 'obrezka',
+      title: 'Обрезка и кронирование',
+      slug: 'obrezka-derevev',
+      image: '/assets/obrezka-main.jpg',
+      result: 'Санитарная и омолаживающая обрезка кроны, удаление опасных ветвей над постройками.',
+      price: 'от 1 500 ₽',
+      service: 'Обрезка деревьев'
+    }
+  ];
+
+  return `<section class="section main-services-section" id="services">
   <div class="container">
     <div class="section-head">
-      <h2>Выберите задачу для точного расчета стоимости</h2>
-      <p>Специализированные бригады и профессиональная техника под каждую задачу в Москве и Московской области.</p>
+      <h2>Все основные услуги</h2>
+      <p>Выполняем работы любой сложности на частных и коммерческих объектах в Москве и Московской области.</p>
     </div>
-    <div class="hub-grid">
-      <article class="hub-card">
-        <div class="hub-card-image">
-          <img src="/assets/spil-main.jpg" alt="Спил и удаление деревьев" width="1024" height="768" loading="lazy">
-          <span class="hub-card-price">от 1 000 ₽</span>
+    <div class="main-services-grid">
+      ${mainCards.map((c) => `<article class="main-service-card" id="${esc(c.id)}">
+        <div class="main-service-image">
+          <img src="${esc(c.image)}" alt="${esc(c.title)}" width="1024" height="768" loading="lazy">
+          <span class="main-service-price">${esc(c.price)}</span>
         </div>
-        <div class="hub-card-body">
-          <h3>Спилить дерево</h3>
-          <p>Спил целиком или безопасный разбор по частям возле дома, забора, крыши и проводов. Аварийные и сухие деревья.</p>
-          <ul class="hub-card-list">
-            <li>Валка целиком при наличии места</li>
-            <li>Спил по частям арбористами и вышкой</li>
-            <li>Контролируемый спуск частей на веревках</li>
-          </ul>
-          <div class="hub-card-actions">
-            <a class="btn btn-accent btn-full" href="/spil-derevev/">Перейти к расчету спила</a>
+        <div class="main-service-body">
+          <h3>${esc(c.title)}</h3>
+          <p class="main-service-result">${esc(c.result)}</p>
+          <div class="main-service-actions">
+            <a class="btn btn-small btn-accent" href="#lead-form" data-open-form data-service="${esc(c.service)}" data-goal="click_calculate">Рассчитать стоимость</a>
+            <a class="main-service-link-more" href="/${c.slug}/">Подробнее об услуге →</a>
           </div>
+        </div>
+      </article>`).join('')}
+    </div>
+  </div>
+</section>`;
+}
+
+function scenariosSection() {
+  return `<section class="section section-muted scenarios-section" id="scenarios">
+  <div class="container">
+    <div class="section-head">
+      <h2>Какая у вас задача?</h2>
+      <p>Подбираем проверенное решение под конкретную ситуацию на вашем участке.</p>
+    </div>
+    <div class="scenarios-grid">
+      ${scenarioCards.map((s, idx) => `<article class="scenario-card">
+        <div class="scenario-header">
+          <span class="scenario-number">0${idx + 1}</span>
+          <h3>${esc(s.title)}</h3>
+        </div>
+        <p class="scenario-desc">${esc(s.desc)}</p>
+        <a class="btn btn-small btn-ghost scenario-btn" href="#lead-form" data-open-form data-service="${esc(s.service)}" data-goal="click_calculate">Рассчитать эту задачу</a>
+      </article>`).join('')}
+    </div>
+  </div>
+</section>`;
+}
+
+function safetySection() {
+  return `<section class="section safety-section" id="safety">
+  <div class="container safety-grid">
+    <div class="safety-media">
+      <img src="${esc(images.sectionalCut)}" alt="Спил деревьев возле дома и забора" width="1024" height="768" loading="lazy">
+      <div class="safety-media-badge">
+        <span class="badge-icon">🛡️</span>
+        <span>Спил фрагментами со спуском на верёвках</span>
+      </div>
+    </div>
+    <div class="safety-content">
+      <h2>Работаем рядом с домами, заборами и постройками</h2>
+      <p class="safety-lead">Главный страх при спиле деревьев — повредить крышу, забор, теплицу, провода или газон. Мы исключаем такие риски благодаря отработанной технологии арбористики.</p>
+      <ul class="safety-list">
+        <li>
+          <strong>100% сохранность имущества</strong>
+          <p>Каждая часть дерева аккуратно подвязывается и плавно спускается вниз на верёвках строго в отведённую зону сброса.</p>
+        </li>
+        <li>
+          <strong>Материальная ответственность закрепляется договором</strong>
+          <p>Фиксируем официальную гарантию сохранности вашего дома, забора и коммуникаций в договоре.</p>
+        </li>
+        <li>
+          <strong>Стоимость работ фиксируется до начала</strong>
+          <p>Названная до выезда цена является окончательной и не повышается в процессе выполнения.</p>
+        </li>
+        <li>
+          <strong>Работают обученные арбористы</strong>
+          <p>Специалисты со стажем от 5 до 10 лет, сертифицированное снаряжение Petzl и профессиональные бензопилы.</p>
+        </li>
+      </ul>
+      <a class="btn btn-accent" href="#lead-form" data-open-form data-service="Сложный спил дерева" data-goal="click_calculate">Рассчитать безопасный спил</a>
+    </div>
+  </div>
+</section>`;
+}
+
+function beforeAfterSection() {
+  return `<section class="section before-after-section" id="before-after">
+  <div class="container">
+    <div class="section-head">
+      <h2>До / После</h2>
+      <p>Показываем реальное состояние объектов до начала работ и результат после сдачи чистого участка.</p>
+    </div>
+    <div class="before-after-grid">
+      <article class="before-after-card">
+        <div class="ba-images">
+          <figure>
+            <img src="${esc(images.workClearingBefore)}" alt="Заросший участок до расчистки" width="1024" height="1536" loading="lazy">
+            <figcaption>До расчистки</figcaption>
+          </figure>
+          <figure>
+            <img src="${esc(images.workClearingAfter)}" alt="Участок после расчистки" width="1024" height="1536" loading="lazy">
+            <figcaption>После расчистки</figcaption>
+          </figure>
+        </div>
+        <div class="ba-body">
+          <h3>Комплексная расчистка заросшего участка</h3>
+          <p><strong>Что было:</strong> Густые заросли кустарника, поросль мелколесья и завалы веток.</p>
+          <p><strong>Что сделано:</strong> Вырубка подлеска, измельчение веток щепорезом в щепу, выравнивание территории.</p>
+          <p class="ba-result"><strong>Результат:</strong> Чистая ровная площадка, готовая к строительству или продаже.</p>
+          <a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="Расчистка участка" data-goal="click_calculate">Рассчитать похожий участок</a>
         </div>
       </article>
 
-      <article class="hub-card">
-        <div class="hub-card-image">
-          <img src="/assets/raschistka-real.png" alt="Расчистка участков" width="1086" height="1448" loading="lazy">
-          <span class="hub-card-price">от 5 000 ₽</span>
+      <article class="before-after-card">
+        <div class="ba-images">
+          <figure>
+            <img src="${esc(images.workStormBefore)}" alt="Аварийное дерево до удаления" width="1024" height="1536" loading="lazy">
+            <figcaption>До удаления</figcaption>
+          </figure>
+          <figure>
+            <img src="${esc(images.workStormAfter)}" alt="Место после удаления аварийного дерева" width="1024" height="1536" loading="lazy">
+            <figcaption>После удаления</figcaption>
+          </figure>
         </div>
-        <div class="hub-card-body">
-          <h3>Расчистить участок</h3>
-          <p>Подготовка территории под строительство, благоустройство или продажу: деревья, кустарник, поросль и бурьян.</p>
-          <ul class="hub-card-list">
-            <li>Спил деревьев и вырубка подлеска</li>
-            <li>Измельчение веток щепорезом на месте</li>
-            <li>Дробление или корчевание пней</li>
-          </ul>
-          <div class="hub-card-actions">
-            <a class="btn btn-accent btn-full" href="/raschistka-uchastkov/">Перейти к расчистке</a>
-          </div>
+        <div class="ba-body">
+          <h3>Удаление аварийного наклонённого дерева</h3>
+          <p><strong>Что было:</strong> Опасный наклон ствола над забором и коммуникациями после сильного ветра.</p>
+          <p><strong>Что сделано:</strong> Аккуратный разбор кроны по частям с контролируемым спуском частей.</p>
+          <p class="ba-result"><strong>Результат:</strong> Угроза падения полностью устранена без малейших повреждений забора и проводов.</p>
+          <a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="Удаление аварийного дерева" data-goal="click_calculate">Рассчитать спил дерева</a>
         </div>
       </article>
 
-      <article class="hub-card">
-        <div class="hub-card-image">
-          <img src="/assets/izmelchenie-main.jpg" alt="Измельчение веток щепорезом" width="1024" height="768" loading="lazy">
-          <span class="hub-card-price">от 2 500 ₽</span>
+      <article class="before-after-card">
+        <div class="ba-images">
+          <figure>
+            <img src="${esc(images.workStumpBefore)}" alt="Пень до дробления" width="1024" height="1536" loading="lazy">
+            <figcaption>До дробления</figcaption>
+          </figure>
+          <figure>
+            <img src="${esc(images.workStumpAfter)}" alt="Место пня после дробления фрезой" width="1024" height="1536" loading="lazy">
+            <figcaption>После дробления</figcaption>
+          </figure>
         </div>
-        <div class="hub-card-body">
-          <h3>Измельчить ветки</h3>
-          <p>Мощный щепорез с опытным оператором. Быстрая переработка веток и древесных отходов в полезную щепу на участке.</p>
-          <ul class="hub-card-list">
-            <li>Работаем только со своим оператором</li>
-            <li>Значительное сокращение объёма веток</li>
-            <li>Щепу можно оставить или вывезти</li>
-          </ul>
-          <div class="hub-card-actions">
-            <a class="btn btn-accent btn-full" href="/izmelchenie-vetok/">Перейти к щепорезу</a>
-          </div>
+        <div class="ba-body">
+          <h3>Дробление пня фрезой ниже уровня грунта</h3>
+          <p><strong>Что было:</strong> Массивный пень посреди зоны благоустройства, мешавший газону.</p>
+          <p><strong>Что сделано:</strong> Измельчение пня пнедробилкой на глубину 25 см без раскопки ям.</p>
+          <p class="ba-result"><strong>Результат:</strong> Ровная площадка с органической мульчей, готовая к посеву травяного газона.</p>
+          <a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="Дробление пня" data-goal="click_calculate">Рассчитать удаление пня</a>
         </div>
       </article>
+    </div>
+  </div>
+</section>`;
+}
+
+function complexSection() {
+  return `<section class="section section-muted complex-section" id="complex">
+  <div class="container">
+    <div class="section-head">
+      <h2>Можно заказать весь комплекс работ одной бригадой</h2>
+      <p>От спила дерева до готового участка — без поиска нескольких подрядчиков.</p>
+    </div>
+
+    <div class="complex-flow">
+      ${complexSteps.map((step, idx) => `
+        <div class="complex-flow-step">
+          <div class="complex-step-num">${esc(step.num)}</div>
+          <h3>${esc(step.title)}</h3>
+          <p>${esc(step.desc)}</p>
+        </div>
+        ${idx < complexSteps.length - 1 ? '<div class="complex-flow-arrow" aria-hidden="true">→</div>' : ''}
+      `).join('')}
+    </div>
+
+    <div class="complex-footer-note">
+      <div class="complex-badges">
+        <span class="complex-badge">🚜 Свой парк техники</span>
+        <span class="complex-badge">🌲 Собственный щепорез с оператором</span>
+        <span class="complex-badge">🤝 Состав работ согласуем заранее</span>
+      </div>
+      <p class="complex-desc-note">Вывоз порубочных остатков выполняется по согласованию. Щепу можно оставить для хозяйственных нужд или вывезти.</p>
+      <a class="btn btn-accent" href="#lead-form" data-open-form data-service="Комплексные работы под ключ" data-goal="click_calculate">Рассчитать комплексную работу</a>
+    </div>
+  </div>
+</section>`;
+}
+
+function priceTableSection() {
+  return `<section class="section" id="prices">
+  <div class="container">
+    <div class="section-head">
+      <h2>Цены на работы</h2>
+      <p>Честные базовые ориентиры стоимости. Точную смету назовём по 2–3 фото до выезда на объект.</p>
+    </div>
+    <div class="price-table-wrap">
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Вид работы</th>
+            <th>Стоимость</th>
+            <th>Что влияет на расчёт</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${priceRows.map(([service, price, factors]) => `<tr>
+            <td><strong>${esc(service)}</strong></td>
+            <td class="price-cell">${esc(price)}</td>
+            <td class="price-factors-cell">${esc(factors)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-factors-block">
+      <h3>От чего зависит итоговая стоимость</h3>
+      <div class="factors-grid">
+        <div class="factor-card"><span>📏</span><strong>Размер и диаметр</strong><p>Толщина ствола и высота кроны определяют трудоёмкость и объём древесины.</p></div>
+        <div class="factor-card"><span>⚠️</span><strong>Состояние дерева</strong><p>Сухостой, наклон, трещины и гниль требуют повышенного внимания и страховки.</p></div>
+        <div class="factor-card"><span>🏠</span><strong>Постройки рядом</strong><p>Наличие дома, забора, теплицы, посадок или ЛЭП требует разбора по частям.</p></div>
+        <div class="factor-card"><span>🎯</span><strong>Свободное место</strong><p>Наличие площадки для сброса частей или необходимость полного завешивания.</p></div>
+        <div class="factor-card"><span>🚜</span><strong>Подъезд техники</strong><p>Возможность заезда автовышки или щепореза напрямую к месту работы.</p></div>
+        <div class="factor-card"><span>🌱</span><strong>Площадь расчистки</strong><p>Плотность кустарника, поросль, бурьян и количество деревьев на сотку.</p></div>
+        <div class="factor-card"><span>🍂</span><strong>Объём веток</strong><p>Количество древесных отходов для переработки щепорезом.</p></div>
+        <div class="factor-card"><span>🚛</span><strong>Необходимость вывоза</strong><p>Складирование на участке, распил на дрова или заказ контейнера для вывоза.</p></div>
+      </div>
+    </div>
+
+    <div class="price-photo-callout">
+      <div>
+        <h3>Пришлите фото — предварительно оценим стоимость</h3>
+        <p>После оценки фиксируем стоимость и закрепляем её в договоре. Никаких скрытых доплат на месте.</p>
+      </div>
+      <a class="btn btn-accent" href="#lead-form" data-open-form data-service="Оценка по фото" data-goal="click_calculate">Рассчитать стоимость по фото</a>
+    </div>
+  </div>
+</section>`;
+}
+
+function whyTrustSection() {
+  return `<section class="section section-muted why-trust-section" id="why-trust">
+  <div class="container">
+    <div class="section-head">
+      <h2>Почему нам доверяют</h2>
+      <p>Конкретные факты и принципы нашей работы на каждом объекте в Москве и Московской области.</p>
+    </div>
+    <div class="trust-groups-grid">
+      ${trustGroups.map((g) => `<article class="trust-group-card">
+        <span class="trust-group-category">${esc(g.category)}</span>
+        <ul class="trust-group-list">
+          ${g.items.map((item) => `<li>${esc(item)}</li>`).join('')}
+        </ul>
+      </article>`).join('')}
     </div>
   </div>
 </section>`;
@@ -323,7 +659,7 @@ function quickLeadSection() {
             <input type="tel" name="phone" id="quick_phone" placeholder="+7 999 999-99-99" required autocomplete="tel" data-phone-input>
             <button class="btn btn-accent" type="submit" data-submit-btn>Получить расчёт</button>
           </div>
-          <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a>.</p>
+          <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку данных</a>.</p>
           <div class="form-success quick-lead-success" data-form-success hidden><strong>Спасибо! Заявка отправлена.</strong> Мы скоро вам позвоним.</div>
           <div class="form-error quick-lead-error" data-form-error hidden>Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
         </form>
@@ -334,29 +670,21 @@ function quickLeadSection() {
 </section>`;
 }
 
-function priceTableSection() {
-  return `<section class="section section-muted" id="prices"><div class="container"><div class="section-head"><h2>Сколько стоит спил дерева</h2><p>Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.</p></div><div class="price-table-wrap"><table class="price-table"><thead><tr><th>Услуга</th><th>Цена</th><th>Что влияет</th></tr></thead><tbody>${priceRows.map(([service, price, factors]) => `<tr><td>${esc(service)}</td><td class="price-cell">${esc(price)}</td><td class="price-factors-cell">${esc(factors)}</td></tr>`).join('')}</tbody></table></div><div class="price-cta"><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Узнать стоимость моего дерева</a><p class="price-cta-note">Пришлите фотографии — предварительно рассчитаем стоимость до выезда.</p></div></div></section>`;
-}
-
-function priceFactorsSection() {
-  const icons = ['📏', '🌲', '⚠️', '🏠', '🚗', '🍃'];
-  return `<section class="section" id="factors"><div class="container"><div class="section-head"><h2>От чего зависит цена</h2></div><div class="factors-grid">${priceFactors.map((factor, i) => `<div class="factor-card"><span class="factor-icon" aria-hidden="true">${icons[i] || '•'}</span><span>${esc(factor)}</span></div>`).join('')}</div></div></section>`;
-}
-
-function servicesSection() {
-  return `<section class="section section-muted" id="services"><div class="container"><div class="section-head"><h2>Работы с деревьями, пнями и участками</h2><p>Каждая услуга рассчитывается индивидуально. Вывоз и уборка включаются только если они согласованы.</p></div><div class="service-grid">${services.slice(0, 9).map(serviceCard).join('')}</div></div></section>`;
-}
-
-function serviceCard(service) {
-  return `<article class="service-card"><img src="${esc(service.image)}" alt="${esc(service.title)}" width="1024" height="768" loading="lazy"><div><h3>${esc(service.title)}</h3><p>${esc(service.short)}</p><p class="card-note">Цена зависит от: ${service.priceFactors.slice(0, 3).map(esc).join(', ')}.</p><div class="card-actions"><a class="btn btn-small btn-accent" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать стоимость</a><a class="link-more" href="/${service.slug}/">Подробнее об услуге</a></div></div></article>`;
+function seoContentSection() {
+  return `<section class="section seo-content-section" id="about-info">
+  <div class="container">
+    <div class="seo-content-inner">
+      <h2>Профессиональные услуги арбористов и расчистка территорий в Москве и МО</h2>
+      <p>Компания «Зелёный Срез» специализируется на выполнении безопасных и технически сложных работ с зелёными насаждениями. Мы работаем по всей территории Москвы и Московской области, обслуживая как частные загородные участки, так и территории СНТ, коттеджных посёлков, предприятий и управляющих компаний.</p>
+      <p>Основными направлениями нашей деятельности являются спил и удаление деревьев целиком и по частям, санитарная и омолаживающая обрезка, кронирование, ликвидация последствий ветровала и удаление аварийных деревьев. Для переработки древесных отходов мы используем собственный профессиональный щепорез (измельчитель веток) с оператором, что позволяет уменьшить объём веток в 6–8 раз и сократить расходы на вывоз. Удаление пней выполняется методом фрезерования (дробления) пнедробилкой ниже уровня земли, благодаря чему сохраняется целостность газона и окружающего ландшафта.</p>
+      <p>Все работы проводятся строго по договору с закреплением материальной ответственности за сохранность построек, кровли, заборов и коммуникаций. Выезд бригады возможен в день обращения или в согласованное удобное время. Предварительный расчёт стоимости производится по фотографиям до выезда бригады.</p>
+    </div>
+  </div>
+</section>`;
 }
 
 function worksPreview() {
-  return `<section class="section" id="works"><div class="container"><div class="section-head"><h2>Типовые задачи</h2></div><div class="work-grid">${workExamples.map((work) => `<article class="work-card"><div class="before-after" aria-label="Сравнение до и стало"><figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure><figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure></div><h3>${esc(work.area)}</h3><p>${esc(work.service)}</p><ul>${work.facts.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="${esc(work.service)}" data-goal="click_calculate">Рассчитать стоимость</a></article>`).join('')}</div><a class="btn btn-ghost" href="/works/">Открыть раздел работ</a></div></section>`;
-}
-
-function trustSection() {
-  return `<section class="section section-muted"><div class="container"><div class="section-head"><h2>Почему нам доверяют</h2></div><div class="trust-cards">${trustPoints.map((point) => `<div class="trust-card"><h3>${esc(point.title)}</h3><p>${esc(point.text)}</p></div>`).join('')}</div></div></section>`;
+  return `<section class="section" id="works"><div class="container"><div class="section-head"><h2>Реальные работы</h2><p>Показываем примеры выполненных задач на участках в Москве и Московской области.</p></div><div class="work-grid">${workExamples.map((work) => `<article class="work-card"><div class="before-after" aria-label="Сравнение до и стало"><figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure><figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure></div><h3>${esc(work.area)}</h3><p>${esc(work.service)}</p><ul>${work.facts.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="${esc(work.service)}" data-goal="click_calculate">Рассчитать похожую задачу</a></article>`).join('')}</div><div class="works-all-action"><a class="btn btn-ghost" href="/works/">Открыть все примеры работ</a></div></div></section>`;
 }
 
 function experienceProofSection() {
@@ -459,7 +787,7 @@ function leadSection(title, text, selectedService = 'Фото на оценку'
     submitText: options.submitText || 'Рассчитать стоимость'
   };
 
-  return `<section class="section lead-section" id="lead-form"><div class="container lead-grid"><div><h2>${esc(title)}</h2><p>${esc(text)}</p><div class="lead-actions">${hasValue(site.phone) ? `<a class="btn btn-light" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>` : ''}${hasValue(site.messengerUrl) ? `<a class="btn btn-ghost-dark" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : ''}${hasValue(site.maxUrl) ? `<a class="btn btn-ghost-dark" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX</a>` : ''}${hasValue(site.telegramUrl) ? `<a class="btn btn-ghost-dark" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram</a>` : ''}</div><p class="call-note">В целях контроля качества разговор может быть записан.</p></div>${leadForm(selectedService, formOptions)}</div></section>`;
+  return `<section class="section lead-section" id="lead-form"><span id="lead" class="lead-anchor" aria-hidden="true"></span><div class="container lead-grid"><div><h2>${esc(title)}</h2><p>${esc(text)}</p><div class="lead-actions">${hasValue(site.phone) ? `<a class="btn btn-light" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>` : ''}${hasValue(site.messengerUrl) ? `<a class="btn btn-ghost-dark" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : ''}${hasValue(site.maxUrl) ? `<a class="btn btn-ghost-dark" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX</a>` : ''}${hasValue(site.telegramUrl) ? `<a class="btn btn-ghost-dark" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram</a>` : ''}</div><p class="call-note">В целях контроля качества разговор может быть записан.</p></div>${leadForm(selectedService, formOptions)}</div></section>`;
 }
 
 function leadForm(selectedService, options = {}) {
@@ -509,6 +837,10 @@ function innerHero(title, text, image, label) {
 
 function simpleHero(title, text) {
   return `<section class="simple-hero"><div class="container"><h1>${esc(title)}</h1><p>${esc(text)}</p></div></section>`;
+}
+
+function serviceCard(service) {
+  return `<article class="service-card"><img src="${esc(service.image)}" alt="${esc(service.title)}" width="1024" height="768" loading="lazy"><div><h3>${esc(service.title)}</h3><p>${esc(service.short)}</p><p class="card-note">Цена зависит от: ${service.priceFactors.slice(0, 3).map(esc).join(', ')}.</p><div class="card-actions"><a class="btn btn-small btn-accent" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать стоимость</a><a class="link-more" href="/${service.slug}/">Подробнее об услуге</a></div></div></article>`;
 }
 
 export function servicePage(service) {
@@ -1328,7 +1660,7 @@ const universalLeadOptions = {
 };
 
 export function pricesPage() {
-  const body = `${simpleHero('Стоимость спила, обрезки и расчистки участков', 'Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.')}${priceTableSection()}${priceFactorsSection()}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Фото на оценку', universalLeadOptions)}`;
+  const body = `${simpleHero('Стоимость спила, обрезки и расчистки участков', 'Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.')}${priceTableSection()}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Фото на оценку', universalLeadOptions)}`;
   return renderPage({ title: 'Цены на спил и обрезку деревьев', description: 'От чего зависит стоимость спила, обрезки, удаления пней, расчистки участка и вывоза веток.', path: '/prices/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Цены', url: '/prices/' }])] });
 }
 
