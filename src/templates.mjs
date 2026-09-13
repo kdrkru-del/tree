@@ -423,11 +423,8 @@ function scenariosSection() {
       <p>Подбираем проверенное решение под конкретную ситуацию на вашем участке.</p>
     </div>
     <div class="scenarios-grid">
-      ${scenarioCards.map((s, idx) => `<article class="scenario-card">
-        <div class="scenario-header">
-          <span class="scenario-number">0${idx + 1}</span>
-          <h3>${esc(s.title)}</h3>
-        </div>
+      ${scenarioCards.map((s) => `<article class="scenario-card">
+        <h3>${esc(s.title)}</h3>
         <p class="scenario-desc">${esc(s.desc)}</p>
         <a class="btn btn-small btn-ghost scenario-btn" href="#lead-form" data-open-form data-service="${esc(s.service)}" data-goal="click_calculate">Рассчитать эту задачу</a>
       </article>`).join('')}
