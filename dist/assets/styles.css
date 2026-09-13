@@ -4152,76 +4152,19 @@ body:not(.motion-ready) .reveal-item {
 
 /* Карточка успеха в Hero-форме */
 .hero-form .form-success {
-  padding: 22px 20px 24px;
+  padding: 16px 18px;
   background: #f0fdf4;
   border: 1.5px solid #86efac;
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: 0 4px 16px rgba(16, 185, 129, 0.08);
+  margin-top: 0;
 }
 
 .hero-form .form-success-header {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.hero-form .form-success-channels {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 4px;
-  margin-bottom: 2px;
-}
-
-.hero-form .btn-channel-chip {
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  text-decoration: none;
-  min-height: 44px;
-  white-space: nowrap;
-  box-sizing: border-box;
-  background: #ffffff;
-  border: 1.5px solid rgba(0, 0, 0, 0.12);
-  color: #1e293b;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
-}
-
-.hero-form .btn-channel-chip svg {
-  flex-shrink: 0;
-}
-
-.hero-form .btn-channel-chip.btn-channel-wa svg {
-  color: #16a34a;
-}
-
-.hero-form .btn-channel-chip.btn-channel-tg svg {
-  color: #0284c7;
-}
-
-.hero-form .btn-channel-chip:hover {
-  transform: translateY(-1px);
-}
-
-.hero-form .btn-channel-chip.btn-channel-wa:hover {
-  background: #f0fdf4;
-  border-color: #22c55e;
-  color: #15803d;
-  box-shadow: 0 3px 12px rgba(34, 197, 94, 0.18);
-}
-
-.hero-form .btn-channel-chip.btn-channel-tg:hover {
-  background: #f0f9ff;
-  border-color: #0284c7;
-  color: #0369a1;
-  box-shadow: 0 3px 12px rgba(2, 132, 199, 0.18);
+  gap: 12px;
+  margin-bottom: 0;
 }
 
 /* 2. ПОЛОСА ДОВЕРИЯ (TRUST BAR) */
@@ -4981,16 +4924,5 @@ body:not(.motion-ready) .reveal-item {
   .hero-form-card {
     padding: 20px 16px;
     border-radius: 14px;
-  }
-
-  .hero-form .form-success-channels {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-
-  .hero-form .btn-channel-chip {
-    padding: 8px 6px;
-    font-size: 0.84rem;
-    min-height: 40px;
   }
 }
