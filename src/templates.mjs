@@ -275,11 +275,15 @@ function heroSection() {
           <div class="form-success" data-form-success hidden>
             <div class="form-success-header">
               <span class="form-success-badge" aria-hidden="true">✓</span>
-              <p class="form-success-title"><strong>Заявка принята!</strong> Чтобы точнее оценить работу, можете прислать фото удобным способом:</p>
+              <div class="form-success-text">
+                <h4 class="form-success-heading">Заявка принята!</h4>
+                <p class="form-success-sub">Чтобы точнее оценить работу, можете прислать фото удобным способом:</p>
+              </div>
             </div>
             <div class="form-success-channels">
-              ${hasValue(site.messengerUrl) ? `<a class="btn-channel btn-channel-whatsapp" href="${messengerHref()}" target="_blank" rel="noopener" data-goal="click_whatsapp"><span>WhatsApp</span></a>` : ''}
-              ${hasValue(site.telegramUrl) ? `<a class="btn-channel btn-channel-telegram" href="${telegramHref()}" target="_blank" rel="noopener" data-goal="click_telegram"><span>Telegram</span></a>` : ''}
+              ${hasValue(site.messengerUrl) ? `<a class="btn-channel btn-channel-whatsapp" href="${messengerHref()}" target="_blank" rel="noopener" data-goal="click_whatsapp"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
+              ${hasValue(site.telegramUrl) ? `<a class="btn-channel btn-channel-telegram" href="${telegramHref()}" target="_blank" rel="noopener" data-goal="click_telegram"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
+              ${hasValue(site.maxUrl) ? `<a class="btn-channel btn-channel-max" href="${maxHref()}" target="_blank" rel="noopener" data-goal="click_max"><span class="channel-max-badge" aria-hidden="true">M</span><span>MAX</span></a>` : ''}
             </div>
           </div>
           <div class="form-error" data-form-error hidden>Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
@@ -549,14 +553,13 @@ function complexSection() {
       <p>От спила дерева до готового участка — без поиска нескольких подрядчиков.</p>
     </div>
 
-    <div class="complex-flow">
+    <div class="complex-flow" aria-label="Этапы комплексной работы">
       ${complexSteps.map((step, idx) => `
         <div class="complex-flow-step">
-          <div class="complex-step-num">${esc(step.num)}</div>
           <h3>${esc(step.title)}</h3>
           <p>${esc(step.desc)}</p>
         </div>
-        ${idx < complexSteps.length - 1 ? '<div class="complex-flow-arrow" aria-hidden="true">→</div>' : ''}
+        ${idx < complexSteps.length - 1 ? '<div class="complex-flow-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>' : ''}
       `).join('')}
     </div>
 
