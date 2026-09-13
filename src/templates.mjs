@@ -195,8 +195,6 @@ export function homePage() {
   ${mainServicesSection()}
   ${scenariosSection()}
   ${safetySection()}
-  ${worksPreview()}
-  ${beforeAfterSection()}
   ${complexSection()}
   ${priceTableSection()}
   ${whyTrustSection()}
@@ -475,77 +473,7 @@ function safetySection() {
 </section>`;
 }
 
-function beforeAfterSection() {
-  return `<section class="section before-after-section" id="before-after">
-  <div class="container">
-    <div class="section-head">
-      <h2>До / После</h2>
-      <p>Показываем реальное состояние объектов до начала работ и результат после сдачи чистого участка.</p>
-    </div>
-    <div class="before-after-grid">
-      <article class="before-after-card">
-        <div class="ba-images">
-          <figure>
-            <img src="${esc(images.workClearingBefore)}" alt="Заросший участок до расчистки" width="1024" height="1536" loading="lazy">
-            <figcaption>До расчистки</figcaption>
-          </figure>
-          <figure>
-            <img src="${esc(images.workClearingAfter)}" alt="Участок после расчистки" width="1024" height="1536" loading="lazy">
-            <figcaption>После расчистки</figcaption>
-          </figure>
-        </div>
-        <div class="ba-body">
-          <h3>Комплексная расчистка заросшего участка</h3>
-          <p><strong>Что было:</strong> Густые заросли кустарника, поросль мелколесья и завалы веток.</p>
-          <p><strong>Что сделано:</strong> Вырубка подлеска, измельчение веток щепорезом в щепу, выравнивание территории.</p>
-          <p class="ba-result"><strong>Результат:</strong> Чистая ровная площадка, готовая к строительству или продаже.</p>
-          <a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="Расчистка участка" data-goal="click_calculate">Рассчитать похожий участок</a>
-        </div>
-      </article>
 
-      <article class="before-after-card">
-        <div class="ba-images">
-          <figure>
-            <img src="${esc(images.workStormBefore)}" alt="Аварийное дерево до удаления" width="1024" height="1536" loading="lazy">
-            <figcaption>До удаления</figcaption>
-          </figure>
-          <figure>
-            <img src="${esc(images.workStormAfter)}" alt="Место после удаления аварийного дерева" width="1024" height="1536" loading="lazy">
-            <figcaption>После удаления</figcaption>
-          </figure>
-        </div>
-        <div class="ba-body">
-          <h3>Удаление аварийного наклонённого дерева</h3>
-          <p><strong>Что было:</strong> Опасный наклон ствола над забором и коммуникациями после сильного ветра.</p>
-          <p><strong>Что сделано:</strong> Аккуратный разбор кроны по частям с контролируемым спуском частей.</p>
-          <p class="ba-result"><strong>Результат:</strong> Угроза падения полностью устранена без малейших повреждений забора и проводов.</p>
-          <a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="Удаление аварийного дерева" data-goal="click_calculate">Рассчитать спил дерева</a>
-        </div>
-      </article>
-
-      <article class="before-after-card">
-        <div class="ba-images">
-          <figure>
-            <img src="${esc(images.workStumpBefore)}" alt="Пень до дробления" width="1024" height="1536" loading="lazy">
-            <figcaption>До дробления</figcaption>
-          </figure>
-          <figure>
-            <img src="${esc(images.workStumpAfter)}" alt="Место пня после дробления фрезой" width="1024" height="1536" loading="lazy">
-            <figcaption>После дробления</figcaption>
-          </figure>
-        </div>
-        <div class="ba-body">
-          <h3>Дробление пня фрезой ниже уровня грунта</h3>
-          <p><strong>Что было:</strong> Массивный пень посреди зоны благоустройства, мешавший газону.</p>
-          <p><strong>Что сделано:</strong> Измельчение пня пнедробилкой на глубину 25 см без раскопки ям.</p>
-          <p class="ba-result"><strong>Результат:</strong> Ровная площадка с органической мульчей, готовая к посеву травяного газона.</p>
-          <a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="Дробление пня" data-goal="click_calculate">Рассчитать удаление пня</a>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>`;
-}
 
 function complexSection() {
   return `<section class="section section-muted complex-section" id="complex">
@@ -689,39 +617,15 @@ function seoContentSection() {
 }
 
 function worksPreview() {
-  return `<section class="section" id="works"><div class="container"><div class="section-head"><h2>Реальные работы</h2><p>Показываем примеры выполненных задач на участках в Москве и Московской области.</p></div><div class="work-grid">${workExamples.map((work) => `<article class="work-card"><div class="before-after" aria-label="Сравнение до и стало"><figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure><figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure></div><h3>${esc(work.area)}</h3><p>${esc(work.service)}</p><ul>${work.facts.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="${esc(work.service)}" data-goal="click_calculate">Рассчитать похожую задачу</a></article>`).join('')}</div><div class="works-all-action"><a class="btn btn-ghost" href="/works/">Открыть все примеры работ</a></div></div></section>`;
+  return `<section class="section" id="works-preview"><div class="container"><div class="section-head"><h2>Реальные работы</h2><p>Показываем примеры выполненных задач на участках в Москве и Московской области.</p></div><div class="work-grid">${workExamples.map((work) => `<article class="work-card"><div class="before-after" aria-label="Сравнение до и стало"><figure><img src="${esc(work.beforeImage)}" alt="${esc(work.beforeAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.beforeLabel)}</figcaption></figure><figure><img src="${esc(work.afterImage)}" alt="${esc(work.afterAlt)}" width="1024" height="1536" loading="lazy"><figcaption>${esc(work.afterLabel)}</figcaption></figure></div><h3>${esc(work.area)}</h3><p>${esc(work.service)}</p><ul>${work.facts.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><a class="btn btn-small btn-ghost" href="#lead-form" data-open-form data-service="${esc(work.service)}" data-goal="click_calculate">Рассчитать похожую задачу</a></article>`).join('')}</div><div class="works-all-action"><a class="btn btn-ghost" href="/works/">Открыть все примеры работ</a></div></div></section>`;
 }
 
 function experienceProofSection() {
-  return `<section class="section experience-proof" id="videos" aria-labelledby="experience-title"><div class="container"><div class="section-head experience-head"><h2 id="experience-title">10 лет работаем с деревьями любой сложности</h2><p>От одиночного дерева возле дома до комплексной расчистки участков и территорий.</p></div><dl class="experience-stats">${experienceStats.map((stat) => `<div class="experience-stat${stat.placeholder ? ' experience-stat-placeholder' : ''}"><dt>${esc(stat.value)}</dt><dd>${esc(stat.label)}</dd></div>`).join('')}</dl><p class="proof-transition">10 лет опыта лучше всего подтверждают реальные работы</p><div class="video-proof-heading"><h2>Посмотрите, как мы работаем на сложных объектах</h2><p>Не рассказываем о профессионализме — показываем реальную работу: спил по частям, работу над крышами, возле домов, заборов и в ограниченном пространстве.</p></div></div></section>`;
+  return `<section class="section experience-proof" id="experience" aria-labelledby="experience-title"><div class="container"><div class="section-head experience-head"><h2 id="experience-title">10 лет работаем с деревьями любой сложности</h2><p>От одиночного дерева возле дома до комплексной расчистки участков и территорий.</p></div><dl class="experience-stats">${experienceStats.map((stat) => `<div class="experience-stat${stat.placeholder ? ' experience-stat-placeholder' : ''}"><dt>${esc(stat.value)}</dt><dd>${esc(stat.label)}</dd></div>`).join('')}</dl><p class="proof-transition">10 лет опыта лучше всего подтверждают реальные работы</p></div></section>`;
 }
 
 function videosSection() {
-  return `${videoGroup({
-    id: 'clearing-videos',
-    title: 'Расчистка и подготовка территории',
-    text: 'Показываем удаление поросли, работу техники, измельчение веток и пней.',
-    videos: clearingVideos,
-    ctaTitle: 'Нужно расчистить участок?',
-    ctaText: 'Пришлите фото или оставьте номер телефона — оценим объём работ и предварительную стоимость.',
-    ctaLabel: 'Отправить фото участка',
-    service: 'Расчистка участка'
-  })}${videoGroup({
-    id: 'complex-videos',
-    title: 'Удаление деревьев в сложных условиях',
-    text: 'Показываем, как выбираем способ работы рядом с домами, крышами, заборами и другими объектами.',
-    videos: complexVideos,
-    muted: true,
-    safety: true,
-    ctaTitle: 'Похожая ситуация на вашем участке?',
-    ctaText: 'Оставьте номер телефона — оценим расположение дерева и предложим подходящий способ выполнения работ.',
-    ctaLabel: 'Рассчитать стоимость',
-    service: 'Сложное удаление дерева'
-  })}`;
-}
-
-function videoGroup({ id, title, text, videos, muted = false, safety = false, ctaTitle, ctaText, ctaLabel, service }) {
-  return `<section class="section video-section${muted ? ' section-muted' : ''}" id="${esc(id)}"><div class="container"><div class="section-head video-group-head"><h2>${esc(title)}</h2><p>${esc(text)}</p></div><div class="video-grid">${videos.map(videoCard).join('')}</div>${safety ? videoSafety() : ''}<div class="video-cta"><div><h3>${esc(ctaTitle)}</h3><p>${esc(ctaText)}</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="${esc(service)}" data-goal="click_calculate">${esc(ctaLabel)}</a></div></div></section>`;
+  return `<section class="section video-section" id="works"><span id="videos" class="anchor-target" aria-hidden="true"></span><div class="container"><div class="section-head"><h2>Реальные работы</h2><p>Показываем реальные объекты и выполненные работы в Москве и Московской области.</p></div><div class="video-proof-subhead"><p>Посмотрите, как мы работаем на сложных объектах: спил по частям, работа над крышами, возле домов, заборов и в ограниченном пространстве.</p></div><div class="video-group" id="clearing-videos"><div class="video-group-head"><h3>Расчистка и подготовка территории</h3><p>Показываем удаление поросли, работу техники, измельчение веток и пней.</p></div><div class="video-grid">${clearingVideos.map(videoCard).join('')}</div><div class="video-cta"><div><h3>Нужно расчистить участок?</h3><p>Пришлите фото или оставьте номер телефона — оценим объём работ и предварительную стоимость.</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Расчистка участка" data-goal="click_calculate">Отправить фото участка</a></div></div><div class="video-group" id="complex-videos" style="margin-top: 56px;"><div class="video-group-head"><h3>Удаление деревьев в сложных условиях</h3><p>Показываем, как выбираем способ работы рядом с домами, крышами, заборами и другими объектами.</p></div><div class="video-grid">${complexVideos.map(videoCard).join('')}</div>${videoSafety()}<div class="video-cta"><div><h3>Похожая ситуация на вашем участке?</h3><p>Оставьте номер телефона — оценим расположение дерева и предложим подходящий способ выполнения работ.</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Сложное удаление дерева" data-goal="click_calculate">Рассчитать стоимость</a></div></div></div></section>`;
 }
 
 function videoCard(video) {
