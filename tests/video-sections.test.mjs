@@ -20,17 +20,17 @@ test('video sections contain 4 clearing and 8 unique complex-work videos', () =>
   assert.deepEqual(
     new Set(mediaKeys),
     new Set([
-      '/assets/WhatsApp Video 2026-08-11 at 14.26.53.mp4',
+      '/assets/whatsapp-work-video.mp4',
       '/assets/work-video-1.mp4',
       '/assets/work-video-3.mp4',
       '/assets/work-video-5.mp4',
-      '/assets/videos/clearing/рас2.mp4',
-      '/assets/videos/complex/без 6.mp4',
-      '/assets/videos/complex/без 7.mp4',
-      '/assets/videos/complex/без1.mp4',
-      '/assets/videos/complex/без4.mp4',
-      '/assets/videos/complex/без5.mp4',
-      '/assets/videos/complex/без7.mp4',
+      '/assets/videos/clearing/ras2.mp4',
+      '/assets/videos/complex/bez6.mp4',
+      '/assets/videos/complex/bez7.mp4',
+      '/assets/videos/complex/bez1.mp4',
+      '/assets/videos/complex/bez4.mp4',
+      '/assets/videos/complex/bez5.mp4',
+      '/assets/videos/complex/bez7-alt.mp4',
       '/assets/videos/complex/bez2-vertical.mp4'
     ])
   );

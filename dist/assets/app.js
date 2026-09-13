@@ -118,9 +118,6 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       const goal = goalNode ? goalNode.dataset.goal : '';
       if (goal && goal !== 'click_phone' && goal !== 'click_messenger') {
         reachGoal(goal, { href: goalNode.getAttribute('href') });
-        if (goal === 'click_telegram') {
-          reachGoal('telegram_click', { href: goalNode.getAttribute('href') });
-        }
       }
       const phoneLink = event.target.closest('a[href^="tel:"]');
       if (phoneLink) {

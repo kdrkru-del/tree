@@ -79,7 +79,8 @@ function metrikaNoScript() {
 
 export function renderPage({ title, description, path = '/', body, jsonLd = [], image = images.hero, leadHref = '#lead-form' }) {
   const canonical = pathUrl(path);
-  const fullTitle = title.includes(site.region) ? title : `${title} | ${site.region}`;
+  const hasRegion = /(?:Москв|Московск)/i.test(title);
+  const fullTitle = hasRegion ? title : `${title} | ${site.region}`;
   const schemas = [organizationSchema(), ...jsonLd];
   const absoluteImage = image.startsWith('http') ? image : `${site.baseUrl}${image}`;
   const usesWikimedia = image.includes('commons.wikimedia.org') || body.includes('commons.wikimedia.org');
@@ -253,7 +254,7 @@ function heroSection() {
       <div class="hero-form-card">
         <div class="hero-form-head">
           <span class="hero-form-badge">Оценка по фото до выезда</span>
-          <h3>Узнайте стоимость работ</h3>
+          <h2>Узнайте стоимость работ</h2>
           <p>Назовём ориентир цены и зафиксируем её до начала работ</p>
         </div>
         <form class="lead-form hero-form" data-lead-form data-form-id="hero-lead-form" id="hero-lead-form">
@@ -282,7 +283,7 @@ function heroSection() {
             <div class="form-success-header">
               <span class="form-success-badge" aria-hidden="true">✓</span>
               <div class="form-success-text">
-                <h4 class="form-success-heading">Заявка принята!</h4>
+                <h3 class="form-success-heading">Заявка принята!</h3>
               </div>
             </div>
           </div>
@@ -590,7 +591,14 @@ function quickLeadSection() {
             <button class="btn btn-accent" type="submit" data-submit-btn>Получить расчёт</button>
           </div>
           <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку данных</a>.</p>
-          <div class="form-success quick-lead-success" data-form-success hidden><strong>Спасибо! Заявка отправлена.</strong> Мы скоро вам позвоним.</div>
+          <div class="form-success quick-lead-success" data-form-success hidden>
+            <div class="form-success-header">
+              <span class="form-success-badge" aria-hidden="true">✓</span>
+              <div class="form-success-text">
+                <p class="form-success-heading">Заявка принята!</p>
+              </div>
+            </div>
+          </div>
           <div class="form-error quick-lead-error" data-form-error hidden>Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
         </form>
         ${hasValue(site.messengerUrl) ? `<a class="btn btn-outline" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">Отправить фото в WhatsApp</a>` : ''}
@@ -720,13 +728,9 @@ function leadForm(selectedService, options = {}) {
   <div class="form-success" data-form-success hidden>
     <div class="form-success-header">
       <span class="form-success-badge" aria-hidden="true">✓</span>
-      <p class="form-success-title"><strong>Заявка отправлена.</strong> Чтобы точнее оценить работу, можете прислать фотографии удобным способом:</p>
-    </div>
-    <div class="form-success-channels">
-      ${hasValue(site.messengerUrl) ? `<a class="btn-channel btn-channel-whatsapp" href="${messengerHref()}" target="_blank" rel="noopener" data-goal="click_whatsapp"><svg viewBox="0 0 24 24" class="channel-icon" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
-      ${hasValue(site.telegramUrl) ? `<a class="btn-channel btn-channel-telegram" href="${telegramHref()}" target="_blank" rel="noopener" data-goal="click_telegram"><svg viewBox="0 0 24 24" class="channel-icon" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
-      ${hasValue(site.maxUrl) ? `<a class="btn-channel btn-channel-max" href="${maxHref()}" target="_blank" rel="noopener" data-goal="click_max"><span class="channel-max-badge" aria-hidden="true">M</span><span>MAX</span></a>` : ''}
-      ${hasValue(site.email) ? `<a class="btn-channel btn-channel-email" href="mailto:${esc(site.email)}" data-goal="click_email"><svg viewBox="0 0 24 24" class="channel-icon" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Почта</span></a>` : ''}
+      <div class="form-success-text">
+        <h3 class="form-success-heading">Заявка принята!</h3>
+      </div>
     </div>
   </div>
   <div class="form-error" data-form-error hidden>Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
@@ -754,7 +758,9 @@ export function servicePage(service) {
   const related = services.filter((item) => item.slug !== service.slug).slice(0, 4);
   const isChipping = service.slug === 'izmelchenie-vetok';
   const body = `${innerHero(service.h1, service.lead, service.image, service.title)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Услуги', url: '/#services' }, { name: service.title, url: path }])}<h2>Что входит в работу</h2><ul class="rich-list">${service.includes.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><div class="honest-note">${esc(service.warning)}</div><h2>Что влияет на расчет</h2><div class="factor-cloud">${service.priceFactors.map((factor) => `<span>${esc(factor)}</span>`).join('')}</div>${isChipping ? `<h2>Что делать со щепой после измельчения?</h2><div class="branch-what-block"><div><strong>Оставить</strong><p>Щепа остается заказчику.</p></div><div><strong>Измельчить</strong><p>Переработаем ветки в щепу.</p></div><div><strong>Вывезти</strong><p>Подготовим и организуем вывоз.</p></div></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Измельчение веток в щепу" data-goal="click_branch_chipping">Рассчитать работу под ключ</a>` : ''}<h2>Как проходит заявка</h2><div class="mini-steps">${processSteps.map(([step, text], index) => `<article><span class="mini-step-arrow" aria-hidden="true">${index < processSteps.length - 1 ? '→' : '✓'}</span><h3>${esc(step)}</h3><p>${esc(text)}</p></article>`).join('')}</div></article><aside class="side-panel"><h2>Расчет стоимости</h2><p>${esc(service.directTitle)}. Передайте фотографии, адрес объекта и желаемый результат.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать</a><a class="btn btn-ghost btn-full" href="${phoneHref()}" data-goal="click_phone">Позвонить</a></aside></div></section><section class="section section-muted"><div class="container"><div class="section-head"><h2>Может понадобиться вместе с услугой</h2></div><div class="service-grid compact">${related.map(serviceCard).join('')}</div></div></section>${faqSection([...service.faq, ...faq.slice(0, 4)])}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', service.title, { submitText: 'Рассчитать стоимость' })}`;
-  return renderPage({ title: service.h1, description: `${service.short} Предварительная оценка по фото.`, path, image: service.image, body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: service.title, url: path }]), serviceSchema(service, path), faqSchema(service.faq)] });
+  const descSuffix = /фото/i.test(service.short) ? '' : ' Предварительная оценка по фото.';
+  const pageDescription = `${service.short}${descSuffix}`.trim();
+  return renderPage({ title: service.h1, description: pageDescription, path, image: service.image, body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: service.title, url: path }]), serviceSchema(service, path), faqSchema(service.faq)] });
 }
 
 export function spilLandingPage(service) {
@@ -1035,7 +1041,9 @@ export function spilLandingPage(service) {
 
   return renderPage({
     title: service.h1,
-    description: `${service.short} Предварительная оценка стоимости по фото. Выезд по Москве и Московской области.`,
+    description: /фотограф|фото/i.test(service.short)
+      ? `${service.short} Выезд по Москве и Московской области.`
+      : `${service.short} Предварительная оценка стоимости по фото. Выезд по Москве и Московской области.`,
     path,
     image: service.image,
     body,

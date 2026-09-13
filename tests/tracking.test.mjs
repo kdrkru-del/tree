@@ -60,6 +60,7 @@ test('Metrika is loaded only by the page template and business goals are emitted
   assert.equal([...app.matchAll(/reachGoal\('lead_form',/g)].length, 1);
   assert.equal([...app.matchAll(/reachGoal\('click_phone',/g)].length, 1);
   assert.equal([...app.matchAll(/reachGoal\('click_messenger',/g)].length, 1);
+  assert.equal([...app.matchAll(/reachGoal\('telegram_click',/g)].length, 1);
   assert.match(app, /goal !== 'click_phone'/);
   assert.match(app, /goal !== 'click_messenger'/);
 });

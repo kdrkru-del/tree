@@ -95,7 +95,8 @@ async function build() {
     'droblenie-main.png',
     'izmelchenie-main.jpg',
     'raschistka-main.jpg',
-    'raschistka-real.png'
+    'raschistka-real.png',
+    'hero-bg.jpg'
   ]) {
     await copyFile(path.join(root, 'assets', asset), path.join(dist, 'assets', asset));
   }
