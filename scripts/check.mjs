@@ -14,7 +14,7 @@ function walk(dir) {
 }
 
 function routeToFile(href) {
-  if (href === '/manifest.webmanifest' || href === '/sitemap.xml' || href === '/robots.txt') return path.join(root, href.slice(1));
+  if (href === '/sitemap.xml' || href === '/robots.txt') return path.join(root, href.slice(1));
   const withoutHash = href.split('#')[0].split('?')[0];
   let target = path.join(root, withoutHash.replace(/^\//, ''));
   if (withoutHash.endsWith('/')) target = path.join(target, 'index.html');

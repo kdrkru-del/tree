@@ -104,7 +104,6 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=20260811-tree">
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png?v=20260811-tree">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v=20260811-tree">
-  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">${wikimediaPreconnect}

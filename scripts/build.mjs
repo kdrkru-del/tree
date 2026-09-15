@@ -174,19 +174,6 @@ Allow: /
 Sitemap: ${site.baseUrl}/sitemap.xml
 `, 'utf8');
   await writeFile(path.join(dist, 'CNAME'), 'zelsrez.ru\n', 'utf8');
-  await writeFile(path.join(dist, 'manifest.webmanifest'), JSON.stringify({
-    name: site.brand,
-    short_name: 'Деревья',
-    start_url: '/',
-    display: 'standalone',
-    background_color: '#fbf7ef',
-    theme_color: '#143d2b',
-    icons: [
-      { src: '/assets/favicon-192.png', sizes: '192x192', type: 'image/png' },
-      { src: '/assets/favicon-512.png', sizes: '512x512', type: 'image/png' }
-    ],
-    lang: 'ru'
-  }, null, 2), 'utf8');
 
   console.log(`Built ${routes.length} pages into ${path.relative(root, dist)}`);
 }
