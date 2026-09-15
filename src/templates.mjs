@@ -120,6 +120,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${footer()}
   ${floatingContacts()}
   ${mobileBar(leadHref)}
+  ${photoModal()}
   <script src="/assets/app.js?v=20260824-metrika-goals-1" type="module"></script>
 </body>
 </html>`;
@@ -174,11 +175,65 @@ function floatingContacts() {
   return buttons ? `<aside class="floating-contact-rail" aria-label="Быстрая связь">${buttons}</aside>` : '';
 }
 
-function mobileBar(leadHref) {
+function mobileBar() {
   const callBtn = `<a class="mobile-btn mobile-btn-call" href="${phoneHref()}" data-goal="click_phone"><span class="mobile-btn-icon">📞</span><span>Позвонить</span></a>`;
-  const calcBtn = `<a class="mobile-btn mobile-btn-calc" href="${leadHref}" data-open-form data-service="Расчет стоимости" data-goal="click_calculate"><span class="mobile-btn-icon">📷</span><span>Рассчитать</span></a>`;
-  const messengerBtn = hasValue(site.messengerUrl) ? `<a class="mobile-btn mobile-btn-msg" href="${messengerHref(leadHref)}" data-goal="click_whatsapp"><span class="mobile-btn-icon">✉</span><span>Написать</span></a>` : '';
-  return `<div class="mobile-action-bar" aria-label="Быстрые действия">${callBtn}${calcBtn}${messengerBtn}</div>`;
+  const calcBtn = `<button type="button" class="mobile-btn mobile-btn-calc" data-open-popup="calc-popup" data-goal="click_calculate"><span class="mobile-btn-icon">📷</span><span>Узнать цену</span></button>`;
+  return `<div class="mobile-action-bar" aria-label="Быстрые действия">${callBtn}${calcBtn}</div>`;
+}
+
+function photoModal() {
+  return `<div class="photo-popup-overlay" id="calc-popup" data-calc-popup aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+  <div class="photo-popup-backdrop" data-popup-close tabindex="-1"></div>
+  <div class="photo-popup-dialog">
+    <div class="photo-popup-header">
+      <div class="photo-popup-titles">
+        <h2 class="photo-popup-title" id="popup-title">Узнать стоимость по фото</h2>
+        <p class="photo-popup-subtitle">Выберите удобный способ связи</p>
+      </div>
+      <button type="button" class="photo-popup-close" data-popup-close aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="photo-popup-body">
+      <div class="photo-popup-actions">
+        <a class="popup-action-btn popup-action-wa" href="https://wa.me/79998081951" target="_blank" rel="noopener" data-goal="click_whatsapp">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg>
+          <span>Отправить фото в WhatsApp</span>
+        </a>
+        <a class="popup-action-btn popup-action-tg" href="https://t.me/Romatran" target="_blank" rel="noopener" data-goal="click_telegram">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          <span>Отправить фото в Telegram</span>
+        </a>
+        <button type="button" class="popup-action-btn popup-action-phone" data-popup-toggle-phone aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>Оставить телефон</span>
+        </button>
+      </div>
+      <form class="lead-form popup-lead-form" data-lead-form data-form-id="popup-lead-form" id="popup-lead-form" hidden>
+        <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
+        <input type="hidden" name="service" value="Расчет стоимости по фото">
+        <div data-form-fields>
+          <div class="lead-field-group">
+            <label class="lead-field-label sr-only" for="popup_phone">Номер телефона</label>
+            <input id="popup_phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" data-phone-input>
+          </div>
+          <button class="btn btn-accent btn-full" type="submit" data-submit-btn>Отправить заявку</button>
+          <p class="popup-photo-note">Перезвоним для уточнения деталей и расчёта</p>
+        </div>
+        <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку данных</a>.</p>
+        <div class="form-success" data-form-success hidden>
+          <div class="form-success-header">
+            <span class="form-success-badge" aria-hidden="true">✓</span>
+            <div class="form-success-text">
+              <h3 class="form-success-heading">Заявка принята!</h3>
+            </div>
+          </div>
+        </div>
+        <div class="form-error" data-form-error hidden>Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
+      </form>
+    </div>
+  </div>
+</div>`;
 }
 
 export function homePage() {
@@ -210,13 +265,13 @@ export function homePage() {
 
 function heroSection() {
   return `<section class="hero hero-direct" id="hero">
-  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев, расчистка участков и измельчение веток в Москве и МО" fetchpriority="high">
+  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев и расчистка участков в Москве и МО" fetchpriority="high">
   <div class="hero-shade"></div>
   <div class="container hero-content">
     <div class="hero-copy">
       <p class="hero-badge">Москва и Московская область • Работаем ежедневно</p>
-      <h1>Спил деревьев, расчистка участков и&nbsp;измельчение веток</h1>
-      <p class="hero-lead">Спиливаем деревья целиком и по частям, расчищаем участки, измельчаем ветки, дробим пни и выполняем обрезку.</p>
+      <h1>Спил деревьев и&nbsp;расчистка участков в&nbsp;Москве и&nbsp;МО</h1>
+      <p class="hero-lead">Удаляем деревья целиком и по частям возле домов, заборов и проводов. Рассчитаем стоимость по фото до начала работ.</p>
 
       <div class="hero-price-anchors" aria-label="Стартовые ценовые ориентиры">
         <a href="#spil" class="hero-price-pill"><span>Спил дерева</span><strong>от 1 000 ₽</strong></a>
@@ -226,7 +281,7 @@ function heroSection() {
 
       <div class="hero-actions">
         <div class="hero-actions-primary">
-          <a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать стоимость</a>
+          <button type="button" class="btn btn-hero-primary" data-open-popup="calc-popup" data-goal="click_calculate">Узнать стоимость по фото</button>
           <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
         </div>
         <div class="hero-messengers-compact" aria-label="Написать в мессенджер">
@@ -239,12 +294,14 @@ function heroSection() {
         </div>
       </div>
 
-      <div class="hero-key-benefits" aria-label="Преимущества">
-        <span>✓ Фиксированная цена по фото</span>
-        <span class="benefit-dot">·</span>
-        <span>✓ Выезд от 2 часов</span>
-        <span class="benefit-dot">·</span>
-        <span>✓ Оплата по факту</span>
+      <div class="hero-trust-line" aria-label="Преимущества">
+        <span>10 лет опыта</span>
+        <span class="trust-dot">·</span>
+        <span>1000+ заказов</span>
+        <span class="trust-dot">·</span>
+        <span>Цена фиксируется</span>
+        <span class="trust-dot">·</span>
+        <span>Оплата после работ</span>
       </div>
       <p class="hero-cta-note">Для предварительной оценки отправьте фотографию дерева и контактный номер.</p>
     </div>

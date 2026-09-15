@@ -368,10 +368,74 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     });
   }
 
+  function initPhotoPopup() {
+    const popup = document.querySelector('[data-calc-popup]');
+    if (!popup) return;
+
+    let lastActive = null;
+
+    function openPopup() {
+      lastActive = document.activeElement;
+      popup.classList.add('is-active');
+      popup.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('has-modal-open');
+
+      const firstAction = popup.querySelector('.popup-action-btn, [data-popup-close]');
+      if (firstAction && typeof firstAction.focus === 'function') {
+        setTimeout(() => firstAction.focus(), 80);
+      }
+    }
+
+    function closePopup() {
+      if (!popup.classList.contains('is-active')) return;
+      popup.classList.remove('is-active');
+      popup.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('has-modal-open');
+
+      if (lastActive && typeof lastActive.focus === 'function') {
+        lastActive.focus();
+      }
+    }
+
+    document.querySelectorAll('[data-open-popup="calc-popup"]').forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        openPopup();
+      });
+    });
+
+    popup.querySelectorAll('[data-popup-close]').forEach((el) => {
+      el.addEventListener('click', closePopup);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && popup.classList.contains('is-active')) {
+        closePopup();
+      }
+    });
+
+    const togglePhoneBtn = popup.querySelector('[data-popup-toggle-phone]');
+    const phoneForm = popup.querySelector('#popup-lead-form');
+    if (togglePhoneBtn && phoneForm) {
+      togglePhoneBtn.addEventListener('click', () => {
+        const isHidden = phoneForm.hidden;
+        phoneForm.hidden = !isHidden;
+        togglePhoneBtn.setAttribute('aria-expanded', String(isHidden));
+        if (isHidden) {
+          const phoneInput = phoneForm.querySelector('[data-phone-input]');
+          if (phoneInput) {
+            setTimeout(() => phoneInput.focus(), 100);
+          }
+        }
+      });
+    }
+  }
+
   loadIntegrations();
   initNav();
   initFloatingRail();
   initGoals();
   initHomeAnimations();
   initLeadForms();
+  initPhotoPopup();
 })();
