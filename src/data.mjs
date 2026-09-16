@@ -18,7 +18,8 @@ export const site = {
   addressNote: 'Работы выполняются на территории заказчика.',
   metrikaId: 111453743,
   leadEndpoint: 'https://zelsrez-leads.roman-k-0b3.workers.dev',
-  novofonScriptUrl: ''
+  novofonScriptUrl: '',
+  mailruDomainVerification: 'f9rjz68ZHMUYn266'
 };
 
 export const nav = [

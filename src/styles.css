@@ -342,10 +342,29 @@ body {
 }
 
 .phone-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-weight: 700;
   font-size: 1.05rem;
+  color: var(--green-900);
   white-space: nowrap;
-  transition: color 0.2s;
+  transition: color 0.2s, background-color 0.2s;
+  text-decoration: none;
+}
+
+.phone-link:hover {
+  color: var(--green-700);
+}
+
+.phone-icon {
+  flex-shrink: 0;
+  color: var(--green-700);
+  transition: transform 0.2s;
+}
+
+.phone-link:hover .phone-icon {
+  transform: scale(1.08);
 }
 
 .header-actions .btn {
@@ -433,40 +452,74 @@ body {
 
 @media (max-width: 768px) {
   body {
-    padding-top: 64px;
+    padding-top: 60px;
   }
 
   .header-inner {
-    height: 64px;
-    gap: 16px;
+    height: 60px;
+    gap: 8px;
   }
 
   .brand-logo-header {
-    width: 150px;
-    max-height: 47px;
+    width: 125px;
+    max-height: 40px;
   }
 
-  .header-contact {
-    display: none;
+  .header-actions {
+    margin-left: auto;
+    gap: 4px;
   }
 
   .header-actions .btn {
     display: none;
   }
 
+  .header-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    justify-content: center;
+  }
+
+  .header-contact .phone-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--green-900);
+    gap: 4px;
+    line-height: 1.2;
+    padding: 3px 6px;
+    border-radius: 6px;
+  }
+
+  .header-contact .phone-icon {
+    width: 13px;
+    height: 13px;
+    color: var(--green-700);
+  }
+
+  .header-contact .header-hours {
+    font-size: 0.68rem;
+    line-height: 1.1;
+    color: var(--muted);
+  }
+
   .nav-toggle {
     display: flex;
+    width: 38px;
+    height: 38px;
+    padding: 7px;
   }
 
   .main-nav.is-open {
     position: fixed;
-    top: 64px;
+    top: 60px;
     left: 0;
     z-index: 199;
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 60px);
     padding: 32px 20px;
     background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
@@ -5131,6 +5184,32 @@ body.has-modal-open {
 }
 
 @media (max-width: 480px) {
+  .brand-logo-header {
+    width: 110px;
+    max-height: 36px;
+  }
+
+  .header-contact .phone-link {
+    font-size: 0.80rem;
+    gap: 3px;
+    padding: 2px 4px;
+  }
+
+  .header-contact .phone-icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .header-contact .header-hours {
+    font-size: 0.62rem;
+  }
+
+  .nav-toggle {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+  }
+
   .hero-direct {
     padding: 66px 0 20px;
     min-height: auto;
@@ -5211,3 +5290,19 @@ body.has-modal-open {
     border-radius: 14px;
   }
 }
+
+@media (max-width: 360px) {
+  .brand-logo-header {
+    width: 98px;
+    max-height: 32px;
+  }
+
+  .header-contact .phone-link {
+    font-size: 0.74rem;
+  }
+
+  .header-contact .header-hours {
+    display: none;
+  }
+}
+

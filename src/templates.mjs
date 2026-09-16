@@ -85,6 +85,9 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   const absoluteImage = image.startsWith('http') ? image : `${site.baseUrl}${image}`;
   const usesWikimedia = image.includes('commons.wikimedia.org') || body.includes('commons.wikimedia.org');
   const wikimediaPreconnect = usesWikimedia ? '\n  <link rel="preconnect" href="https://commons.wikimedia.org">' : '';
+  const mailruMeta = (path === '/' && site.mailruDomainVerification)
+    ? `\n  <meta name="mailru-domain" content="${esc(site.mailruDomainVerification)}" />`
+    : '';
   return `<!doctype html>
 <html lang="ru">
 <head>
@@ -92,7 +95,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${esc(fullTitle)}</title>
   <meta name="description" content="${esc(description)}">
-  <link rel="canonical" href="${esc(canonical)}">
+  <link rel="canonical" href="${esc(canonical)}">${mailruMeta}
   <meta property="og:type" content="website">
   <meta property="og:title" content="${esc(fullTitle)}">
   <meta property="og:description" content="${esc(description)}">
@@ -128,7 +131,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
 
 function header(leadHref) {
   const phoneEl = hasValue(site.phone)
-    ? `<a class="phone-link" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>${hasValue(site.hours) ? `<span>${esc(site.hours)}</span>` : ''}`
+    ? `<a class="phone-link" href="${phoneHref()}" data-goal="click_phone"><svg class="phone-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>${esc(site.phone)}</span></a>${hasValue(site.hours) ? `<span class="header-hours">${esc(site.hours)}</span>` : ''}`
     : '';
   return `<header class="site-header" data-header>
   <div class="container header-inner">
