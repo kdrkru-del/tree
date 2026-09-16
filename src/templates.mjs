@@ -141,13 +141,56 @@ function header(leadHref) {
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-nav-toggle>
       <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
     </button>
-    <nav class="main-nav" id="main-nav" data-nav>${nav.map((item) => `<a href="${item.href}">${esc(item.label)}</a>`).join('')}</nav>
+    <nav class="main-nav" id="main-nav" data-nav>${nav.map((item) => `<a class="nav-link" href="${item.href}">${esc(item.label)}</a>`).join('')}${mobileNavContacts()}</nav>
     <div class="header-actions">
       ${phoneEl ? `<div class="header-contact">${phoneEl}</div>` : ''}
       <a class="btn btn-small btn-accent" href="${leadHref}" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать стоимость</a>
     </div>
   </div>
 </header>`;
+}
+
+function mobileNavContacts() {
+  const phoneBtn = hasValue(site.phone)
+    ? `<a class="mobile-nav-phone-btn" href="${phoneHref()}" data-goal="click_phone">
+        <svg class="mobile-nav-phone-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        <span class="mobile-nav-phone-content">
+          <span class="mobile-nav-phone-num">${esc(site.phone)}</span>
+          ${hasValue(site.hours) ? `<span class="mobile-nav-phone-hours">${esc(site.hours)}</span>` : ''}
+        </span>
+      </a>`
+    : '';
+
+  const waBtn = hasValue(site.messengerUrl)
+    ? `<a class="mobile-nav-msg-btn mobile-nav-msg-wa" href="${messengerHref()}" target="_blank" rel="noopener" data-goal="click_whatsapp" aria-label="Написать в WhatsApp">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg>
+        <span>WhatsApp</span>
+      </a>`
+    : '';
+
+  const tgBtn = hasValue(site.telegramUrl)
+    ? `<a class="mobile-nav-msg-btn mobile-nav-msg-tg" href="${telegramHref()}" target="_blank" rel="noopener" data-goal="click_telegram" aria-label="Написать в Telegram">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        <span>Telegram</span>
+      </a>`
+    : '';
+
+  const maxBtn = hasValue(site.maxUrl)
+    ? `<a class="mobile-nav-msg-btn mobile-nav-msg-max" href="${maxHref()}" target="_blank" rel="noopener" data-goal="click_max" aria-label="Открыть MAX">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg>
+        <span>MAX</span>
+      </a>`
+    : '';
+
+  const msgBtns = [waBtn, tgBtn, maxBtn].filter(Boolean).join('');
+
+  return `<div class="mobile-nav-contacts">
+    <div class="mobile-nav-contacts-title">Быстрая связь</div>
+    ${phoneBtn}
+    ${msgBtns ? `<div class="mobile-nav-messengers">${msgBtns}</div>` : ''}
+  </div>`;
 }
 
 function footer() {

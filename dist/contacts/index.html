@@ -45,7 +45,28 @@
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-nav-toggle>
       <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
     </button>
-    <nav class="main-nav" id="main-nav" data-nav><a href="/#services">Услуги</a><a href="/#works">Работы</a><a href="/#prices">Цены</a><a href="/#complex">Комплекс</a><a href="/#organizations">Для организаций</a><a href="/#faq">FAQ</a><a href="/#contacts">Контакты</a></nav>
+    <nav class="main-nav" id="main-nav" data-nav><a class="nav-link" href="/#services">Услуги</a><a class="nav-link" href="/#works">Работы</a><a class="nav-link" href="/#prices">Цены</a><a class="nav-link" href="/#complex">Комплекс</a><a class="nav-link" href="/#organizations">Для организаций</a><a class="nav-link" href="/#faq">FAQ</a><a class="nav-link" href="/#contacts">Контакты</a><div class="mobile-nav-contacts">
+    <div class="mobile-nav-contacts-title">Быстрая связь</div>
+    <a class="mobile-nav-phone-btn" href="tel:+79998081951" data-goal="click_phone">
+        <svg class="mobile-nav-phone-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        <span class="mobile-nav-phone-content">
+          <span class="mobile-nav-phone-num">8 999 808 19 51</span>
+          <span class="mobile-nav-phone-hours">с 09:00 до 21:00</span>
+        </span>
+      </a>
+    <div class="mobile-nav-messengers"><a class="mobile-nav-msg-btn mobile-nav-msg-wa" href="https://wa.me/79998081951" target="_blank" rel="noopener" data-goal="click_whatsapp" aria-label="Написать в WhatsApp">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg>
+        <span>WhatsApp</span>
+      </a><a class="mobile-nav-msg-btn mobile-nav-msg-tg" href="https://t.me/Romatran" target="_blank" rel="noopener" data-goal="click_telegram" aria-label="Написать в Telegram">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        <span>Telegram</span>
+      </a><a class="mobile-nav-msg-btn mobile-nav-msg-max" href="https://max.ru/u/f9LHodD0cOK2FZjOMiAfkiTAhKQ6WCesY4Z-rjekiEr9SGF4LtEmUHaAKws" target="_blank" rel="noopener" data-goal="click_max" aria-label="Открыть MAX">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg>
+        <span>MAX</span>
+      </a></div>
+  </div></nav>
     <div class="header-actions">
       <div class="header-contact"><a class="phone-link" href="tel:+79998081951" data-goal="click_phone"><svg class="phone-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>8 999 808 19 51</span></a><span class="header-hours">с 09:00 до 21:00</span></div>
       <a class="btn btn-small btn-accent" href="#lead-form" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать стоимость</a>

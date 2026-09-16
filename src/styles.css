@@ -325,6 +325,10 @@ body {
   transform: scaleX(1);
 }
 
+.mobile-nav-contacts {
+  display: none;
+}
+
 .header-actions {
   display: flex;
   align-items: center;
@@ -433,20 +437,146 @@ body {
     overflow-y: auto;
   }
 
-  .main-nav.is-open a {
+  .main-nav.is-open .nav-link,
+  .main-nav.is-open > a:not([class*="mobile-nav"]) {
     padding: 12px 0;
     font-size: 1.1rem;
     color: var(--graphite);
     border-bottom: 1px solid var(--line);
   }
 
-  .main-nav.is-open a:hover {
+  .main-nav.is-open .nav-link:hover,
+  .main-nav.is-open > a:not([class*="mobile-nav"]):hover {
     color: var(--green-700);
     background: transparent;
   }
 
-  .main-nav.is-open a::after {
+  .main-nav.is-open .nav-link::after,
+  .main-nav.is-open > a:not([class*="mobile-nav"])::after {
     display: none;
+  }
+
+  .main-nav.is-open .mobile-nav-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1.5px solid var(--line);
+    flex-shrink: 0;
+  }
+
+  .mobile-nav-contacts-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  .mobile-nav-phone-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 10px 14px;
+    background: var(--green-900);
+    color: var(--white) !important;
+    border: none !important;
+    border-radius: 10px;
+    text-decoration: none !important;
+    box-shadow: 0 4px 12px rgba(18, 53, 38, 0.18);
+    transition: background 0.18s ease, transform 0.15s ease;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .mobile-nav-phone-btn:hover,
+  .mobile-nav-phone-btn:active {
+    background: var(--green-800);
+    color: var(--white) !important;
+    transform: translateY(-1px);
+  }
+
+  .mobile-nav-phone-icon {
+    flex-shrink: 0;
+    color: #34d399;
+  }
+
+  .mobile-nav-phone-content {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .mobile-nav-phone-num {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--white);
+    white-space: nowrap;
+  }
+
+  .mobile-nav-phone-hours {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.2;
+    margin-top: 2px;
+  }
+
+  .mobile-nav-messengers {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .mobile-nav-msg-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 46px;
+    min-width: 0;
+    padding: 8px 4px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    border: none !important;
+    transition: transform 0.15s ease, filter 0.15s ease;
+    white-space: nowrap;
+    box-sizing: border-box;
+  }
+
+  .mobile-nav-msg-btn:hover,
+  .mobile-nav-msg-btn:active {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+  }
+
+  .mobile-nav-msg-btn svg {
+    flex-shrink: 0;
+  }
+
+  .mobile-nav-msg-wa {
+    background: #25d366;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.28);
+  }
+
+  .mobile-nav-msg-tg {
+    background: #229ed9;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(34, 158, 217, 0.28);
+  }
+
+  .mobile-nav-msg-max {
+    background: #5b4bdf;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(91, 75, 223, 0.28);
   }
 }
 
@@ -520,14 +650,17 @@ body {
     flex-direction: column;
     width: 100%;
     height: calc(100vh - 60px);
-    padding: 32px 20px;
+    height: calc(100dvh - 60px);
+    padding: 24px 20px calc(env(safe-area-inset-bottom, 0px) + 24px);
     background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .main-nav.is-open a {
+  .main-nav.is-open .nav-link,
+  .main-nav.is-open > a:not([class*="mobile-nav"]) {
     font-size: 1.25rem;
     padding: 12px 0;
     color: var(--graphite);
@@ -5303,6 +5436,27 @@ body.has-modal-open {
 
   .header-contact .header-hours {
     display: none;
+  }
+
+  .mobile-nav-phone-num {
+    font-size: 0.95rem;
+  }
+
+  .mobile-nav-messengers {
+    gap: 6px;
+  }
+
+  .mobile-nav-msg-btn {
+    flex-direction: column;
+    font-size: 0.72rem;
+    gap: 2px;
+    padding: 6px 2px;
+    min-height: 48px;
+  }
+
+  .mobile-nav-msg-btn svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
