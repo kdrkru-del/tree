@@ -439,10 +439,14 @@ body {
 
   .main-nav.is-open .nav-link,
   .main-nav.is-open > a:not([class*="mobile-nav"]) {
-    padding: 12px 0;
-    font-size: 1.1rem;
+    padding: 10px 0;
+    font-size: 1.05rem;
     color: var(--graphite);
     border-bottom: 1px solid var(--line);
+  }
+
+  .main-nav.is-open .nav-link--desktop-only {
+    display: none !important;
   }
 
   .main-nav.is-open .nav-link:hover,
@@ -460,8 +464,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 20px;
-    padding-top: 18px;
+    margin-top: 14px;
+    padding-top: 14px;
     border-top: 1.5px solid var(--line);
     flex-shrink: 0;
   }
@@ -651,7 +655,7 @@ body {
     width: 100%;
     height: calc(100vh - 60px);
     height: calc(100dvh - 60px);
-    padding: 24px 20px calc(env(safe-area-inset-bottom, 0px) + 24px);
+    padding: 16px 20px calc(env(safe-area-inset-bottom, 0px) + 20px);
     background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -661,10 +665,16 @@ body {
 
   .main-nav.is-open .nav-link,
   .main-nav.is-open > a:not([class*="mobile-nav"]) {
-    font-size: 1.25rem;
-    padding: 12px 0;
+    font-size: 1.15rem;
+    padding: 9px 0;
     color: var(--graphite);
     border-bottom: 1px solid var(--line);
+  }
+
+  .main-nav.is-open .mobile-nav-contacts {
+    margin-top: 12px;
+    padding-top: 12px;
+    gap: 8px;
   }
 }
 
@@ -2222,6 +2232,49 @@ details p {
   font-size: 1.25rem;
   color: var(--white);
   margin-bottom: 8px;
+}
+
+.footer-messengers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 14px;
+}
+
+.footer-msg-btn {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin-bottom: 0 !important;
+  transition: all 0.2s ease;
+}
+
+.footer-msg-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.footer-msg-wa svg {
+  color: #25d366;
+}
+
+.footer-msg-tg svg {
+  color: #29b6f6;
+}
+
+.footer-msg-max svg {
+  color: #ffb066;
 }
 
 .footer-bottom {

@@ -141,7 +141,11 @@ function header(leadHref) {
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-nav-toggle>
       <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
     </button>
-    <nav class="main-nav" id="main-nav" data-nav>${nav.map((item) => `<a class="nav-link" href="${item.href}">${esc(item.label)}</a>`).join('')}${mobileNavContacts()}</nav>
+    <nav class="main-nav" id="main-nav" data-nav>${nav.map((item) => {
+      const desktopOnly = item.label === 'Комплекс' || item.label === 'FAQ';
+      const cls = desktopOnly ? 'nav-link nav-link--desktop-only' : 'nav-link';
+      return `<a class="${cls}" href="${item.href}">${esc(item.label)}</a>`;
+    }).join('')}${mobileNavContacts()}</nav>
     <div class="header-actions">
       ${phoneEl ? `<div class="header-contact">${phoneEl}</div>` : ''}
       <a class="btn btn-small btn-accent" href="${leadHref}" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать стоимость</a>
@@ -194,9 +198,27 @@ function mobileNavContacts() {
 }
 
 function footer() {
-  const phoneEl = hasValue(site.phone) ? `<a class="phone-link" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : '';
-  const emailEl = hasValue(site.email) ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : '';
-  const messengerEl = hasValue(site.messengerUrl) ? `<a href="${messengerHref('/#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : '';
+  const phoneEl = hasValue(site.phone) ? `<a class="phone-link footer-phone" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : '';
+  const emailEl = hasValue(site.email) ? `<a class="footer-email" href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : '';
+  const waBtn = hasValue(site.messengerUrl)
+    ? `<a class="footer-msg-btn footer-msg-wa" href="${messengerHref('/#lead-form')}" target="_blank" rel="noopener" data-goal="click_whatsapp">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg>
+        <span>WhatsApp</span>
+      </a>`
+    : '';
+  const tgBtn = hasValue(site.telegramUrl)
+    ? `<a class="footer-msg-btn footer-msg-tg" href="${telegramHref('/#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        <span>Telegram</span>
+      </a>`
+    : '';
+  const maxBtn = hasValue(site.maxUrl)
+    ? `<a class="footer-msg-btn footer-msg-max" href="${maxHref('/#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg>
+        <span>MAX</span>
+      </a>`
+    : '';
+  const msgRow = [waBtn, tgBtn, maxBtn].filter(Boolean).join('');
   return `<footer class="site-footer" id="contacts">
   <div class="container footer-grid">
     <div>
@@ -205,7 +227,13 @@ function footer() {
       <p class="muted">${esc(site.addressNote)}</p>
     </div>
     <div><h2>Услуги</h2>${services.slice(0, 7).map((service) => `<a href="/${service.slug}/">${esc(service.title)}</a>`).join('')}</div>
-    <div><h2>Контакты</h2>${phoneEl}${emailEl}${messengerEl}<p class="call-note">В целях контроля качества разговор может быть записан.</p></div>
+    <div>
+      <h2>Контакты</h2>
+      ${phoneEl}
+      ${msgRow ? `<div class="footer-messengers" aria-label="Мессенджеры">${msgRow}</div>` : ''}
+      ${emailEl}
+      <p class="call-note">В целях контроля качества разговор может быть записан.</p>
+    </div>
   </div>
   <div class="container footer-bottom"><span>© ${new Date().getFullYear()} ${esc(site.brand)}</span><a href="/privacy/">Политика конфиденциальности</a><a href="/personal-data-consent/">Согласие на обработку данных</a><a href="/requisites/">Реквизиты</a><a href="https://voltrena.ru" target="_blank" rel="noopener" style="color: #6ee7b7; text-decoration: underline; text-underline-offset: 3px;">Создание и продвижение: voltrena.ru</a></div>
 </footer>`;
@@ -311,17 +339,18 @@ export function homePage() {
 
 function heroSection() {
   return `<section class="hero hero-direct" id="hero">
-  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев и расчистка участков в Москве и МО" fetchpriority="high">
+  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев, расчистка участков, корчевание пней и измельчение веток" fetchpriority="high">
   <div class="hero-shade"></div>
   <div class="container hero-content">
     <div class="hero-copy">
       <p class="hero-badge">Москва и Московская область • Работаем ежедневно</p>
-      <h1>Спил деревьев и&nbsp;расчистка участков в&nbsp;Москве и&nbsp;МО</h1>
-      <p class="hero-lead">Удаляем деревья целиком и по частям возле домов, заборов и проводов. Рассчитаем стоимость по фото до начала работ.</p>
+      <h1>Спил деревьев, расчистка участков, корчевание пней и&nbsp;измельчение веток</h1>
+      <p class="hero-lead">Безопасно удаляем деревья любой сложности, дробим пни и перерабатываем ветки в щепу. Фиксированная смета по фото до выезда, договор и материальная ответственность.</p>
 
       <div class="hero-price-anchors" aria-label="Стартовые ценовые ориентиры">
         <a href="#spil" class="hero-price-pill"><span>Спил дерева</span><strong>от 1 000 ₽</strong></a>
         <a href="#raschistka" class="hero-price-pill"><span>Расчистка участка</span><strong>от 5 000 ₽</strong></a>
+        <a href="#korchevanie" class="hero-price-pill"><span>Корчевание пней</span><strong>от 1 500 ₽</strong></a>
         <a href="#izmelchenie" class="hero-price-pill"><span>Измельчение веток</span><strong>от 2 500 ₽</strong></a>
       </div>
 
@@ -343,11 +372,11 @@ function heroSection() {
       <div class="hero-trust-line" aria-label="Преимущества">
         <span>10 лет опыта</span>
         <span class="trust-dot">·</span>
-        <span>1000+ заказов</span>
+        <span>1000+ объектов</span>
         <span class="trust-dot">·</span>
-        <span>Цена фиксируется</span>
+        <span>Своя спецтехника</span>
         <span class="trust-dot">·</span>
-        <span>Оплата после работ</span>
+        <span>Оплата по факту</span>
       </div>
       <p class="hero-cta-note">Для предварительной оценки отправьте фотографию дерева и контактный номер.</p>
     </div>
@@ -499,7 +528,7 @@ function mainServicesSection() {
       <p>Выполняем работы любой сложности на частных и коммерческих объектах в Москве и Московской области.</p>
     </div>
     <div class="main-services-grid">
-      ${mainCards.map((c) => `<article class="main-service-card" id="${esc(c.id)}">
+      ${mainCards.map((c) => `<article class="main-service-card" id="${esc(c.id)}">${c.id === 'pni' ? '<span id="korchevanie" class="anchor-target" aria-hidden="true"></span>' : ''}
         <div class="main-service-image">
           <img src="${esc(c.image)}" alt="${esc(c.title)}" width="1024" height="768" loading="lazy">
           <span class="main-service-price">${esc(c.price)}</span>
