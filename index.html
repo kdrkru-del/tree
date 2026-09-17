@@ -46,7 +46,7 @@
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-nav-toggle>
       <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
     </button>
-    <nav class="main-nav" id="main-nav" data-nav><a class="nav-link" href="/#services">Услуги</a><a class="nav-link" href="/#works">Работы</a><a class="nav-link" href="/#prices">Цены</a><a class="nav-link" href="/#complex">Комплекс</a><a class="nav-link" href="/#organizations">Для организаций</a><a class="nav-link" href="/#faq">FAQ</a><a class="nav-link" href="/#contacts">Контакты</a><div class="mobile-nav-contacts">
+    <nav class="main-nav" id="main-nav" data-nav><a class="nav-link" href="/#services">Услуги</a><a class="nav-link" href="/#works">Работы</a><a class="nav-link" href="/#prices">Цены</a><a class="nav-link nav-link--desktop-only" href="/#complex">Комплекс</a><a class="nav-link" href="/#organizations">Для организаций</a><a class="nav-link nav-link--desktop-only" href="/#faq">FAQ</a><a class="nav-link" href="/#contacts">Контакты</a><div class="mobile-nav-contacts">
     <div class="mobile-nav-contacts-title">Быстрая связь</div>
     <a class="mobile-nav-phone-btn" href="tel:+79998081951" data-goal="click_phone">
         <svg class="mobile-nav-phone-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
@@ -76,17 +76,18 @@
 </header>
   <main id="main">
   <section class="hero hero-direct" id="hero">
-  <img class="hero-bg" src="/assets/hero-bg.jpg" alt="Спил деревьев и расчистка участков в Москве и МО" fetchpriority="high">
+  <img class="hero-bg" src="/assets/hero-bg.jpg" alt="Спил деревьев, расчистка участков, корчевание пней и измельчение веток" fetchpriority="high">
   <div class="hero-shade"></div>
   <div class="container hero-content">
     <div class="hero-copy">
       <p class="hero-badge">Москва и Московская область • Работаем ежедневно</p>
-      <h1>Спил деревьев и&nbsp;расчистка участков в&nbsp;Москве и&nbsp;МО</h1>
-      <p class="hero-lead">Удаляем деревья целиком и по частям возле домов, заборов и проводов. Рассчитаем стоимость по фото до начала работ.</p>
+      <h1>Спил деревьев, расчистка участков, корчевание пней и&nbsp;измельчение веток</h1>
+      <p class="hero-lead">Безопасно удаляем деревья любой сложности, дробим пни и перерабатываем ветки в щепу. Фиксированная смета по фото до выезда, договор и материальная ответственность.</p>
 
       <div class="hero-price-anchors" aria-label="Стартовые ценовые ориентиры">
         <a href="#spil" class="hero-price-pill"><span>Спил дерева</span><strong>от 1 000 ₽</strong></a>
         <a href="#raschistka" class="hero-price-pill"><span>Расчистка участка</span><strong>от 5 000 ₽</strong></a>
+        <a href="#korchevanie" class="hero-price-pill"><span>Корчевание пней</span><strong>от 1 500 ₽</strong></a>
         <a href="#izmelchenie" class="hero-price-pill"><span>Измельчение веток</span><strong>от 2 500 ₽</strong></a>
       </div>
 
@@ -108,11 +109,11 @@
       <div class="hero-trust-line" aria-label="Преимущества">
         <span>10 лет опыта</span>
         <span class="trust-dot">·</span>
-        <span>1000+ заказов</span>
+        <span>1000+ объектов</span>
         <span class="trust-dot">·</span>
-        <span>Цена фиксируется</span>
+        <span>Своя спецтехника</span>
         <span class="trust-dot">·</span>
-        <span>Оплата после работ</span>
+        <span>Оплата по факту</span>
       </div>
       <p class="hero-cta-note">Для предварительной оценки отправьте фотографию дерева и контактный номер.</p>
     </div>
@@ -253,7 +254,7 @@
             <a class="main-service-link-more" href="/izmelchenie-vetok/">Подробнее об услуге →</a>
           </div>
         </div>
-      </article><article class="main-service-card" id="pni">
+      </article><article class="main-service-card" id="pni"><span id="korchevanie" class="anchor-target" aria-hidden="true"></span>
         <div class="main-service-image">
           <img src="/assets/droblenie-main.png" alt="Дробление и удаление пней" width="1024" height="768" loading="lazy">
           <span class="main-service-price">от 1 500 ₽</span>
@@ -614,7 +615,22 @@
       <p class="muted">Работы выполняются на территории заказчика.</p>
     </div>
     <div><h2>Услуги</h2><a href="/spil-derevev/">Спил и удаление деревьев</a><a href="/obrezka-derevev/">Обрезка деревьев</a><a href="/udalenie-avariynyh-derevev/">Удаление аварийных деревьев</a><a href="/udalenie-suhih-derevev/">Удаление сухих деревьев</a><a href="/spil-derevev-po-chastyam/">Спил деревьев по частям</a><a href="/korchevanie-pney/">Корчевание пней</a><a href="/droblenie-pney/">Дробление пней</a></div>
-    <div><h2>Контакты</h2><a class="phone-link" href="tel:+79998081951" data-goal="click_phone">8 999 808 19 51</a><a href="mailto:srez.z@yandex.ru">srez.z@yandex.ru</a><a href="https://wa.me/79998081951" data-goal="click_whatsapp">WhatsApp</a><p class="call-note">В целях контроля качества разговор может быть записан.</p></div>
+    <div>
+      <h2>Контакты</h2>
+      <a class="phone-link footer-phone" href="tel:+79998081951" data-goal="click_phone">8 999 808 19 51</a>
+      <div class="footer-messengers" aria-label="Мессенджеры"><a class="footer-msg-btn footer-msg-wa" href="https://wa.me/79998081951" target="_blank" rel="noopener" data-goal="click_whatsapp">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg>
+        <span>WhatsApp</span>
+      </a><a class="footer-msg-btn footer-msg-tg" href="https://t.me/Romatran" target="_blank" rel="noopener" data-goal="click_telegram">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        <span>Telegram</span>
+      </a><a class="footer-msg-btn footer-msg-max" href="https://max.ru/u/f9LHodD0cOK2FZjOMiAfkiTAhKQ6WCesY4Z-rjekiEr9SGF4LtEmUHaAKws" target="_blank" rel="noopener" data-goal="click_max">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg>
+        <span>MAX</span>
+      </a></div>
+      <a class="footer-email" href="mailto:srez.z@yandex.ru">srez.z@yandex.ru</a>
+      <p class="call-note">В целях контроля качества разговор может быть записан.</p>
+    </div>
   </div>
   <div class="container footer-bottom"><span>© 2026 Зеленый Срез</span><a href="/privacy/">Политика конфиденциальности</a><a href="/personal-data-consent/">Согласие на обработку данных</a><a href="/requisites/">Реквизиты</a><a href="https://voltrena.ru" target="_blank" rel="noopener" style="color: #6ee7b7; text-decoration: underline; text-underline-offset: 3px;">Создание и продвижение: voltrena.ru</a></div>
 </footer>
