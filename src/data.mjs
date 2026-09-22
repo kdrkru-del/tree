@@ -19,7 +19,8 @@ export const site = {
   metrikaId: 111453743,
   leadEndpoint: 'https://zelsrez-leads.roman-k-0b3.workers.dev',
   novofonScriptUrl: '',
-  mailruDomainVerification: 'f9rjz68ZHMUYn266'
+  mailruDomainVerification: 'f9rjz68ZHMUYn266',
+  yandexVerification: 'd04a7ff6136f9d5a'
 };
 
 export const nav = [

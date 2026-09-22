@@ -88,6 +88,9 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   const mailruMeta = (path === '/' && site.mailruDomainVerification)
     ? `\n  <meta name="mailru-domain" content="${esc(site.mailruDomainVerification)}" />`
     : '';
+  const yandexMeta = (path === '/' && site.yandexVerification)
+    ? `\n  <meta name="yandex-verification" content="${esc(site.yandexVerification)}" />`
+    : '';
   return `<!doctype html>
 <html lang="ru">
 <head>
@@ -95,7 +98,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${esc(fullTitle)}</title>
   <meta name="description" content="${esc(description)}">
-  <link rel="canonical" href="${esc(canonical)}">${mailruMeta}
+  <link rel="canonical" href="${esc(canonical)}">${mailruMeta}${yandexMeta}
   <meta property="og:type" content="website">
   <meta property="og:title" content="${esc(fullTitle)}">
   <meta property="og:description" content="${esc(description)}">

@@ -9,7 +9,9 @@ function walk(dir) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const file = path.join(dir, entry.name);
     if (entry.isDirectory()) walk(file);
-    if (entry.isFile() && entry.name.endsWith('.html')) htmlFiles.push(file);
+    if (entry.isFile() && entry.name.endsWith('.html') && !entry.name.startsWith('yandex_') && !entry.name.startsWith('google')) {
+      htmlFiles.push(file);
+    }
   }
 }
 

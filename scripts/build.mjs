@@ -1,4 +1,4 @@
-import { mkdir, rm, writeFile, copyFile } from 'node:fs/promises';
+import { mkdir, rm, writeFile, copyFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { clearingVideos, complexVideos, legalPages, services, site } from '../src/data.mjs';
@@ -176,6 +176,13 @@ Allow: /
 Sitemap: ${site.baseUrl}/sitemap.xml
 `, 'utf8');
   await writeFile(path.join(dist, 'CNAME'), 'zelsrez.ru\n', 'utf8');
+
+  const rootEntries = await readdir(root, { withFileTypes: true });
+  for (const entry of rootEntries) {
+    if (entry.isFile() && (entry.name.startsWith('yandex_') || entry.name.startsWith('google'))) {
+      await copyFile(path.join(root, entry.name), path.join(dist, entry.name));
+    }
+  }
 
   console.log(`Built ${routes.length} pages into ${path.relative(root, dist)}`);
 }
