@@ -61,7 +61,8 @@ export const images = Object.fromEntries(
   Object.entries(mediaFiles).map(([key, item]) => [key, commonsFile(item.file, item.width ?? 1200)])
 );
 
-images.hero = '/assets/hero-bg.jpg';
+images.hero = '/assets/hero-bg.webp';
+images.heroMobile = '/assets/hero-bg-mobile.webp';
 images.spil = '/assets/spil-main.jpg';
 images.pruning = '/assets/obrezka-main.jpg';
 images.emergency = '/assets/avarijnoe-main.jpg';

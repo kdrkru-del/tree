@@ -339,7 +339,7 @@ export function homePage() {
 
 function heroSection() {
   return `<section class="hero hero-direct" id="hero">
-  <img class="hero-bg" src="${esc(images.hero)}" alt="Спил деревьев, расчистка участков, корчевание пней и измельчение веток" fetchpriority="high">
+  <img class="hero-bg" src="${esc(images.hero)}" srcset="${esc(images.heroMobile)} 800w, ${esc(images.hero)} 1920w" sizes="100vw" alt="Спил деревьев, расчистка участков, корчевание пней и измельчение веток" fetchpriority="high">
   <div class="hero-shade"></div>
   <div class="container hero-content">
     <div class="hero-copy">
@@ -1740,7 +1740,35 @@ function organizationSchema() {
 }
 
 function professionalServiceSchema() {
-  return { '@context': 'https://schema.org', '@type': 'ProfessionalService', name: site.brand, areaServed: ['Москва', 'Московская область'], telephone: hasValue(site.phone) ? site.phone : undefined, url: site.baseUrl, description: 'Спил, удаление, обрезка деревьев, корчевание пней и расчистка участков.' };
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: site.brand,
+    image: pathUrl('/assets/logo-zelenyi-srez.png'),
+    url: site.baseUrl,
+    telephone: hasValue(site.phone) ? site.phone : undefined,
+    email: hasValue(site.email) ? site.email : undefined,
+    priceRange: '1000 - 150000 RUB',
+    description: 'Спил, удаление, обрезка деревьев, корчевание пней и расчистка участков в Москве и Московской области.',
+    areaServed: [
+      { '@type': 'City', name: 'Москва' },
+      { '@type': 'AdministrativeArea', name: 'Московская область' }
+    ],
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Москва',
+      addressRegion: 'Московская область',
+      addressCountry: 'RU'
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        opens: '09:00',
+        closes: '21:00'
+      }
+    ]
+  };
 }
 
 function serviceSchema(service, path) {
