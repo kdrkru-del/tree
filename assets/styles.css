@@ -4150,6 +4150,7 @@ body:not(.motion-ready) .reveal-item {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  min-height: 42px;
   background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -4159,6 +4160,7 @@ body:not(.motion-ready) .reveal-item {
   color: var(--white);
   transition: all 0.2s ease;
   font-size: 0.9rem;
+  box-sizing: border-box;
 }
 
 .hero-price-pill span {
@@ -5269,20 +5271,22 @@ body.has-modal-open {
   .hero-price-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 14px;
     border-radius: 8px;
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     line-height: 1.2;
     background: rgba(255, 255, 255, 0.1);
+    box-sizing: border-box;
   }
 
   .hero-price-pill span {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
   }
 
   .hero-price-pill strong {
-    font-size: 0.85rem;
+    font-size: 0.88rem;
   }
 
   .hero-direct .hero-actions {
@@ -5377,8 +5381,10 @@ body.has-modal-open {
 
   .header-contact .phone-link {
     font-size: 0.80rem;
-    gap: 3px;
-    padding: 2px 4px;
+    gap: 4px;
+    padding: 6px 6px;
+    min-height: 36px;
+    box-sizing: border-box;
   }
 
   .header-contact .phone-icon {
@@ -5429,17 +5435,19 @@ body.has-modal-open {
   }
 
   .hero-price-pill {
-    padding: 4px 8px;
-    font-size: 0.78rem;
-    gap: 4px;
+    min-height: 40px;
+    padding: 7px 11px;
+    font-size: 0.82rem;
+    gap: 6px;
+    box-sizing: border-box;
   }
 
   .hero-price-pill span {
-    font-size: 0.75rem;
+    font-size: 0.80rem;
   }
 
   .hero-price-pill strong {
-    font-size: 0.8rem;
+    font-size: 0.86rem;
   }
 
   .hero-direct .hero-actions {
