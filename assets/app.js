@@ -232,6 +232,24 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     localStorage.setItem(key, JSON.stringify(errors.slice(-30)));
   }
 
+  function syncErrorFallback(errorEl, payload) {
+    if (!errorEl || !payload) return;
+    const phone = payload.phone || (payload.fields && payload.fields.phone) || '';
+    const name = payload.name || (payload.fields && payload.fields.name) || '';
+    const service = payload.service || (payload.fields && payload.fields.service) || 'Спил деревьев';
+    const textMsg = encodeURIComponent(
+      `Здравствуйте! Заявка с сайта zelsrez.ru:\n• Услуга: ${service}\n• Телефон: ${phone}${name ? `\n• Имя: ${name}` : ''}`
+    );
+    const waLink = errorEl.querySelector('.form-error-wa');
+    if (waLink && config.messengerUrl) {
+      waLink.href = `${config.messengerUrl}?text=${textMsg}`;
+    }
+    const tgLink = errorEl.querySelector('.form-error-tg');
+    if (tgLink && config.telegramUrl) {
+      tgLink.href = `${config.telegramUrl}?text=${textMsg}`;
+    }
+  }
+
   /* ─── ЕДИНЫЙ ОБРАБОТЧИК ВСЕХ ФОРМ ─── */
   function initLeadForms() {
     const utm = getUtm();
@@ -333,6 +351,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         if (name) payload.name = name;
 
         saveLead(payload);
+        reachGoal('lead_form_submit', { form: formId, service });
 
         // UI: загрузка
         submitBtn.disabled = true;
@@ -358,7 +377,11 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
 
         } catch (error) {
           saveError({ at: new Date().toISOString(), message: error.message, payload });
-          if (errorEl) errorEl.hidden = false;
+          reachGoal('lead_delivery_error', { form: formId, message: error.message });
+          if (errorEl) {
+            errorEl.hidden = false;
+            syncErrorFallback(errorEl, payload);
+          }
         } finally {
           form.dataset.submitting = 'false';
           submitBtn.disabled   = false;

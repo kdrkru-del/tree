@@ -63,7 +63,7 @@ export async function deliverLead(endpoint, payload, files = [], fetchImpl = glo
   }
 
   const request = buildLeadRequest(payload, files);
-  const waitMs = Number.isFinite(timeoutMs) ? timeoutMs : (files.length ? 60000 : 20000);
+  const waitMs = Number.isFinite(timeoutMs) ? timeoutMs : (files.length ? 60000 : 10000);
   const controller = typeof AbortController === 'function' ? new AbortController() : null;
   const timeout = controller && waitMs > 0
     ? setTimeout(() => controller.abort(), waitMs)
