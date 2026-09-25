@@ -258,6 +258,18 @@ function mobileBar() {
   return `<div class="mobile-action-bar" aria-label="Быстрые действия">${callBtn}${calcBtn}</div>`;
 }
 
+function formErrorMarkup(customClass = '') {
+  const cls = customClass ? ` ${customClass}` : '';
+  return `<div class="form-error${cls}" data-form-error hidden>
+    <div class="form-error-title">Не удалось отправить заявку через сервер. Попробуйте ещё раз или свяжитесь с нами напрямую:</div>
+    <div class="form-error-actions">
+      <a href="${esc(site.phoneHref)}" class="form-error-btn form-error-call" data-goal="click_phone">📞 Позвонить: ${esc(site.phone)}</a>
+      <a href="${esc(site.messengerUrl)}" target="_blank" rel="noopener" class="form-error-btn form-error-wa" data-goal="click_whatsapp">Написать в WhatsApp</a>
+      <a href="${esc(site.telegramUrl)}" target="_blank" rel="noopener" class="form-error-btn form-error-tg" data-goal="click_telegram">Написать в Telegram</a>
+    </div>
+  </div>`;
+}
+
 function photoModal() {
   return `<div class="photo-popup-overlay" id="calc-popup" data-calc-popup aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="popup-title">
   <div class="photo-popup-backdrop" data-popup-close tabindex="-1"></div>
@@ -306,7 +318,7 @@ function photoModal() {
             </div>
           </div>
         </div>
-        <div class="form-error" data-form-error hidden>Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
+        ${formErrorMarkup()}
       </form>
     </div>
   </div>
@@ -421,7 +433,7 @@ function heroSection() {
               </div>
             </div>
           </div>
-          <div class="form-error" data-form-error hidden>Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
+          ${formErrorMarkup()}
         </form>
       </div>
     </div>
@@ -733,7 +745,7 @@ function quickLeadSection() {
               </div>
             </div>
           </div>
-          <div class="form-error quick-lead-error" data-form-error hidden>Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
+          ${formErrorMarkup('quick-lead-error')}
         </form>
         ${hasValue(site.messengerUrl) ? `<a class="btn btn-outline" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">Отправить фото в WhatsApp</a>` : ''}
       </div>
@@ -867,7 +879,7 @@ function leadForm(selectedService, options = {}) {
       </div>
     </div>
   </div>
-  <div class="form-error" data-form-error hidden>Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
+  ${formErrorMarkup()}
 </form>`;
 }
 
