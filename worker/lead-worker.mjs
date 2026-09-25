@@ -138,7 +138,13 @@ function leadText(payload, photoCount) {
   const fields = payload.fields;
   const details = splitBranchAfter(fields.comment);
   const isTechuchet = /tehuchet24\.ru/i.test(`${payload.source} ${payload.page}`);
-  const title = isTechuchet ? '<b>🛠 Новая заявка — ТехУчёт</b>' : '<b>🌳 Новая заявка</b>';
+  const isAbandoned = payload.abandoned === true || /брошенн/i.test(fields.comment || '');
+  let title = isTechuchet ? '<b>🛠 Новая заявка — ТехУчёт</b>' : '<b>🌳 Новая заявка</b>';
+  if (isAbandoned) {
+    title = isTechuchet
+      ? '<b>⚠️ БРОШЕННЫЙ ВВОД — ТехУчёт (клиент не нажал «Отправить»)</b>'
+      : '<b>⚠️ БРОШЕННЫЙ ВВОД (клиент не нажал «Отправить»)</b>';
+  }
   const utm = Object.entries(payload.utm)
     .slice(0, 6)
     .map(([key, value]) => `${escapeHtml(clean(key, 60))}=${escapeHtml(clean(value, 120))}`)
