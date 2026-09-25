@@ -12,7 +12,7 @@ export const site = {
   messengerUrl: 'https://wa.me/79998081951',
   maxPhone: '8 999 808 19 51',
   maxUrl: 'https://max.ru/u/f9LHodD0cOK2FZjOMiAfkiTAhKQ6WCesY4Z-rjekiEr9SGF4LtEmUHaAKws',
-  hours: 'с 09:00 до 21:00',
+  hours: 'с 08:00 до 22:00',
   baseUrl: 'https://zelsrez.ru',
   region: 'Москва и Московская область',
   addressNote: 'Работы выполняются на территории заказчика.',
@@ -561,7 +561,7 @@ export const trustGroups = [
     category: 'СКОРОСТЬ',
     items: [
       'Выезд бригады от 2 часов при срочных и аварийных задачах',
-      'Работаем ежедневно с 09:00 до 21:00 без выходных'
+      'Работаем ежедневно с 08:00 до 22:00 без выходных'
     ]
   }
 ];
