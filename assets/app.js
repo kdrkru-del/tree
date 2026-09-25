@@ -297,8 +297,69 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       const errorEl    = form.querySelector('[data-form-error]');
       if (!phoneInput || !submitBtn) return;
 
+      let abandonedTimer = null;
+      const onPhoneEntered = (delayMs = 12000) => {
+        if (form.dataset.submitting === 'true' || form.dataset.submitted === 'true') return;
+        const raw = phoneInput.value.trim();
+        if (!isValidPhone(raw)) return;
+        const norm = normalizePhone(raw);
+        if (sessionStorage.getItem(`tree_abandoned_${norm}`)) return;
+
+        if (abandonedTimer) clearTimeout(abandonedTimer);
+        abandonedTimer = setTimeout(() => {
+          sendAbandoned(norm);
+        }, delayMs);
+      };
+
+      const sendAbandoned = (norm) => {
+        if (form.dataset.submitting === 'true' || form.dataset.submitted === 'true') return;
+        if (sessionStorage.getItem(`tree_abandoned_${norm}`)) return;
+        sessionStorage.setItem(`tree_abandoned_${norm}`, '1');
+
+        const fId = form.dataset.formId || 'form';
+        const srv = form.querySelector('[name="service"]')?.value || 'Спил деревьев';
+        const cName = nameInput ? nameInput.value.trim() : '';
+
+        const abandonedData = {
+          lead_id: createLeadId(),
+          created_at: new Date().toISOString(),
+          source: document.referrer || 'direct',
+          page: window.location.href,
+          entry_page: localStorage.getItem('tree_site_entry_page') || window.location.href,
+          form: fId,
+          utm,
+          phone: norm,
+          service: srv,
+          abandoned: true,
+          fields: {
+            phone: norm,
+            service: srv,
+            name: cName,
+            comment: '⚠️ Брошенный ввод: номер набран в форму, но кнопка «Отправить» не нажата'
+          }
+        };
+        if (cName) abandonedData.name = cName;
+
+        reachGoal('lead_abandoned_captured', { form: fId, service: srv });
+        deliverLead(config.leadEndpoint, abandonedData).catch(() => {});
+      };
+
       phoneInput.addEventListener('input', () => {
         phoneInput.setCustomValidity('');
+        onPhoneEntered(15000);
+      });
+
+      phoneInput.addEventListener('blur', () => {
+        onPhoneEntered(6000);
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+          const raw = phoneInput.value.trim();
+          if (isValidPhone(raw)) {
+            sendAbandoned(normalizePhone(raw));
+          }
+        }
       });
 
       phoneInput.addEventListener('focus', () => {
@@ -310,6 +371,8 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
+        if (abandonedTimer) clearTimeout(abandonedTimer);
+        form.dataset.submitted = 'true';
 
         if (form.dataset.submitting === 'true') return;
 
