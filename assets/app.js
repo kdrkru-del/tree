@@ -255,19 +255,25 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     const utm = getUtm();
 
     document.querySelectorAll('[data-open-form]').forEach((trigger) => {
-      trigger.addEventListener('click', () => {
+      trigger.addEventListener('click', (event) => {
+        const popup = document.querySelector('[data-calc-popup]');
+        if (popup) {
+          event.preventDefault();
+        }
         if (trigger.dataset.service) {
           document.querySelectorAll('[data-lead-form] [name="service"]').forEach((input) => {
             input.value = trigger.dataset.service;
           });
         }
-        const targetHref = trigger.getAttribute('href');
-        if (targetHref && targetHref.startsWith('#')) {
-          const target = document.querySelector(targetHref);
-          if (target) {
-            const phoneInTarget = target.querySelector('[data-phone-input]');
-            if (phoneInTarget) {
-              setTimeout(() => phoneInTarget.focus(), 200);
+        if (!popup) {
+          const targetHref = trigger.getAttribute('href');
+          if (targetHref && targetHref.startsWith('#')) {
+            const target = document.querySelector(targetHref);
+            if (target) {
+              const phoneInTarget = target.querySelector('[data-phone-input]');
+              if (phoneInTarget) {
+                setTimeout(() => phoneInTarget.focus(), 200);
+              }
             }
           }
         }
@@ -454,21 +460,93 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     });
   }
 
+  function initPhoneMasks() {
+    function formatPhone(val) {
+      let digits = val.replace(/\D/g, '');
+      if (!digits.length) return '';
+      if (digits.startsWith('8')) digits = '7' + digits.slice(1);
+      else if (!digits.startsWith('7')) digits = '7' + digits;
+      digits = digits.slice(0, 11);
+
+      let res = '+7 (';
+      if (digits.length > 1) res += digits.slice(1, Math.min(4, digits.length));
+      if (digits.length >= 4) res += ') ' + digits.slice(4, Math.min(7, digits.length));
+      if (digits.length >= 7) res += '-' + digits.slice(7, Math.min(9, digits.length));
+      if (digits.length >= 9) res += '-' + digits.slice(9, 11);
+      return res;
+    }
+
+    document.querySelectorAll('[data-phone-input], input[type="tel"]').forEach((input) => {
+      input.addEventListener('focus', () => {
+        if (!input.value || input.value.trim() === '') {
+          input.value = '+7 (';
+          setTimeout(() => {
+            input.setSelectionRange(input.value.length, input.value.length);
+          }, 0);
+        }
+      });
+
+      input.addEventListener('input', (e) => {
+        const cur = input.value;
+        const digits = cur.replace(/\D/g, '');
+        if (!digits || (digits === '7' && cur.length <= 4)) {
+          if (e.inputType === 'deleteContentBackward' || e.inputType === 'deleteContentForward') {
+            input.value = '';
+            return;
+          }
+        }
+        input.value = formatPhone(cur);
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && input.value.length <= 4) {
+          input.value = '';
+        }
+      });
+
+      input.addEventListener('blur', () => {
+        const digits = input.value.replace(/\D/g, '');
+        if (digits.length <= 1) {
+          input.value = '';
+        }
+      });
+    });
+  }
+
   function initPhotoPopup() {
     const popup = document.querySelector('[data-calc-popup]');
     if (!popup) return;
 
     let lastActive = null;
 
-    function openPopup() {
+    function openPopup(serviceName) {
       lastActive = document.activeElement;
       popup.classList.add('is-active');
       popup.setAttribute('aria-hidden', 'false');
       document.body.classList.add('has-modal-open');
 
-      const firstAction = popup.querySelector('.popup-action-btn, [data-popup-close]');
-      if (firstAction && typeof firstAction.focus === 'function') {
-        setTimeout(() => firstAction.focus(), 80);
+      if (serviceName) {
+        const srvInput = popup.querySelector('[name="service"]');
+        if (srvInput) srvInput.value = serviceName;
+
+        let matched = false;
+        popup.querySelectorAll('.popup-task-chips [data-set-service]').forEach((chip) => {
+          const isMatch = chip.dataset.setService === serviceName;
+          chip.classList.toggle('is-active', isMatch);
+          if (isMatch) matched = true;
+        });
+        if (!matched) {
+          popup.querySelectorAll('.popup-task-chips [data-set-service]').forEach((chip) => {
+            chip.classList.toggle('is-active', chip.dataset.setService === 'Комплекс / Другое');
+          });
+        }
+      }
+
+      const phoneInput = popup.querySelector('[data-phone-input]');
+      if (phoneInput) {
+        setTimeout(() => {
+          phoneInput.focus();
+        }, 120);
       }
     }
 
@@ -486,7 +564,14 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     document.querySelectorAll('[data-open-popup="calc-popup"]').forEach((trigger) => {
       trigger.addEventListener('click', (e) => {
         e.preventDefault();
-        openPopup();
+        openPopup(trigger.dataset.service);
+      });
+    });
+
+    document.querySelectorAll('[data-open-form]').forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        openPopup(trigger.dataset.service);
       });
     });
 
@@ -500,21 +585,16 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       }
     });
 
-    const togglePhoneBtn = popup.querySelector('[data-popup-toggle-phone]');
-    const phoneForm = popup.querySelector('#popup-lead-form');
-    if (togglePhoneBtn && phoneForm) {
-      togglePhoneBtn.addEventListener('click', () => {
-        const isHidden = phoneForm.hidden;
-        phoneForm.hidden = !isHidden;
-        togglePhoneBtn.setAttribute('aria-expanded', String(isHidden));
-        if (isHidden) {
-          const phoneInput = phoneForm.querySelector('[data-phone-input]');
-          if (phoneInput) {
-            setTimeout(() => phoneInput.focus(), 100);
-          }
+    popup.querySelectorAll('.popup-task-chips [data-set-service]').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        popup.querySelectorAll('.popup-task-chips [data-set-service]').forEach((c) => c.classList.remove('is-active'));
+        chip.classList.add('is-active');
+        const srvInput = popup.querySelector('[name="service"]');
+        if (srvInput) {
+          srvInput.value = chip.dataset.setService;
         }
       });
-    }
+    });
   }
 
   loadIntegrations();
@@ -522,6 +602,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
   initFloatingRail();
   initGoals();
   initHomeAnimations();
+  initPhoneMasks();
   initLeadForms();
   initPhotoPopup();
 })();
