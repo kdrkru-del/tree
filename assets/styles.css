@@ -4164,26 +4164,14 @@ body:not(.motion-ready) .reveal-item {
   padding: 110px 0 70px;
 }
 
-.hero-direct .hero-shade {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, rgba(8, 28, 18, 0.94) 0%, rgba(10, 32, 22, 0.84) 48%, rgba(10, 32, 22, 0.42) 100%),
-              linear-gradient(to top, rgba(6, 22, 14, 0.92) 0%, rgba(6, 22, 14, 0.45) 35%, transparent 65%);
-  z-index: 1;
-}
-
 .hero-direct .hero-content {
-  grid-template-columns: 1fr;
-  max-width: 960px;
-  gap: 0;
+  grid-template-columns: 1.25fr 390px;
+  gap: 48px;
   align-items: center;
 }
 
 .hero-direct .hero-copy {
-  max-width: 940px;
+  max-width: none;
 }
 
 .hero-direct h1 {
@@ -4198,33 +4186,31 @@ body:not(.motion-ready) .reveal-item {
   font-size: 1.18rem;
   line-height: 1.55;
   margin: 0 0 24px;
-  opacity: 0.94;
-  max-width: 780px;
+  opacity: 0.92;
 }
 
 /* Стартовые плашки цен в первом экране */
 .hero-price-anchors {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 10px;
+  gap: 10px;
   margin-bottom: 24px;
-  max-width: 920px;
 }
 
 .hero-price-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 40px;
+  gap: 10px;
+  min-height: 42px;
   background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 100px;
-  padding: 7px 15px;
+  padding: 8px 18px;
   color: var(--white);
   transition: all 0.2s ease;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   box-sizing: border-box;
 }
 
@@ -4250,18 +4236,18 @@ body:not(.motion-ready) .reveal-item {
   flex-direction: column;
   gap: 14px;
   margin-bottom: 22px;
-  max-width: 540px;
+  max-width: 520px;
 }
 
 .hero-actions-primary {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 .hero-actions-primary .btn {
   height: 52px;
-  padding: 0 28px;
+  padding: 0 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
