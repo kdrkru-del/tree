@@ -113,7 +113,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">${wikimediaPreconnect}
-  <link rel="stylesheet" href="/assets/styles.css?v=20260926-hero-popup-1">
+  <link rel="stylesheet" href="/assets/styles.css?v=20260926-hero-popup-2">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   ${metrikaCounter()}
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
@@ -127,7 +127,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${floatingContacts()}
   ${mobileBar(leadHref)}
   ${photoModal()}
-  <script src="/assets/app.js?v=20260926-hero-popup-1" type="module"></script>
+  <script src="/assets/app.js?v=20260926-hero-popup-2" type="module"></script>
 </body>
 </html>`;
 }
@@ -372,12 +372,7 @@ function heroSection() {
         <a href="#izmelchenie" class="hero-price-pill"><span>Измельчение веток</span><strong>от 2 500 ₽</strong></a>
       </div>
 
-      <div class="hero-actions">
-        <div class="hero-actions-primary">
-          <button type="button" class="btn btn-hero-primary" data-open-popup="calc-popup" data-goal="click_calculate">Рассчитать стоимость</button>
-          <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
-        </div>
-        <div class="hero-messengers-compact" aria-label="Написать в мессенджер">
+      <div class="hero-messengers-compact" aria-label="Написать в мессенджер">
           <span class="hero-msgr-label">Написать:</span>
           <div class="hero-msgr-links">
             ${hasValue(site.messengerUrl) ? `<a class="hero-msgr-chip hero-msgr-wa" href="${messengerHref('#calc-popup')}" data-goal="click_whatsapp" title="Написать в WhatsApp"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
@@ -385,7 +380,6 @@ function heroSection() {
             ${hasValue(site.maxUrl) ? `<a class="hero-msgr-chip hero-msgr-max" href="${maxHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_max" title="Открыть профиль в MAX"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg><span>MAX</span></a>` : ''}
           </div>
         </div>
-      </div>
 
       <div class="hero-trust-line" aria-label="Преимущества">
         <span>10 лет опыта</span>

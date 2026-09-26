@@ -4265,6 +4265,7 @@ body:not(.motion-ready) .reveal-item {
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  margin-bottom: 22px;
 }
 
 .hero-msgr-label {
