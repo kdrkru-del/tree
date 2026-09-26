@@ -276,38 +276,34 @@ function photoModal() {
   <div class="photo-popup-dialog">
     <div class="photo-popup-header">
       <div class="photo-popup-titles">
-        <h2 class="photo-popup-title" id="popup-title">Узнать стоимость по фото</h2>
-        <p class="photo-popup-subtitle">Выберите удобный способ связи</p>
+        <h2 class="photo-popup-title" id="popup-title">Рассчитать стоимость работ</h2>
+        <p class="photo-popup-subtitle">Назовём ориентир цены и зафиксируем её до начала работ</p>
       </div>
       <button type="button" class="photo-popup-close" data-popup-close aria-label="Закрыть">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
     </div>
     <div class="photo-popup-body">
-      <div class="photo-popup-actions">
-        <a class="popup-action-btn popup-action-wa" href="https://wa.me/79998081951" target="_blank" rel="noopener" data-goal="click_whatsapp">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg>
-          <span>Отправить фото в WhatsApp</span>
-        </a>
-        <a class="popup-action-btn popup-action-tg" href="https://t.me/Romatran" target="_blank" rel="noopener" data-goal="click_telegram">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-          <span>Отправить фото в Telegram</span>
-        </a>
-        <button type="button" class="popup-action-btn popup-action-phone" data-popup-toggle-phone aria-expanded="false">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <span>Оставить телефон</span>
-        </button>
-      </div>
-      <form class="lead-form popup-lead-form" data-lead-form data-form-id="popup-lead-form" id="popup-lead-form" hidden>
+      <form class="lead-form popup-lead-form" data-lead-form data-form-id="popup-lead-form" id="popup-lead-form">
         <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
-        <input type="hidden" name="service" value="Расчет стоимости по фото">
+        <input type="hidden" name="service" value="Спил деревьев">
         <div data-form-fields>
+          <div class="hero-task-chips popup-task-chips" role="radiogroup" aria-label="Быстрый выбор задачи">
+            <button type="button" class="task-chip is-active" data-set-service="Спил деревьев">Спил</button>
+            <button type="button" class="task-chip" data-set-service="Расчистка участка">Расчистка</button>
+            <button type="button" class="task-chip" data-set-service="Измельчение веток">Ветки</button>
+            <button type="button" class="task-chip" data-set-service="Комплекс / Другое">Другое</button>
+          </div>
+          <div class="lead-field-group">
+            <label class="lead-field-label sr-only" for="popup_name">Ваше имя</label>
+            <input id="popup_name" name="name" type="text" autocomplete="name" placeholder="Ваше имя (необязательно)">
+          </div>
           <div class="lead-field-group">
             <label class="lead-field-label sr-only" for="popup_phone">Номер телефона</label>
             <input id="popup_phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" data-phone-input>
           </div>
-          <button class="btn btn-accent btn-full" type="submit" data-submit-btn>Отправить заявку</button>
-          <p class="popup-photo-note">Перезвоним для уточнения деталей и расчёта</p>
+          <button class="btn btn-accent btn-full" type="submit" data-submit-btn>Получить расчёт</button>
+          <p class="popup-photo-note">Фото можно отправить после заявки через Telegram, WhatsApp или MAX.</p>
         </div>
         <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку данных</a>.</p>
         <div class="form-success" data-form-success hidden>
@@ -315,11 +311,18 @@ function photoModal() {
             <span class="form-success-badge" aria-hidden="true">✓</span>
             <div class="form-success-text">
               <h3 class="form-success-heading">Заявка принята!</h3>
+              <p class="form-success-sub">Специалист свяжется с вами в течение 5–10 минут.</p>
             </div>
           </div>
         </div>
         ${formErrorMarkup()}
       </form>
+      <div class="popup-messengers-divider"><span>или напишите напрямую</span></div>
+      <div class="popup-messenger-row">
+        ${hasValue(site.messengerUrl) ? `<a class="popup-msgr-chip popup-msgr-wa" href="${messengerHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_whatsapp" title="WhatsApp"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
+        ${hasValue(site.telegramUrl) ? `<a class="popup-msgr-chip popup-msgr-tg" href="${telegramHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_telegram" title="Telegram"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
+        ${hasValue(site.maxUrl) ? `<a class="popup-msgr-chip popup-msgr-max" href="${maxHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_max" title="MAX"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg><span>MAX</span></a>` : ''}
+      </div>
     </div>
   </div>
 </div>`;
@@ -371,15 +374,15 @@ function heroSection() {
 
       <div class="hero-actions">
         <div class="hero-actions-primary">
-          <button type="button" class="btn btn-hero-primary" data-open-popup="calc-popup" data-goal="click_calculate">Узнать стоимость по фото</button>
+          <button type="button" class="btn btn-hero-primary" data-open-popup="calc-popup" data-goal="click_calculate">Рассчитать стоимость</button>
           <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
         </div>
         <div class="hero-messengers-compact" aria-label="Написать в мессенджер">
           <span class="hero-msgr-label">Написать:</span>
           <div class="hero-msgr-links">
-            ${hasValue(site.messengerUrl) ? `<a class="hero-msgr-chip hero-msgr-wa" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp" title="Написать в WhatsApp"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
-            ${hasValue(site.telegramUrl) ? `<a class="hero-msgr-chip hero-msgr-tg" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram" title="Написать в Telegram"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
-            ${hasValue(site.maxUrl) ? `<a class="hero-msgr-chip hero-msgr-max" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max" title="Открыть профиль в MAX"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg><span>MAX</span></a>` : ''}
+            ${hasValue(site.messengerUrl) ? `<a class="hero-msgr-chip hero-msgr-wa" href="${messengerHref('#calc-popup')}" data-goal="click_whatsapp" title="Написать в WhatsApp"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
+            ${hasValue(site.telegramUrl) ? `<a class="hero-msgr-chip hero-msgr-tg" href="${telegramHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_telegram" title="Написать в Telegram"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
+            ${hasValue(site.maxUrl) ? `<a class="hero-msgr-chip hero-msgr-max" href="${maxHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_max" title="Открыть профиль в MAX"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg><span>MAX</span></a>` : ''}
           </div>
         </div>
       </div>
@@ -394,48 +397,6 @@ function heroSection() {
         <span>Оплата по факту</span>
       </div>
       <p class="hero-cta-note">Для предварительной оценки отправьте фотографию дерева и контактный номер.</p>
-    </div>
-
-    <div class="hero-form-panel">
-      <div class="hero-form-card">
-        <div class="hero-form-head">
-          <span class="hero-form-badge">Оценка по фото до выезда</span>
-          <h2>Узнайте стоимость работ</h2>
-          <p>Назовём ориентир цены и зафиксируем её до начала работ</p>
-        </div>
-        <form class="lead-form hero-form" data-lead-form data-form-id="hero-lead-form" id="hero-lead-form">
-          <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
-          <input type="hidden" name="service" value="Спил деревьев">
-          <div data-form-fields>
-            <div class="hero-task-chips" role="radiogroup" aria-label="Быстрый выбор задачи">
-              <button type="button" class="task-chip is-active" data-set-service="Спил деревьев">Спил</button>
-              <button type="button" class="task-chip" data-set-service="Расчистка участка">Расчистка</button>
-              <button type="button" class="task-chip" data-set-service="Измельчение веток">Ветки</button>
-              <button type="button" class="task-chip" data-set-service="Комплекс / Другое">Другое</button>
-            </div>
-            <div class="lead-field-group">
-              <label class="lead-field-label sr-only" for="hero_name">Ваше имя</label>
-              <input id="hero_name" name="name" type="text" autocomplete="name" placeholder="Ваше имя (необязательно)">
-            </div>
-            <div class="lead-field-group">
-              <label class="lead-field-label sr-only" for="hero_phone">Номер телефона</label>
-              <input id="hero_phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" data-phone-input>
-            </div>
-            <button class="btn btn-accent btn-full" type="submit" data-submit-btn>Получить расчёт</button>
-            <p class="hero-photo-note">Фото можно отправить после заявки через Telegram, WhatsApp или MAX.</p>
-          </div>
-          <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку данных</a>.</p>
-          <div class="form-success" data-form-success hidden>
-            <div class="form-success-header">
-              <span class="form-success-badge" aria-hidden="true">✓</span>
-              <div class="form-success-text">
-                <h3 class="form-success-heading">Заявка принята!</h3>
-              </div>
-            </div>
-          </div>
-          ${formErrorMarkup()}
-        </form>
-      </div>
     </div>
   </div>
 </section>`;
