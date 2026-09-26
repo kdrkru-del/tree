@@ -119,8 +119,8 @@ test('phone-only forms keep data on errors and never count WhatsApp as delivery'
   assert.match(templates, /Для предварительной оценки отправьте фотографию дерева и контактный номер\./);
   assert.match(templates, /name="service" value="Быстрый расчет"/);
   assert.match(templates, /name="service" value="\$\{esc\(selectedService\)\}"/);
-  assert.match(templates, /app\.js\?v=20260824-metrika-goals-1/);
-  assert.match(source, /lead-delivery\.mjs\?v=20260824-metrika-goals-1/);
+  assert.match(templates, /app\.js\?v=2026/);
+  assert.match(source, /lead-delivery\.mjs\?v=2026/);
 
   const catches = [...source.matchAll(/\} catch \(error\) \{/g)];
   assert.equal(catches.length, 1);
