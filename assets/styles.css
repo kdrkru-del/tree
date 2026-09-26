@@ -4165,13 +4165,14 @@ body:not(.motion-ready) .reveal-item {
 }
 
 .hero-direct .hero-content {
-  grid-template-columns: 1.25fr 390px;
-  gap: 48px;
+  grid-template-columns: 1fr;
+  max-width: 860px;
+  gap: 0;
   align-items: center;
 }
 
 .hero-direct .hero-copy {
-  max-width: none;
+  max-width: 840px;
 }
 
 .hero-direct h1 {
@@ -4236,18 +4237,18 @@ body:not(.motion-ready) .reveal-item {
   flex-direction: column;
   gap: 14px;
   margin-bottom: 22px;
-  max-width: 520px;
+  max-width: 540px;
 }
 
 .hero-actions-primary {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .hero-actions-primary .btn {
   height: 52px;
-  padding: 0 18px;
+  padding: 0 28px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -4518,16 +4519,102 @@ body.has-modal-open {
 }
 
 .popup-lead-form {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid #e5e7eb;
+  margin-top: 4px;
+}
+
+.popup-lead-form .lead-field-group {
+  margin-bottom: 10px;
+}
+
+.popup-lead-form input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 0.95rem;
+  color: var(--graphite);
+  background: #fdfdfd;
+  box-sizing: border-box;
+}
+
+.popup-lead-form input:focus {
+  outline: none;
+  border-color: var(--green-700);
+  box-shadow: 0 0 0 3px rgba(34, 97, 69, 0.15);
+}
+
+.popup-lead-form .btn {
+  height: 48px;
+  font-size: 1.02rem;
 }
 
 .popup-photo-note {
   font-size: 0.78rem;
   color: var(--muted, #6b7280);
-  margin: 6px 0 0;
+  margin: 8px 0 0;
   text-align: center;
+}
+
+.popup-messengers-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 18px 0 12px;
+  color: var(--muted, #6b7280);
+  font-size: 0.82rem;
+}
+
+.popup-messengers-divider::before,
+.popup-messengers-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.popup-messengers-divider span {
+  padding: 0 10px;
+}
+
+.popup-messenger-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
+}
+
+.popup-msgr-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  box-sizing: border-box;
+}
+
+.popup-msgr-chip:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.popup-msgr-wa {
+  background: #25d366;
+  color: #fff;
+}
+
+.popup-msgr-tg {
+  background: #0088cc;
+  color: #fff;
+}
+
+.popup-msgr-max {
+  background: #f3f4f6;
+  color: #1f2937;
+  border: 1px solid #d1d5db;
 }
 
 /* Карточка формы в первом экране */
