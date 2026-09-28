@@ -381,13 +381,15 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         form.dataset.submitted = 'true';
 
         if (form.dataset.submitting === 'true') return;
+        form.dataset.submitting = 'true'; // guard moved up — prevents double-submit
 
         // honeypot
         const hp = form.querySelector('[name="website"]');
-        if (hp && hp.value) return;
+        if (hp && hp.value) { form.dataset.submitting = 'false'; return; }
 
         const rawPhone = phoneInput.value.trim();
         if (!isValidPhone(rawPhone)) {
+          form.dataset.submitting = 'false';
           phoneInput.setCustomValidity('Введите корректный номер телефона');
           phoneInput.reportValidity();
           return;
@@ -395,7 +397,6 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         phoneInput.setCustomValidity('');
 
         const phone = normalizePhone(rawPhone);
-        form.dataset.submitting = 'true';
 
         const leadId  = createLeadId();
         const formId  = form.dataset.formId || 'form';
