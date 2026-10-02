@@ -329,7 +329,7 @@ function photoModal(waText = '') {
             <span class="form-success-badge" aria-hidden="true">✓</span>
             <div class="form-success-text">
               <h3 class="form-success-heading">Заявка принята!</h3>
-              <p class="form-success-sub">Специалист свяжется с вами в течение 5–10 минут.</p>
+              <p class="form-success-sub">Свяжемся после получения заявки для уточнения деталей и расчёта.</p>
             </div>
           </div>
         </div>
@@ -581,7 +581,7 @@ function safetySection() {
         </li>
         <li>
           <strong>Работают обученные арбористы</strong>
-          <p>Специалисты со стажем от 5 до 10 лет, сертифицированное снаряжение Petzl и профессиональные бензопилы.</p>
+          <p>Опытные специалисты, сертифицированное снаряжение и профессиональные бензопилы.</p>
         </li>
       </ul>
       <a class="btn btn-accent" href="#lead-form" data-open-form data-service="Сложный спил дерева" data-goal="click_calculate">Рассчитать безопасный спил</a>
@@ -733,7 +733,7 @@ function seoContentSection() {
     <div class="seo-content-inner">
       <h2>Профессиональные услуги арбористов и расчистка территорий в Москве и МО</h2>
       <p>Компания «Зелёный Срез» специализируется на выполнении безопасных и технически сложных работ с зелёными насаждениями. Мы работаем по всей территории Москвы и Московской области, обслуживая как частные загородные участки, так и территории СНТ, коттеджных посёлков, предприятий и управляющих компаний.</p>
-      <p>Основными направлениями нашей деятельности являются спил и удаление деревьев целиком и по частям, санитарная и омолаживающая обрезка, кронирование, ликвидация последствий ветровала и удаление аварийных деревьев. Для переработки древесных отходов мы используем собственный профессиональный щепорез (измельчитель веток) с оператором, что позволяет уменьшить объём веток в 6–8 раз и сократить расходы на вывоз. Удаление пней выполняется методом фрезерования (дробления) пнедробилкой ниже уровня земли, благодаря чему сохраняется целостность газона и окружающего ландшафта.</p>
+      <p>Основными направлениями нашей деятельности являются спил и удаление деревьев целиком и по частям, санитарная и омолаживающая обрезка, кронирование, ликвидация последствий ветровала и удаление аварийных деревьев. Для переработки древесных отходов мы используем собственный профессиональный щепорез (измельчитель веток) с оператором, что позволяет значительно уменьшить объём веток и сократить расходы на вывоз. Удаление пней выполняется методом фрезерования (дробления) пнедробилкой ниже уровня земли, благодаря чему сохраняется целостность газона и окружающего ландшафта.</p>
       <p>Все работы проводятся строго по договору с закреплением материальной ответственности за сохранность построек, кровли, заборов и коммуникаций. Выезд бригады возможен в день обращения или в согласованное удобное время. Предварительный расчёт стоимости производится по фотографиям до выезда бригады.</p>
     </div>
   </div>
@@ -1108,7 +1108,7 @@ function renderFastLeadForm({ serviceCode, serviceName, formId, title, subtitle,
               <span class="form-success-badge" aria-hidden="true">✓</span>
               <div class="form-success-text">
                 <h3 class="form-success-heading">Заявка принята!</h3>
-                <p class="form-success-sub">Специалист свяжется с вами в течение 5–10 минут для предварительного расчёта.</p>
+                <p class="form-success-sub">Свяжемся после получения заявки для предварительной оценки стоимости.</p>
               </div>
             </div>
             <div class="fast-success-step2-prompt" data-success-step2-prompt>
@@ -1184,7 +1184,7 @@ function renderQuiz({ serviceCode, serviceName, quizId, title, subtitle, steps, 
           <div class="quiz-step quiz-step-final" data-step="${totalSteps}">
             <div class="quiz-question-box">
               <h3 class="quiz-question-title">Куда прислать предварительный расчёт?</h3>
-              <p class="quiz-question-hint">Мастер оценит параметры задачи и свяжется с вами в течение 5–10 минут.</p>
+              <p class="quiz-question-hint">Оценим параметры задачи и свяжемся с вами после получения ответов.</p>
             </div>
             <div class="quiz-final-grid">
               <div class="lead-field-group">
@@ -1218,7 +1218,7 @@ function renderQuiz({ serviceCode, serviceName, quizId, title, subtitle, steps, 
               <span class="form-success-badge" aria-hidden="true">✓</span>
               <div class="form-success-text">
                 <h3 class="form-success-heading">Данные приняты!</h3>
-                <p class="form-success-sub">Специалист анализирует ваши ответы и свяжется с вами в течение 5–10 минут.</p>
+                <p class="form-success-sub">Свяжемся после получения заявки для уточнения деталей и расчёта стоимости.</p>
               </div>
             </div>
             <div class="quiz-success-footer">
@@ -1255,7 +1255,7 @@ export function spilLandingPage(service) {
           <a class="btn btn-hero-primary" href="#quiz-spil" data-goal="click_calculate">Рассчитать стоимость спила</a>
           <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
         </div>
-        ${heroTrustBadges(['✓ 10 лет опыта и 1000+ заказов', '✓ Материальная ответственность по договору'])}
+        ${heroTrustBadges(['✓ Опытные специалисты-арбористы', '✓ Материальная ответственность по договору'])}
       </div>
       <aside class="landing-hero-card" aria-label="Расчёт стоимости спила">
         <div class="landing-hero-media">
@@ -1273,7 +1273,7 @@ export function spilLandingPage(service) {
           <p class="hero-prices-note">Окончательная цена зависит от высоты, диаметра и условий вокруг дерева.</p>
         </div>
         <div class="landing-hero-form-box" id="hero-form-spil">
-          <a class="btn btn-accent btn-full" href="#quiz-spil" data-goal="click_calculate">Пройти онлайн-расчёт за 1 минуту</a>
+          <a class="btn btn-accent btn-full" href="#quiz-spil" data-goal="click_calculate">Пройти онлайн-расчёт стоимости</a>
         </div>
       </aside>
     </div>
@@ -1284,7 +1284,7 @@ export function spilLandingPage(service) {
     serviceName: 'Спил и удаление деревьев',
     formId: 'fast-lead-spil',
     title: 'Быстрый расчёт стоимости спила',
-    subtitle: 'Оставьте номер телефона — мастер свяжется в течение 5–10 минут для предварительной оценки.',
+    subtitle: 'Оставьте номер телефона — свяжемся после получения заявки и предварительно оценим стоимость.',
     submitText: 'Получить расчёт спила',
     commentPlaceholder: 'Укажите породу дерева, примерную высоту или опишите окружение (дом, забор, провода)',
     waText: waDirectTexts.spil
@@ -1490,12 +1490,12 @@ export function emergencyLandingPage(service) {
           <a class="btn btn-hero-primary" href="#quiz-emergency" data-goal="click_calculate">Оценить опасное дерево</a>
           <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
         </div>
-        ${heroTrustBadges(['✓ Срочный выезд бригады от 2 часов', '✓ Материальная ответственность по договору'])}
+        ${heroTrustBadges(['✓ Оперативный выезд бригады', '✓ Материальная ответственность по договору'])}
       </div>
       <aside class="landing-hero-card" aria-label="Оценка опасного дерева">
         <div class="landing-hero-media">
           <img src="/assets/avarijnoe-main.jpg" alt="Удаление опасного аварийного дерева" width="1024" height="768" fetchpriority="high">
-          <span class="landing-hero-tag">Срочный выезд при угрозе падения</span>
+          <span class="landing-hero-tag">Оперативный выезд при угрозе падения</span>
         </div>
         <div class="landing-hero-prices">
           <p class="hero-prices-label">Подтверждённые стартовые цены</p>
@@ -1519,7 +1519,7 @@ export function emergencyLandingPage(service) {
     serviceName: 'Удаление аварийных деревьев',
     formId: 'fast-lead-emergency',
     title: 'Срочная оценка аварийного дерева',
-    subtitle: 'Введите номер телефона — мастер свяжется в течение 5–10 минут для оценки опасности и расчёта.',
+    subtitle: 'Введите номер телефона — свяжемся после получения заявки для оценки опасности и расчёта.',
     submitText: 'Оценить опасное дерево',
     commentPlaceholder: 'Опишите проблему: угол наклона, трещины, нависание над крышей или проводами',
     waText: waDirectTexts.emergency_tree
@@ -1663,7 +1663,7 @@ export function emergencyLandingPage(service) {
   <section class="section section-repeat-cta" id="cta-emergency">
     <div class="container text-center">
       <h2>Опасное дерево на участке? Не рискуйте постройками</h2>
-      <p class="repeat-cta-sub">Сделайте фото с безопасного расстояния и получите предварительный расчёт за 5–10 минут.</p>
+      <p class="repeat-cta-sub">Сделайте фото с безопасного расстояния — предварительно оценим стоимость и сложность работ до выезда.</p>
       <div class="repeat-cta-actions">
         <a class="btn btn-accent btn-large" href="#quiz-emergency" data-goal="click_calculate">Оценить опасное дерево</a>
         <a class="btn btn-secondary btn-large" href="${phoneHref()}" data-goal="click_phone">📞 Позвонить мастеру</a>
@@ -1715,7 +1715,7 @@ export function raschistkaLandingPage(service) {
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
         <h1>Расчистка участков от деревьев, кустарника и поросли<br><span class="hero-subline">в Москве и Московской области</span></h1>
-        <p class="hero-lead">Спил деревьев, вырубка мелколесья, измельчение веток в щепу, корчевание или дробление пней. Предварительный расчёт по фото и площади за 5–10 минут.</p>
+        <p class="hero-lead">Спил деревьев, вырубка мелколесья, измельчение веток в щепу, корчевание или дробление пней. Предварительно оценим стоимость по фото и площади участка.</p>
         <div class="landing-hero-actions">
           <a class="btn btn-hero-primary" href="#quiz-clearing" data-goal="click_calculate">Рассчитать стоимость расчистки</a>
           <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
@@ -1738,7 +1738,7 @@ export function raschistkaLandingPage(service) {
           <p class="hero-prices-note">Стоимость зависит от площади в сотках, плотности кустарника и объёма деревьев.</p>
         </div>
         <div class="landing-hero-form-box" id="hero-form-clearing">
-          <a class="btn btn-accent btn-full" href="#quiz-clearing" data-goal="click_calculate">Пройти онлайн-расчёт за 1 минуту</a>
+          <a class="btn btn-accent btn-full" href="#quiz-clearing" data-goal="click_calculate">Пройти онлайн-расчёт стоимости</a>
         </div>
       </aside>
     </div>
@@ -1749,7 +1749,7 @@ export function raschistkaLandingPage(service) {
     serviceName: 'Расчистка участков',
     formId: 'fast-lead-clearing',
     title: 'Быстрый расчёт стоимости расчистки',
-    subtitle: 'Оставьте номер телефона — мастер свяжется в течение 5–10 минут для предварительной оценки объёма и стоимости.',
+    subtitle: 'Оставьте номер телефона — свяжемся после получения заявки и предварительно оценим объём и стоимость.',
     submitText: 'Получить расчёт расчистки',
     commentPlaceholder: 'Укажите примерную площадь в сотках, степень зарослей или что нужно сделать',
     waText: waDirectTexts.land_clearing
@@ -1793,7 +1793,7 @@ export function raschistkaLandingPage(service) {
         <div class="quick-scenario-card">
           <span class="quick-scenario-icon">⚙️</span>
           <h3>Измельчение веток в щепу</h3>
-          <p>Собственный мобильный щепорез переработает ветки прямо на месте, сократив объём отходов в 5–7 раз.</p>
+          <p>Собственный мобильный щепорез переработает ветки прямо на месте, значительно сократив объём порубочных остатков.</p>
         </div>
         <div class="quick-scenario-card">
           <span class="quick-scenario-icon">🚜</span>
@@ -1902,7 +1902,7 @@ export function raschistkaLandingPage(service) {
   <section class="section section-repeat-cta" id="cta-clearing">
     <div class="container text-center">
       <h2>Нужно привести заросший участок в порядок?</h2>
-      <p class="repeat-cta-sub">Пришлите 2–3 фото участка и примерную площадь — назовём ориентир стоимости за 5–10 минут.</p>
+      <p class="repeat-cta-sub">Пришлите 2–3 фото участка и примерную площадь — предварительно оценим стоимость до выезда бригады.</p>
       <div class="repeat-cta-actions">
         <a class="btn btn-accent btn-large" href="#quiz-clearing" data-goal="click_calculate">Рассчитать стоимость расчистки</a>
         <a class="btn btn-secondary btn-large" href="${phoneHref()}" data-goal="click_phone">📞 Позвонить мастеру</a>
@@ -1954,7 +1954,7 @@ export function pruningLandingPage(service) {
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
         <h1>Обрезка деревьев<br><span class="hero-subline">в Москве и Московской области</span></h1>
-        <p class="hero-lead">Санитарная, омолаживающая и формовочная обрезка, удаление сухих и нависающих ветвей арбористами и с автовышки. Предварительный расчёт по фото за 5–10 минут.</p>
+        <p class="hero-lead">Санитарная, омолаживающая и формовочная обрезка, удаление сухих и нависающих ветвей арбористами и с автовышки. Предварительно оценим стоимость по фото до выезда.</p>
         <div class="landing-hero-actions">
           <a class="btn btn-hero-primary" href="#quiz-pruning" data-goal="click_calculate">Рассчитать стоимость обрезки</a>
           <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
@@ -1977,7 +1977,7 @@ export function pruningLandingPage(service) {
           <p class="hero-prices-note">Окончательная цена зависит от высоты, густоты кроны и условий вокруг дерева.</p>
         </div>
         <div class="landing-hero-form-box" id="hero-form-pruning">
-          <a class="btn btn-accent btn-full" href="#quiz-pruning" data-goal="click_calculate">Пройти онлайн-расчёт за 1 минуту</a>
+          <a class="btn btn-accent btn-full" href="#quiz-pruning" data-goal="click_calculate">Пройти онлайн-расчёт стоимости</a>
         </div>
       </aside>
     </div>
@@ -1988,7 +1988,7 @@ export function pruningLandingPage(service) {
     serviceName: 'Обрезка деревьев',
     formId: 'fast-lead-pruning',
     title: 'Быстрый расчёт стоимости обрезки',
-    subtitle: 'Оставьте номер телефона — мастер свяжется в течение 5–10 минут для предварительной оценки объема и стоимости.',
+    subtitle: 'Оставьте номер телефона — свяжемся после получения заявки и предварительно оценим объём и стоимость.',
     submitText: 'Получить расчёт обрезки',
     commentPlaceholder: 'Укажите породу дерева, примерную высоту, количество деревьев или что мешает',
     waText: waDirectTexts.tree_pruning
@@ -2118,7 +2118,7 @@ export function pruningLandingPage(service) {
   <section class="section section-repeat-cta" id="cta-pruning">
     <div class="container text-center">
       <h2>Нужно обрезать дерево аккуратно и безопасно?</h2>
-      <p class="repeat-cta-sub">Сделайте фото дерева с расстояния — мастер оценит объём работ и назовёт ориентир стоимости за 5–10 минут.</p>
+      <p class="repeat-cta-sub">Сделайте фото дерева с расстояния — предварительно оценим стоимость и сложность работ до выезда.</p>
       <div class="repeat-cta-actions">
         <a class="btn btn-accent btn-large" href="#quiz-pruning" data-goal="click_calculate">Рассчитать стоимость обрезки</a>
         <a class="btn btn-secondary btn-large" href="${phoneHref()}" data-goal="click_phone">📞 Позвонить мастеру</a>
@@ -2174,7 +2174,7 @@ export function raschistkaProsekLepLandingPage() {
         ${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Расчистка просек и охранных зон ЛЭП', url: path }])}
         <div class="warning-callout" role="note">
           <span class="warning-icon">⚠️</span>
-          <span>Важно: работы в охранных зонах действующих высоковольтных линий выполняются с соблюдением требований безопасности, при необходимости согласуется регламент допуска с балансодержателем сетей.</span>
+          <span>Важно: условия работ возле действующих линий определяются после оценки объекта. При необходимости согласуется регламент допуска с балансодержателем сетей.</span>
         </div>
         <h1>Расчистка просек и территорий под ЛЭП<br><span class="hero-subline">в Москве и Московской области</span></h1>
         <p class="hero-lead">Вырубка древесно-кустарниковой растительности (ДКР), удаление угрожающих деревьев в охранных зонах, измельчение в щепу на месте. Работаем по официальному договору с юридическими и частными лицами.</p>
@@ -2213,7 +2213,7 @@ export function raschistkaProsekLepLandingPage() {
     formId: 'fast-lead-lep',
     isLep: true,
     title: 'Расчёт по объекту или техническому заданию',
-    subtitle: 'Оставьте контакты — инженер свяжется в течение 10–15 минут, уточнит параметры объекта или примет ТЗ на расчёт.',
+    subtitle: 'Оставьте контакты — свяжемся после получения заявки, уточним параметры объекта или примем ТЗ на расчёт.',
     submitText: 'Получить расчёт объекта',
     commentPlaceholder: 'Укажите протяжённость трассы (км), ширину полосы (м), площадь в га или особенности',
     waText: waDirectTexts.lep_clearing
@@ -2248,7 +2248,7 @@ export function raschistkaProsekLepLandingPage() {
         <div class="feature-card">
           <span class="feature-icon">🛡️</span>
           <h3>Охранные зоны ЛЭП</h3>
-          <p>Удаление древесно-кустарниковой растительности в границах охранных зон вдоль трасс воздушных линий в строгом соответствии с нормативами.</p>
+          <p>Удаление древесно-кустарниковой растительности в границах охранных зон вдоль трасс воздушных линий с обеспечением безопасных расстояний.</p>
         </div>
         <div class="feature-card">
           <span class="feature-icon">📐</span>
@@ -2512,23 +2512,23 @@ export function raschistkaProsekLepLandingPage() {
     <div class="container">
       <div class="section-head">
         <h2>Подтверждённый опыт и оснащение «Зелёного Среза»</h2>
-        <p class="section-subhead">Практический опыт с 2014 года, профессиональный бензоинструмент, собственная база измельчителей и проверенные технологии.</p>
+        <p class="section-subhead">Опытные специалисты, профессиональный бензоинструмент, собственная база измельчителей и проверенные технологии.</p>
       </div>
       <div class="trust-grid-lp">
         <div class="trust-item-lp">
           <span class="trust-icon-lp">🌲</span>
-          <h3>10 лет практического опыта</h3>
-          <p>Более 1000 выполненных заказов по спилу сложных деревьев и комплексной расчистке заросших участков в Москве и Подмосковье.</p>
+          <h3>Опытные специалисты и отработанные технологии</h3>
+          <p>Регулярно выполняем работы по спилу сложных деревьев и комплексной расчистке заросших участков в Москве и Подмосковье.</p>
         </div>
         <div class="trust-item-lp">
           <span class="trust-icon-lp">⚙️</span>
           <h3>Собственные мобильные щепорезы</h3>
-          <p>Измельчители веток с опытными операторами перерабатывают порубочные остатки в щепу на месте, сокращая объём отходов в 5–7 раз.</p>
+          <p>Измельчители веток с опытными операторами перерабатывают порубочные остатки в щепу на месте, значительно сокращая объём порубочных остатков.</p>
         </div>
         <div class="trust-item-lp">
           <span class="trust-icon-lp">🪓</span>
           <h3>Профессиональный бензоинструмент</h3>
-          <p>Бензопилы, кусторезы и высоторезы Stihl и Husqvarna — полная автономность на объектах без электричества и коммуникаций.</p>
+          <p>Профессиональные бензопилы, кусторезы и высоторезы — полная автономность на объектах без электричества и коммуникаций.</p>
         </div>
         <div class="trust-item-lp">
           <span class="trust-icon-lp">🧗</span>
@@ -2618,7 +2618,7 @@ export function izmelchenieLandingPage(service) {
           <span>Работаем с оператором. Технику без оператора не сдаём.</span>
         </div>
         <h1>Измельчение веток в щепу<br><span class="hero-subline">в Москве и Московской области</span></h1>
-        <p class="hero-lead">Собственный мощный измельчитель с опытным оператором на ваш участок. Быстро переработаем ветки после спила или расчистки в однородную щепу, сократив объём в 5–7 раз.</p>
+        <p class="hero-lead">Собственный мощный измельчитель с опытным оператором на ваш участок. Быстро переработаем ветки после спила или расчистки в однородную щепу, значительно уменьшив объём порубочных остатков.</p>
         <div class="landing-hero-actions">
           <a class="btn btn-hero-primary" href="#quiz-chipping" data-goal="click_calculate">Рассчитать измельчение веток</a>
           <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
@@ -2635,7 +2635,7 @@ export function izmelchenieLandingPage(service) {
           <ul class="hero-prices-list">
             <li><span>Измельчение веток</span><strong>от 2 500 ₽</strong></li>
             <li><span>Работа опытного оператора</span><strong>Включена</strong></li>
-            <li><span>Сокращение объёма отходов</span><strong>в 5–7 раз</strong></li>
+            <li><span>Сокращение объёма отходов</span><strong>значительное</strong></li>
             <li><span>Вывоз щепы (по желанию)</span><strong>по согласованию</strong></li>
           </ul>
           <p class="hero-prices-note">Оценим необходимую смену работы щепореза по фотографии кучи веток.</p>
@@ -2652,7 +2652,7 @@ export function izmelchenieLandingPage(service) {
     serviceName: 'Измельчение веток',
     formId: 'fast-lead-chipping',
     title: 'Быстрый расчёт стоимости измельчения веток',
-    subtitle: 'Оставьте номер телефона — мастер свяжется в течение 5–10 минут и оценит смену работы щепореза.',
+    subtitle: 'Оставьте номер телефона — свяжемся после получения заявки и предварительно рассчитаем смену работы щепореза.',
     submitText: 'Получить расчёт измельчения',
     commentPlaceholder: 'Опишите примерный объём кучи веток (длина, ширина, высота) или породу',
     waText: waDirectTexts.branch_chipping
@@ -2773,7 +2773,7 @@ export function izmelchenieLandingPage(service) {
           <div class="pricing-summary-row">
             <span class="pricing-name">Сокращение объёма отходов</span>
             <span class="pricing-dots"></span>
-            <strong class="pricing-val">в 5–7 раз</strong>
+            <strong class="pricing-val">значительное</strong>
           </div>
           <div class="pricing-summary-row">
             <span class="pricing-name">Вывоз щепы (по желанию)</span>
@@ -2826,7 +2826,7 @@ export function izmelchenieLandingPage(service) {
           <div class="scenario-number">03</div>
           <p class="scenario-condition">Экономия на утилизации</p>
           <h3>Подготовить к вывозу</h3>
-          <p>Плотная измельчённая щепа занимает в 5–7 раз меньше места, упрощая погрузку и значительно удешевляя вывоз с территории.</p>
+          <p>Плотная измельчённая щепа занимает значительно меньше места, упрощая погрузку и существенно удешевляя вывоз с территории.</p>
         </article>
       </div>
     </div>
