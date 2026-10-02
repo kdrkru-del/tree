@@ -3933,8 +3933,15 @@ body:not(.motion-ready) .reveal-item {
    КОММЕРЧЕСКИЕ БЛОКИ ПОСАДОЧНЫХ СТРАНИЦ
    ========================================================================== */
 
-.section-what-we-do {
-  background: var(--surface-muted, #f7f4ee);
+.section-what-we-do,
+.section-what-we-clear {
+  padding: 64px 0 56px;
+  background: var(--white);
+}
+
+.section-what-we-do .section-head,
+.section-what-we-clear .section-head {
+  margin-bottom: 0;
 }
 
 .quick-scenarios-grid {
@@ -5812,111 +5819,6 @@ body.has-modal-open {
   line-height: 1.3;
 }
 
-.section-fast-lead {
-  padding: 40px 0;
-  background: var(--warm-100);
-}
-
-.fast-lead-wrapper {
-  max-width: 680px;
-  margin: 0 auto;
-  background: var(--white);
-  border-radius: var(--radius);
-  padding: 32px 36px;
-  box-shadow: 0 4px 20px rgba(12, 36, 25, 0.08);
-  border: 1px solid var(--line);
-}
-
-.fast-lead-header h2 {
-  font-size: 1.55rem;
-  font-weight: 700;
-  margin: 0 0 6px;
-  text-align: center;
-  color: var(--green-950);
-}
-
-.fast-lead-subtitle {
-  font-size: 0.95rem;
-  color: var(--muted);
-  text-align: center;
-  margin: 0 0 22px;
-  line-height: 1.45;
-}
-
-.fast-phone-row {
-  display: flex;
-  gap: 12px;
-  align-items: stretch;
-}
-
-.fast-phone-group {
-  flex: 1;
-  margin-bottom: 0;
-}
-
-.fast-phone-group input {
-  width: 100%;
-  height: 52px;
-  font-size: 1.12rem;
-  font-weight: 600;
-  padding: 0 16px;
-  border: 2px solid var(--line);
-  border-radius: 10px;
-  background: var(--warm-50);
-  box-sizing: border-box;
-}
-
-.fast-phone-group input:focus {
-  border-color: var(--green-700);
-  outline: none;
-  background: #ffffff;
-}
-
-.fast-submit-btn {
-  height: 52px;
-  padding: 0 26px;
-  font-size: 1.02rem;
-  font-weight: 700;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.fast-step-toggle-wrap {
-  margin-top: 12px;
-  text-align: center;
-}
-
-.fast-step-toggle {
-  background: transparent;
-  border: none;
-  color: var(--green-700);
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 6px;
-}
-
-.fast-step-toggle:hover {
-  background: var(--warm-50);
-  color: var(--green-900);
-}
-
-.fast-step-2 {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px dashed var(--line);
-  animation: fadeIn 0.2s ease-out;
-}
-
-.fast-fields-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
 
 .file-upload-group {
   margin-top: 12px;
@@ -5986,19 +5888,6 @@ body.has-modal-open {
   line-height: 1;
 }
 
-.fast-micro-trust {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-top: 18px;
-}
-
-.micro-trust-badge {
-  font-size: 0.8rem;
-  color: var(--muted);
-  font-weight: 500;
-}
 
 /* Квиз */
 .section-quiz {
@@ -6322,16 +6211,9 @@ body.has-modal-open {
 }
 
 @media (max-width: 768px) {
-  .fast-phone-row {
-    flex-direction: column;
-  }
-
-  .fast-fields-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .fast-lead-wrapper {
-    padding: 24px 18px;
+  .section-what-we-do,
+  .section-what-we-clear {
+    padding: 44px 0 36px;
   }
 
   .quiz-options-grid {

@@ -108,103 +108,50 @@
     </div>
   </section>
     
-  <section class="section section-fast-lead" id="lead-emergency_tree">
-    <span id="lead-form" class="sr-only" aria-hidden="true"></span>
+  <section class="section section-what-we-do" id="what-we-do-emergency">
     <div class="container">
-      <div class="fast-lead-wrapper">
-        <div class="fast-lead-header">
-          <h2>Срочная оценка аварийного дерева</h2>
-          <p class="fast-lead-subtitle">Введите номер телефона — свяжемся после получения заявки для оценки опасности и расчёта.</p>
+      <div class="section-head">
+        <h2>Что входит в работу</h2>
+        <p class="section-subhead">Безопасные технологии ликвидации опасных деревьев любой категории сложности.</p>
+      </div>
+      <div class="quick-scenarios-grid">
+        <div class="quick-scenario-card">
+          <span class="quick-scenario-icon">⚠️</span>
+          <h3>Оценка степени аварийности</h3>
+          <p>Определяем наклон, прочность древесины, точки механического напряжения и угрозу строениям.</p>
         </div>
-
-        <form class="lead-form fast-lead-form" data-fast-lead-form data-service-code="emergency_tree" data-form-id="fast-lead-emergency" id="fast-lead-emergency">
-          <input type="hidden" name="service" value="Удаление аварийных деревьев">
-          <input type="hidden" name="service_code" value="emergency_tree">
-          <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
-
-          <!-- Шаг 1: Телефон и быстрая отправка -->
-          <div class="fast-step-1" data-fast-step-1>
-            <div class="fast-phone-row">
-              <div class="lead-field-group fast-phone-group">
-                <label class="lead-field-label sr-only" for="fast_phone_emergency_tree">Номер телефона</label>
-                <input id="fast_phone_emergency_tree" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" data-phone-input>
-              </div>
-              <button class="btn btn-accent fast-submit-btn" type="submit" data-submit-btn>Оценить опасное дерево</button>
-            </div>
-            <div class="fast-step-toggle-wrap">
-              <button type="button" class="fast-step-toggle" data-toggle-step-2 aria-expanded="false">
-                <span>+ Уточнить задачу и прикрепить фото (необязательно)</span>
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Шаг 2: Необязательные детали -->
-          <div class="fast-step-2" data-fast-step-2 hidden>
-            <div class="fast-fields-grid">
-              <div class="lead-field-group">
-                <label class="lead-field-label" for="fast_name_emergency_tree">Ваше имя</label>
-                <input id="fast_name_emergency_tree" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться">
-              </div>
-              <div class="lead-field-group">
-                <label class="lead-field-label" for="fast_city_emergency_tree">Город / район / СНТ</label>
-                <input id="fast_city_emergency_tree" name="city" type="text" placeholder="Например, Истринский район">
-              </div>
-            </div>
-            <div class="lead-field-group">
-              <label class="lead-field-label" for="fast_comment_emergency_tree">Комментарий к задаче</label>
-              <textarea id="fast_comment_emergency_tree" name="comment" rows="2" placeholder="Опишите проблему: угол наклона, трещины, нависание над крышей или проводами"></textarea>
-            </div>
-            <div class="lead-field-group file-upload-group">
-              <label class="file-upload-label" for="fast_photos_emergency_tree">
-                <span class="file-upload-icon">📷</span>
-                <span class="file-upload-text"><strong>Прикрепить фотографии (до 5 шт.)</strong><br><small>Подойдут фото с телефона: общий вид, ствол, окружение</small></span>
-              </label>
-              <input id="fast_photos_emergency_tree" name="photos" type="file" accept="image/*" multiple data-photos-input class="sr-only">
-              <div class="file-preview-list" data-file-preview></div>
-            </div>
-          </div>
-
-          <div class="fast-micro-trust">
-            <span class="micro-trust-badge">✓ Стоимость до начала работ</span>
-            <span class="micro-trust-badge">✓ Москва и МО</span>
-            <span class="micro-trust-badge">✓ Работа по договору</span>
-          </div>
-
-          <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a>.</p>
-
-          <!-- Успех -->
-          <div class="form-success fast-form-success" data-form-success hidden>
-            <div class="form-success-header">
-              <span class="form-success-badge" aria-hidden="true">✓</span>
-              <div class="form-success-text">
-                <h3 class="form-success-heading">Заявка принята!</h3>
-                <p class="form-success-sub">Свяжемся после получения заявки для предварительной оценки стоимости.</p>
-              </div>
-            </div>
-            <div class="fast-success-step2-prompt" data-success-step2-prompt>
-              <p class="fast-step2-invite">Хотите прислать фото или ТЗ напрямую мастеру?</p>
-              <div class="fast-success-msgr-chips">
-                <a class="btn btn-small btn-wa" href="https://wa.me/79998081951?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D1%83%D0%B6%D0%BD%D0%BE%20%D0%BE%D1%86%D0%B5%D0%BD%D0%B8%D1%82%D1%8C%20%D0%B0%D0%B2%D0%B0%D1%80%D0%B8%D0%B9%D0%BD%D0%BE%D0%B5%20%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%BE." target="_blank" rel="noopener" data-goal="click_whatsapp">Отправить в WhatsApp</a>
-                <a class="btn btn-small btn-tg" href="https://t.me/Romatran" target="_blank" rel="noopener" data-goal="click_telegram">Отправить в Telegram</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-error fast-form-error" data-form-error hidden>
-    <div class="form-error-title">Не удалось отправить заявку через сервер. Попробуйте ещё раз или свяжитесь с нами напрямую:</div>
-    <div class="form-error-actions">
-      <a href="tel:+79998081951" class="form-error-btn form-error-call" data-goal="click_phone">📞 Позвонить: 8 999 808 19 51</a>
-      <a href="https://wa.me/79998081951?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D1%83%D0%B6%D0%BD%D0%BE%20%D0%BE%D1%86%D0%B5%D0%BD%D0%B8%D1%82%D1%8C%20%D0%B0%D0%B2%D0%B0%D1%80%D0%B8%D0%B9%D0%BD%D0%BE%D0%B5%20%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%BE." target="_blank" rel="noopener" class="form-error-btn form-error-wa" data-goal="click_whatsapp">Написать в WhatsApp</a>
-      <a href="https://t.me/Romatran" target="_blank" rel="noopener" class="form-error-btn form-error-tg" data-goal="click_telegram">Написать в Telegram</a>
-    </div>
-  </div>
-        </form>
+        <div class="quick-scenario-card">
+          <span class="quick-scenario-icon">🪜</span>
+          <h3>Разбор по частям сверху вниз</h3>
+          <p>Аккуратное спиливание ветвей и фрагментов ствола арбористом или с автовышки без неконтролируемого падения.</p>
+        </div>
+        <div class="quick-scenario-card">
+          <span class="quick-scenario-icon">🏡</span>
+          <h3>Спуск частей на верёвках над строениями</h3>
+          <p>Контролируемое опускание каждого элемента в зону сброса при нависании над крышей, забором или беседкой.</p>
+        </div>
+        <div class="quick-scenario-card">
+          <span class="quick-scenario-icon">⚡</span>
+          <h3>Работы возле линий коммуникаций</h3>
+          <p>Оценка расстояния до проводов, аккуратное снятие ветвей и освобождение проездов.</p>
+        </div>
+        <div class="quick-scenario-card">
+          <span class="quick-scenario-icon">⚙️</span>
+          <h3>Распил и измельчение веток</h3>
+          <p>Распиливаем ствол на части, перерабатываем ветки собственным щепорезом в щепу прямо на месте.</p>
+        </div>
+        <div class="quick-scenario-card">
+          <span class="quick-scenario-icon">🚛</span>
+          <h3>Уборка и вывоз по согласованию</h3>
+          <p>Организуем погрузку и вывоз порубочных остатков контейнером по условиям договора.</p>
+        </div>
       </div>
     </div>
   </section>
     
   <section class="section section-quiz" id="quiz-emergency">
+    <span id="lead-form" class="sr-only" aria-hidden="true"></span>
+    <span id="lead-emergency_tree" class="sr-only" aria-hidden="true"></span>
     <div class="container">
       <div class="section-head text-center">
         <h2>Предварительная оценка аварийного дерева</h2>
@@ -507,47 +454,6 @@
           <div class="pricing-summary-cta">
             <a class="btn btn-accent btn-full" href="#quiz-emergency" data-goal="click_calculate">Оценить опасное дерево</a>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-    
-  <section class="section section-what-we-do" id="what-we-do-emergency">
-    <div class="container">
-      <div class="section-head">
-        <h2>Что входит в работу</h2>
-        <p class="section-subhead">Безопасные технологии ликвидации опасных деревьев любой категории сложности.</p>
-      </div>
-      <div class="quick-scenarios-grid">
-        <div class="quick-scenario-card">
-          <span class="quick-scenario-icon">⚠️</span>
-          <h3>Оценка степени аварийности</h3>
-          <p>Определяем наклон, прочность древесины, точки механического напряжения и угрозу строениям.</p>
-        </div>
-        <div class="quick-scenario-card">
-          <span class="quick-scenario-icon">🪜</span>
-          <h3>Разбор по частям сверху вниз</h3>
-          <p>Аккуратное спиливание ветвей и фрагментов ствола арбористом или с автовышки без неконтролируемого падения.</p>
-        </div>
-        <div class="quick-scenario-card">
-          <span class="quick-scenario-icon">🏡</span>
-          <h3>Спуск частей на верёвках над строениями</h3>
-          <p>Контролируемое опускание каждого элемента в зону сброса при нависании над крышей, забором или беседкой.</p>
-        </div>
-        <div class="quick-scenario-card">
-          <span class="quick-scenario-icon">⚡</span>
-          <h3>Работы возле линий коммуникаций</h3>
-          <p>Оценка расстояния до проводов, аккуратное снятие ветвей и освобождение проездов.</p>
-        </div>
-        <div class="quick-scenario-card">
-          <span class="quick-scenario-icon">⚙️</span>
-          <h3>Распил и измельчение веток</h3>
-          <p>Распиливаем ствол на части, перерабатываем ветки собственным щепорезом в щепу прямо на месте.</p>
-        </div>
-        <div class="quick-scenario-card">
-          <span class="quick-scenario-icon">🚛</span>
-          <h3>Уборка и вывоз по согласованию</h3>
-          <p>Организуем погрузку и вывоз порубочных остатков контейнером по условиям договора.</p>
         </div>
       </div>
     </div>
