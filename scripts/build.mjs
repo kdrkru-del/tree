@@ -12,6 +12,7 @@ import {
   pagePath,
   pricesPage,
   raschistkaLandingPage,
+  raschistkaProsekLepLandingPage,
   servicePage,
   spilLandingPage,
   worksPage
@@ -144,6 +145,7 @@ async function build() {
   await add('works', worksPage());
   await add('faq', faqPage());
   await add('contacts', contactsPage());
+  await add('raschistka-prosek-lep', raschistkaProsekLepLandingPage());
   const notFoundHtml = notFoundPage();
   await write('404', notFoundHtml);
   await writeFile(path.join(dist, '404.html'), notFoundHtml, 'utf8');

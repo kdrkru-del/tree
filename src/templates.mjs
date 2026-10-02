@@ -113,7 +113,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">${wikimediaPreconnect}
-  <link rel="stylesheet" href="/assets/styles.css?v=20260926-hero-popup-2">
+  <link rel="stylesheet" href="/assets/styles.css?v=20261002-lep-landing-1">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   ${metrikaCounter()}
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
@@ -127,7 +127,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${floatingContacts()}
   ${mobileBar(leadHref)}
   ${photoModal()}
-  <script src="/assets/app.js?v=20260926-hero-popup-2" type="module"></script>
+  <script src="/assets/app.js?v=20261002-lep-landing-1" type="module"></script>
 </body>
 </html>`;
 }
@@ -1419,6 +1419,478 @@ export function raschistkaLandingPage(service) {
       breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: service.title, url: path }]),
       serviceSchema(service, path),
       faqSchema(service.faq)
+    ]
+  });
+}
+
+export function raschistkaProsekLepLandingPage() {
+  const path = '/raschistka-prosek-lep/';
+  const related = services.filter((item) =>
+    ['raschistka-uchastkov', 'izmelchenie-vetok', 'spil-derevev', 'korchevanie-pney'].includes(item.slug)
+  );
+
+  const lepFaq = [
+    [
+      'Сколько стоит расчистка просеки под ЛЭП?',
+      'Итоговая стоимость формируется индивидуально на основании площади в гектарах или протяжённости трассы, плотности ДКР, среднего диаметра деревьев и необходимости утилизации порубочных остатков. Для предварительного расчёта отправьте нам параметры участка или техническое задание.'
+    ],
+    [
+      'От чего зависит цена за гектар?',
+      'Цена за гектар зависит от категории сложности: сплошная вырубка мелколесья и кустарника, выборочный спил деревьев, удаление крупномерных или аварийных стволов, а также способ утилизации порубочных остатков (измельчение в щепу на месте или вывоз).'
+    ],
+    [
+      'Работаете ли вы по всей Московской области?',
+      'Да, мы выезжаем во все районы Московской области и Новой Москвы. Бригады полностью автономны и оснащены всем необходимым оборудованием для работы на линейных объектах без коммуникаций.'
+    ],
+    [
+      'Можно ли рассчитать стоимость по фото?',
+      'Да. Если прислать фотографии или видео трассы, указать протяжённость, ширину просеки и ориентировочную плотность зарослей, мы предоставим предварительную оценку стоимости работ до выезда на объект.'
+    ],
+    [
+      'Работаете ли вы с юридическими лицами?',
+      'Да, мы работаем с юридическими лицами по официальному договору от ООО «ЮНАТ». Предоставляем полный комплект закрывающих документов, смету, возможна безналичная оплата с расчётного счёта.'
+    ],
+    [
+      'Можно ли расчистить только кустарник и мелколесье?',
+      'Да, мы выполняем как комплексную расчистку под ключ, так и отдельные виды работ: сплошную вырубку кустарника, выкашивание поросли, удаление подлеска без вырубки крупных деревьев.'
+    ],
+    [
+      'Можно ли удалить отдельные аварийные деревья?',
+      'Да. Если на трассе или рядом с охранной зоной есть наклонённые, сухие или повреждённые деревья, угрожающие падением на провода, наши специалисты аккуратно удалят их целиком или разберут по частям.'
+    ],
+    [
+      'Вывозите ли вы порубочные остатки?',
+      'Да, по условиям договора мы можем переработать ветки собственным щепорезом в щепу прямо на месте (что уменьшает объём отходов в 5–7 раз), складировать остатки в согласованном месте или организовать вывоз контейнерами.'
+    ],
+    [
+      'Как рассчитывается срок выполнения?',
+      'Сроки рассчитываются исходя из общей площади объекта, плотности насаждений, рельефа местности и согласованного перечня операций. График и контрольные этапы фиксируются в договоре.'
+    ],
+    [
+      'Можно ли отправить техническое задание?',
+      'Да, вы можете отправить файл технического задания, дефектную ведомость или схему трассы на нашу электронную почту srez.z@yandex.ru или в мессенджеры WhatsApp и Telegram. Мы изучим материалы и подготовим коммерческое предложение.'
+    ]
+  ];
+
+  const hero = `
+  <section class="landing-hero landing-hero--lep">
+    <div class="container landing-hero-inner">
+      <div class="landing-hero-content">
+        ${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Расчистка просек и охранных зон ЛЭП', url: path }])}
+        <h1>Расчистка просек и охранных зон ЛЭП<br><span class="hero-subline">в Москве и Московской области</span></h1>
+        <p class="hero-lead">Расчистим территорию от деревьев, кустарника и ДКР. Удаление аварийных деревьев, расчистка просек, измельчение и вывоз порубочных остатков. Работаем с частными и юридическими лицами по Москве и Московской области.</p>
+        <div class="landing-hero-actions">
+          <a class="btn btn-hero-primary" href="#hero-form-lep" data-open-form data-service="Расчистка просек ЛЭП (lep_clearing)" data-goal="click_calculate">Рассчитать стоимость</a>
+          <a class="btn btn-hero-secondary" href="${messengerHref('#hero-form-lep')}" target="_blank" rel="noopener" data-goal="click_whatsapp">Отправить фото объекта</a>
+          <a class="btn btn-ghost" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
+        </div>
+        <div class="trust-bar" aria-label="Преимущества">
+          <span>Москва и вся Московская область</span>
+          <span class="trust-bar-dot">·</span>
+          <span>Работа по договору</span>
+          <span class="trust-bar-dot">·</span>
+          <span>Для юридических и частных лиц</span>
+          <span class="trust-bar-dot">·</span>
+          <span>Выезд на объект</span>
+          <span class="trust-bar-dot">·</span>
+          <span>Расчёт стоимости после оценки объёма</span>
+        </div>
+      </div>
+      <aside class="landing-hero-card" aria-label="Расчет стоимости расчистки просеки">
+        <div class="landing-hero-media">
+          <img src="/assets/raschistka-real.png" alt="Расчистка просеки и охранной зоны ЛЭП в Подмосковье" width="1086" height="1448" fetchpriority="high">
+          <span class="landing-hero-tag">Комплексная расчистка под ключ</span>
+        </div>
+        <div class="landing-hero-prices">
+          <p class="hero-prices-label">Параметры и условия расчёта</p>
+          <ul class="hero-prices-list">
+            <li><span>Оценка объекта</span><strong>по фото или выезду</strong></li>
+            <li><span>Форма оплаты</span><strong>безнал / договор</strong></li>
+            <li><span>Утилизация веток</span><strong>щепорез на месте</strong></li>
+          </ul>
+          <p class="hero-prices-note">Итоговая стоимость рассчитывается индивидуально по площади, протяжённости и плотности ДКР.</p>
+        </div>
+        <div class="landing-hero-form-box" id="hero-form-lep">
+          <h2 class="landing-form-title">Рассчитать стоимость расчистки ЛЭП</h2>
+          <p class="landing-form-sub">Оставьте телефон — свяжемся в течение 10–15 минут, уточним параметры объекта и подготовим расчёт.</p>
+          ${leadForm('Расчистка просек ЛЭП (lep_clearing)', { formId: 'hero-lead-form-lep', submitText: 'Рассчитать стоимость', customClass: 'lead-form--hero' })}
+        </div>
+      </aside>
+    </div>
+  </section>`;
+
+  const whatWeClear = `
+  <section class="section section-what-we-clear" id="what-we-clear-lep">
+    <div class="container">
+      <div class="section-head">
+        <h2>Что мы расчищаем</h2>
+        <p class="section-subhead">Выполняем полный комплекс работ по расчистке полос отвода линейных объектов, охранных зон и прилегающих территорий.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">⚡</span>
+          <h3>Просеки ЛЭП</h3>
+          <p>Систематическая вырубка деревьев и кустарника в пределах установленной ширины просеки для безаварийной эксплуатации линий электропередачи всех классов напряжения.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🛡️</span>
+          <h3>Охранные зоны ЛЭП</h3>
+          <p>Удаление древесно-кустарниковой растительности в границах охранных зон вдоль трасс воздушных линий в строгом соответствии с нормативами.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📐</span>
+          <h3>Трассы воздушных линий (ВЛ)</h3>
+          <p>Расчистка коридоров прохождения воздушных линий ВЛ 0,4–10 кВ и выше, опиловка нависающих ветвей и крон, приближающихся к токоведущим проводам.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌿</span>
+          <h3>Древесно-кустарниковую растительность (ДКР)</h3>
+          <p>Сплошное и выборочное удаление дикорастущего кустарника, ивняка, мелколесья, подлеска и самосевной поросли под уровень земли.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⚠️</span>
+          <h3>Аварийные и угрожающие деревья</h3>
+          <p>Спил деревьев с опасным наклоном, сухих, треснувших стволов за пределами охранной зоны, способных упасть на провода при сильном ветре или снегопаде.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🚜</span>
+          <h3>Заросшие территории вдоль линий</h3>
+          <p>Ликвидация многолетних завалов, бурьяна, поваленных стволов и застарелых зарослей вдоль технологических проездов и подъездных путей к опорам.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🏗️</span>
+          <h3>Территории под новые линейные объекты</h3>
+          <p>Подготовка и расчистка лесных коридоров перед проектированием, строительством, расширением и монтажом новых линий электропередачи.</p>
+        </div>
+      </div>
+      <div class="section-cta-repeat">
+        <a class="btn btn-accent" href="#hero-form-lep" data-open-form data-service="Расчистка просек ЛЭП (lep_clearing)" data-goal="click_calculate">Рассчитать стоимость расчистки</a>
+      </div>
+    </div>
+  </section>`;
+
+  const workflow = `
+  <section class="section section-muted section-workflow-lep" id="workflow-lep">
+    <div class="container">
+      <div class="section-head">
+        <h2>Что входит в работу: полный цикл расчистки</h2>
+        <p class="section-subhead">Организуем полный технологический процесс от предварительного обследования до сдачи чистой полосы заказчику.</p>
+      </div>
+      <div class="features-grid">
+        <div class="lep-step-card">
+          <span class="lep-step-badge">1</span>
+          <h3>Осмотр объекта</h3>
+          <p>Выезд специалистов на трассу, обследование рельефа, подъездных путей, типа грунта и видового состава насаждений.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">2</span>
+          <h3>Оценка площади и плотности</h3>
+          <p>Точный замер площади в гектарах или сотках, протяжённости трассы, таксация древостоя и определение густоты ДКР.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">3</span>
+          <h3>Определение способа расчистки</h3>
+          <p>Подбор оптимальной технологии: сплошная валка с земли, спил по частям в стеснённых условиях, обрезка крон, измельчение на месте.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">4</span>
+          <h3>Валка / спил / обрезка</h3>
+          <p>Безопасная валка деревьев в заданном направлении, спил аварийных стволов рядом с опорами, опиловка нависающих ветвей.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">5</span>
+          <h3>Удаление кустарника и мелколесья</h3>
+          <p>Сплошной срез дикорастущего кустарника, ивняка и поросли мощными кусторезами и бензопилами под уровень земли.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">6</span>
+          <h3>Измельчение веток и порубочных остатков</h3>
+          <p>Переработка срезанных ветвей и древесных отходов собственным мобильным щепорезом в щепу прямо на трассе (сокращение объёма до 7 раз).</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">7</span>
+          <h3>Сбор или вывоз отходов</h3>
+          <p>Складирование щепы в валы на границе полосы отвода, распределение по грунту либо погрузка и вывоз контейнерами на утилизацию.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">8</span>
+          <h3>Сдача очищенной территории заказчику</h3>
+          <p>Совместный контрольный осмотр выполненного участка с заказчиком, подписание двустороннего акта сдачи-приёмки и передача закрывающих документов.</p>
+        </div>
+      </div>
+    </div>
+  </section>`;
+
+  const b2bSection = `
+  <section class="section section-dark section-b2b-lep" id="b2b-lep">
+    <div class="container">
+      <div class="lep-b2b-header">
+        <span class="lep-b2b-badge">Для юридических лиц и подрядчиков</span>
+        <h2>Расчистка ЛЭП для организаций и подрядчиков</h2>
+        <p>Работаем с электросетевыми компаниями, подрядчиками энергетического сектора, строительными организациями, СНТ, промышленными предприятиями и балансодержателями линейных объектов.</p>
+      </div>
+      <div class="features-grid">
+        <div class="lep-b2b-card">
+          <h3>Расчистка больших площадей</h3>
+          <p>Формируем автономные звенья специалистов для оперативной расчистки протяжённых трасс и участков площадью в десятки гектаров.</p>
+        </div>
+        <div class="lep-b2b-card">
+          <h3>Работа по техническому заданию</h3>
+          <p>Строго соблюдаем требования ТЗ, дефектных ведомостей, проектных коридоров, габаритов охранных зон и регламентов заказчика.</p>
+        </div>
+        <div class="lep-b2b-card">
+          <h3>Поэтапная сдача работ</h3>
+          <p>Возможность разбивки линейного объекта на согласованные технологические захватки и пикеты с промежуточным подписанием актов.</p>
+        </div>
+        <div class="lep-b2b-card">
+          <h3>Официальный договор</h3>
+          <p>Работаем как юридическое лицо (ООО «ЮНАТ», ИНН 2536345868), несём полную договорную и материальную ответственность.</p>
+        </div>
+        <div class="lep-b2b-card">
+          <h3>Безналичный расчёт</h3>
+          <p>Оплата по безналичному расчёту с предоставлением полного комплекта закрывающих документов (договор, смета, акты выполненных работ).</p>
+        </div>
+        <div class="lep-b2b-card">
+          <h3>Фото- и видеофиксация</h3>
+          <p>Подробные отчёты состояния объекта «до / в процессе / после» на каждом этапе расчистки для удалённого контроля технадзором.</p>
+        </div>
+        <div class="lep-b2b-card">
+          <h3>Предварительный осмотр объекта</h3>
+          <p>Оперативный выезд специалистов для детального обследования трассы, рельефа и сложности до согласования сметы.</p>
+        </div>
+        <div class="lep-b2b-card">
+          <h3>Расчёт по площади и сложности</h3>
+          <p>Прозрачное сметное ценообразование на основе объективных параметров без скрытых затрат и непредвиденных наценок.</p>
+        </div>
+      </div>
+      <div class="lep-tz-banner">
+        <div class="lep-tz-banner-text">
+          <h3>Есть проектная документация или ТЗ?</h3>
+          <p>Присылайте файлы технического задания, дефектные ведомости и схемы трассы на почту <strong>${esc(site.email)}</strong> или в мессенджеры WhatsApp и Telegram — оперативно изучим материалы и подготовим коммерческое предложение.</p>
+        </div>
+        <div class="lep-tz-banner-actions">
+          <a class="btn btn-accent" href="#hero-form-lep" data-open-form data-service="Расчистка просек ЛЭП (lep_clearing)" data-goal="click_calculate">Отправить ТЗ для расчёта</a>
+          ${hasValue(site.messengerUrl) ? `<a class="btn btn-outline" href="${messengerHref('#hero-form-lep')}" target="_blank" rel="noopener" data-goal="click_whatsapp">WhatsApp</a>` : ''}
+          ${hasValue(site.telegramUrl) ? `<a class="btn btn-outline" href="${telegramHref('#hero-form-lep')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram</a>` : ''}
+        </div>
+      </div>
+    </div>
+  </section>`;
+
+  const pricingFactors = `
+  <section class="section section-pricing-factors-lep" id="pricing-factors-lep">
+    <div class="container">
+      <div class="section-head">
+        <h2>От чего зависит стоимость расчистки</h2>
+        <p class="section-subhead">Мы не выдумываем фиксированные цены — точный расчёт сметы формируется под конкретные параметры вашего линейного объекта.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">📏</span>
+          <h3>Площадь в га / сотках</h3>
+          <p>Общий объём территории определяет количество задействованных вальщиков, операторов и продолжительность смен.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🛣️</span>
+          <h3>Протяжённость трассы</h3>
+          <p>Линейная длина коридора просеки и её проектная ширина (от 10 до 50+ метров в зависимости от напряжения линии).</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌳</span>
+          <h3>Плотность ДКР</h3>
+          <p>Густота кустарниковых зарослей, ивняка, подлеска и самосевной поросли на квадратный метр полосы.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌲</span>
+          <h3>Диаметр и высота деревьев</h3>
+          <p>Соотношение тонкомера, среднемерной древесины и вековых стволов диаметром от 30–40 см.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⚠️</span>
+          <h3>Количество аварийных деревьев</h3>
+          <p>Стволы с опасным наклоном в сторону проводов, гнилью или сухостой, требующие аккуратного пофрагментного разбора.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🏞️</span>
+          <h3>Доступность территории</h3>
+          <p>Заболоченность, перепады высот, овраги, наличие технологических проездов для перемещения людей и техники.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⚙️</span>
+          <h3>Необходимость измельчения</h3>
+          <p>Переработка веток и древесных остатков в технологическую щепу мобильным измельчителем прямо на полосе отвода.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🚛</span>
+          <h3>Необходимость вывоза</h3>
+          <p>Вывоз порубочных остатков контейнерами 8, 20 или 27 м³ либо складирование в валы и распределение щепы по грунту.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🚙</span>
+          <h3>Возможность подъезда техники</h3>
+          <p>Условия подъезда транспорта для доставки рабочих бригад, заправки оборудования и буксировки измельчителя.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📍</span>
+          <h3>Удалённость объекта</h3>
+          <p>Логистическое плечо от МКАД по районам Москвы, Новой Москвы и Московской области.</p>
+        </div>
+      </div>
+      <div class="section-cta-repeat">
+        <a class="btn btn-accent" href="#hero-form-lep" data-open-form data-service="Расчистка просек ЛЭП (lep_clearing)" data-goal="click_calculate">Получить расчёт</a>
+      </div>
+    </div>
+  </section>`;
+
+  const objectsSection = `
+  <section class="section section-muted section-objects-lep" id="objects-lep">
+    <div class="container">
+      <div class="section-head">
+        <h2>Для каких объектов выполняем расчистку</h2>
+        <p class="section-subhead">Работаем с линейными, промышленными, поселковыми и частными территориями любого назначения по всей Московской области.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">⚡</span>
+          <h3>Линии электропередачи</h3>
+          <p>Магистральные и распределительные ЛЭП всех классов напряжения, расширение и поддержание нормативной полосы просеки.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🔌</span>
+          <h3>Воздушные линии ВЛ</h3>
+          <p>Трассы ВЛ 0,4, 6, 10 кВ и выше, защита проводов от касания ветвей и обрывов при падении сухостоя.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🏘️</span>
+          <h3>СНТ и коттеджные посёлки</h3>
+          <p>Расчистка коридоров внутренних и подводящих электросетей, предотвращение аварийных отключений электричества в посёлках.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🏭</span>
+          <h3>Промышленные предприятия</h3>
+          <p>Заводские территории, технологические коридоры, эстакады коммуникаций и площадки собственных трансформаторных подстанций.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🏗️</span>
+          <h3>Строительные объекты</h3>
+          <p>Подготовка трасс и технологических полос перед прокладкой инженерных коммуникаций и строительством объектов.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌐</span>
+          <h3>Линейные объекты</h3>
+          <p>Технологические полосы вдоль трубопроводов, автомобильных и железных дорог, оптико-волоконных линий связи.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🏢</span>
+          <h3>Территории организаций</h3>
+          <p>Складские комплексы, логистические парки, автобазы и базы отдыха с расположенными на территории электросетями.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🏡</span>
+          <h3>Частные земельные участки</h3>
+          <p>Загородные участки, где деревья, кустарник и поросль угрожают проводам абонентского ввода и наружным сетям.</p>
+        </div>
+      </div>
+    </div>
+  </section>`;
+
+  const trustBlock = `
+  <section class="section section-trust-lep" id="trust-lep">
+    <div class="container">
+      <div class="section-head">
+        <h2>Подтверждённый опыт и оснащение «Зелёного Среза»</h2>
+        <p class="section-subhead">Практический опыт с 2014 года, профессиональный бензоинструмент, собственная база измельчителей и проверенные технологии.</p>
+      </div>
+      <div class="trust-grid-lp">
+        <div class="trust-item-lp">
+          <span class="trust-icon-lp">🌲</span>
+          <h3>10 лет практического опыта</h3>
+          <p>Более 1000 выполненных заказов по спилу сложных деревьев и комплексной расчистке заросших участков в Москве и Подмосковье.</p>
+        </div>
+        <div class="trust-item-lp">
+          <span class="trust-icon-lp">⚙️</span>
+          <h3>Собственные мобильные щепорезы</h3>
+          <p>Измельчители веток с опытными операторами перерабатывают порубочные остатки в щепу на месте, сокращая объём отходов в 5–7 раз.</p>
+        </div>
+        <div class="trust-item-lp">
+          <span class="trust-icon-lp">🪓</span>
+          <h3>Профессиональный бензоинструмент</h3>
+          <p>Бензопилы, кусторезы и высоторезы Stihl и Husqvarna — полная автономность на объектах без электричества и коммуникаций.</p>
+        </div>
+        <div class="trust-item-lp">
+          <span class="trust-icon-lp">🧗</span>
+          <h3>Опытные вальщики и арбористы</h3>
+          <p>Специальное альпинистское и такелажное снаряжение для безопасного разбора аварийных деревьев рядом с опорами и проводами.</p>
+        </div>
+        <div class="trust-item-lp">
+          <span class="trust-icon-lp">📄</span>
+          <h3>Официальный договор и безнал</h3>
+          <p>Работаем как юридическое лицо (ООО «ЮНАТ», ИНН 2536345868). Договор, подробная смета, безналичный расчёт, закрывающие акты.</p>
+        </div>
+        <div class="trust-item-lp">
+          <span class="trust-icon-lp">🛡️</span>
+          <h3>Материальная ответственность</h3>
+          <p>Отвечаем по договору за сохранность проводов, опор, ограждений и инфраструктуры заказчика при выполнении работ.</p>
+        </div>
+      </div>
+    </div>
+  </section>`;
+
+  const leadCalcBlock = `
+  <section class="section lead-section" id="lep-calc-form">
+    <div class="container lead-grid">
+      <div>
+        <h2>Расчёт по фото или техническому заданию</h2>
+        <p>Пришлите фотографии, площадь или протяжённость участка и краткое описание задачи. Предварительно оценим объём работ и стоимость. Для проектной документации и технического задания напишите нам в мессенджер или на почту <a href="mailto:${esc(site.email)}" style="color: #fff; text-decoration: underline;">${esc(site.email)}</a>.</p>
+        <div class="lead-actions">
+          ${hasValue(site.phone) ? `<a class="btn btn-light" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>` : ''}
+          ${hasValue(site.messengerUrl) ? `<a class="btn btn-ghost-dark" href="${messengerHref('#lep-calc-form')}" target="_blank" rel="noopener" data-goal="click_whatsapp">WhatsApp</a>` : ''}
+          ${hasValue(site.telegramUrl) ? `<a class="btn btn-ghost-dark" href="${telegramHref('#lep-calc-form')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram</a>` : ''}
+          ${hasValue(site.maxUrl) ? `<a class="btn btn-ghost-dark" href="${maxHref('#lep-calc-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX</a>` : ''}
+        </div>
+        <p class="call-note">В целях контроля качества разговор может быть записан.</p>
+      </div>
+      ${leadForm('Расчистка просек ЛЭП (lep_clearing)', { formId: 'bottom-lead-form-lep', submitText: 'Получить расчёт' })}
+    </div>
+  </section>`;
+
+  const body = `
+    ${hero}
+    ${whatWeClear}
+    ${workflow}
+    ${b2bSection}
+    ${pricingFactors}
+    ${objectsSection}
+    ${trustBlock}
+    ${leadCalcBlock}
+    ${faqSection(lepFaq)}
+    <section class="section section-muted section-related-bottom">
+      <div class="container">
+        <div class="section-head">
+          <h2>Также выполняем на объектах</h2>
+        </div>
+        <div class="service-grid compact">${related.map(serviceCard).join('')}</div>
+      </div>
+    </section>
+  `;
+
+  return renderPage({
+    title: 'Расчистка просек под ЛЭП в Москве и МО | Вырубка деревьев и ДКР — Зелёный Срез',
+    description: 'Расчистка просек и охранных зон ЛЭП в Москве и Московской области. Вырубка деревьев и кустарника, удаление ДКР, аварийных деревьев, измельчение и вывоз. Расчёт стоимости по объекту.',
+    path,
+    image: images.clearing,
+    leadHref: '#hero-form-lep',
+    body,
+    jsonLd: [
+      breadcrumbSchema([
+        { name: 'Главная', url: '/' },
+        { name: 'Расчистка просек и охранных зон ЛЭП', url: path }
+      ]),
+      serviceSchema({
+        title: 'Расчистка просек и охранных зон ЛЭП в Москве и Московской области',
+        short: 'Расчистка просек и охранных зон ЛЭП в Москве и Московской области. Вырубка деревьев и кустарника, удаление ДКР, аварийных деревьев, измельчение и вывоз. Расчёт стоимости по объекту.'
+      }, path),
+      faqSchema(lepFaq)
     ]
   });
 }
