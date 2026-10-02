@@ -308,46 +308,21 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         if (form.dataset.submitting === 'true' || form.dataset.submitted === 'true') return;
         const raw = phoneInput.value.trim();
         if (!isValidPhone(raw)) return;
-        const norm = normalizePhone(raw);
-        if (sessionStorage.getItem(`tree_abandoned_${norm}`)) return;
+        if (sessionStorage.getItem('tree_abandon_tracked')) return;
 
         if (abandonedTimer) clearTimeout(abandonedTimer);
         abandonedTimer = setTimeout(() => {
-          sendAbandoned(norm);
+          sendAbandoned();
         }, delayMs);
       };
 
-      const sendAbandoned = (norm) => {
+      const sendAbandoned = () => {
         if (form.dataset.submitting === 'true' || form.dataset.submitted === 'true') return;
-        if (sessionStorage.getItem(`tree_abandoned_${norm}`)) return;
-        sessionStorage.setItem(`tree_abandoned_${norm}`, '1');
+        if (sessionStorage.getItem('tree_abandon_tracked')) return;
+        sessionStorage.setItem('tree_abandon_tracked', '1');
 
         const fId = form.dataset.formId || form.dataset.quizId || 'form';
-        const srv = form.querySelector('[name="service"]')?.value || 'Спил деревьев';
-        const cName = nameInput ? nameInput.value.trim() : '';
-
-        const abandonedData = {
-          lead_id: createLeadId(),
-          created_at: new Date().toISOString(),
-          source: document.referrer || 'direct',
-          page: window.location.href,
-          entry_page: localStorage.getItem('tree_site_entry_page') || window.location.href,
-          form: fId,
-          utm,
-          phone: norm,
-          service: srv,
-          abandoned: true,
-          fields: {
-            phone: norm,
-            service: srv,
-            name: cName,
-            comment: '⚠️ Брошенный ввод: номер набран в форму, но кнопка «Отправить» не нажата'
-          }
-        };
-        if (cName) abandonedData.name = cName;
-
-        reachGoal('lead_abandoned_captured', { form: fId, service: srv });
-        deliverLead(config.leadEndpoint, abandonedData).catch(() => {});
+        reachGoal('lead_form_abandon', { form: fId });
       };
 
       phoneInput.addEventListener('input', () => {
@@ -363,7 +338,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         if (document.visibilityState === 'hidden') {
           const raw = phoneInput.value.trim();
           if (isValidPhone(raw)) {
-            sendAbandoned(normalizePhone(raw));
+            sendAbandoned();
           }
         }
       });
@@ -457,6 +432,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         if (successEl) successEl.hidden = true;
         if (errorEl)   errorEl.hidden   = true;
 
+        try {
           const files = form._selectedFiles || [];
           if (files.length) {
             await deliverLead(config.leadEndpoint, payload, files);
