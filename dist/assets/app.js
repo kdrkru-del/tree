@@ -295,7 +295,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       });
     });
 
-    document.querySelectorAll('[data-lead-form]').forEach((form) => {
+    document.querySelectorAll('[data-lead-form], [data-fast-lead-form], [data-quiz-form]').forEach((form) => {
       const phoneInput = form.querySelector('[data-phone-input]');
       const nameInput  = form.querySelector('[name="name"]');
       const submitBtn  = form.querySelector('[data-submit-btn]');
@@ -322,7 +322,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         if (sessionStorage.getItem(`tree_abandoned_${norm}`)) return;
         sessionStorage.setItem(`tree_abandoned_${norm}`, '1');
 
-        const fId = form.dataset.formId || 'form';
+        const fId = form.dataset.formId || form.dataset.quizId || 'form';
         const srv = form.querySelector('[name="service"]')?.value || 'Спил деревьев';
         const cName = nameInput ? nameInput.value.trim() : '';
 
@@ -371,7 +371,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       phoneInput.addEventListener('focus', () => {
         if (!form.dataset.started) {
           form.dataset.started = 'true';
-          reachGoal('lead_form_start', { form: form.dataset.formId || 'form' });
+          reachGoal('lead_form_start', { form: form.dataset.formId || form.dataset.quizId || 'form' });
         }
       }, { once: true });
 
@@ -399,11 +399,35 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         const phone = normalizePhone(rawPhone);
 
         const leadId  = createLeadId();
-        const formId  = form.dataset.formId || 'form';
+        const formId  = form.dataset.formId || form.dataset.quizId || 'form';
         const service = form.querySelector('[name="service"]')?.value || 'Заявка с сайта';
         const name    = nameInput ? nameInput.value.trim() : '';
+        const cityInput = form.querySelector('[name="city"]');
+        const city = cityInput ? cityInput.value.trim() : '';
+        const serviceCode = form.dataset.serviceCode || form.querySelector('[name="service_code"]')?.value || '';
+
+        let comment = form.querySelector('[name="comment"]')?.value?.trim() || '';
+        if (form.hasAttribute('data-quiz-form')) {
+          const steps = Array.from(form.querySelectorAll('.quiz-step'));
+          const totalSteps = steps.length;
+          const answersSummary = [];
+          steps.slice(0, totalSteps - 1).forEach((stepEl) => {
+            const qText = stepEl.dataset.question || 'Вопрос';
+            const checked = Array.from(stepEl.querySelectorAll('.quiz-option-input:checked')).map((i) => i.value);
+            if (checked.length) {
+              answersSummary.push(`• ${qText}: ${checked.join(', ')}`);
+            }
+          });
+          if (answersSummary.length) {
+            comment = `Ответы квиза (${service}):\n` + answersSummary.join('\n');
+          }
+        }
+
         const fields = { phone, service };
         if (name) fields.name = name;
+        if (city) fields.city = city;
+        if (comment) fields.comment = comment;
+        if (serviceCode) fields.service_code = serviceCode;
 
         const payload = {
           lead_id:     leadId,
@@ -419,6 +443,9 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
           fields
         };
         if (name) payload.name = name;
+        if (city) payload.city = city;
+        if (comment) payload.comment = comment;
+        if (serviceCode) payload.service_code = serviceCode;
 
         saveLead(payload);
         reachGoal('lead_form_submit', { form: formId, service });
@@ -430,8 +457,12 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         if (successEl) successEl.hidden = true;
         if (errorEl)   errorEl.hidden   = true;
 
-        try {
-          await deliverLead(config.leadEndpoint, payload);
+          const files = form._selectedFiles || [];
+          if (files.length) {
+            await deliverLead(config.leadEndpoint, payload, files);
+          } else {
+            await deliverLead(config.leadEndpoint, payload);
+          }
 
           // Успех — только после реального ответа сервера
           reachGoal('lead_form', { form: formId, service });
@@ -439,11 +470,38 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
           reachGoal('lead_sent', { form: formId, phone });
           phoneInput.value = '';
           if (nameInput) nameInput.value = '';
-          if (successEl) successEl.hidden = false;
+          if (cityInput) cityInput.value = '';
+          const commentEl = form.querySelector('[name="comment"]');
+          if (commentEl) commentEl.value = '';
+          form._selectedFiles = [];
+          const previewList = form.querySelector('[data-file-preview]');
+          if (previewList) previewList.innerHTML = '';
+
           const fieldsWrap = form.querySelector('[data-form-fields]');
           if (fieldsWrap) fieldsWrap.hidden = true;
+
+          const step1 = form.querySelector('[data-fast-step-1]');
+          if (step1) step1.hidden = true;
+          const step2Wrap = form.querySelector('[data-fast-step-2]');
+          if (step2Wrap) step2Wrap.hidden = true;
+          const trustMicro = form.querySelector('.fast-micro-trust');
+          if (trustMicro) trustMicro.hidden = true;
+
+          if (form.hasAttribute('data-quiz-form')) {
+            const steps = Array.from(form.querySelectorAll('.quiz-step'));
+            steps.forEach((s) => s.classList.remove('is-active'));
+            const finalStep = form.querySelector('.quiz-step-final');
+            if (finalStep) finalStep.style.display = 'none';
+            const progressFill = form.closest('.quiz-container')?.querySelector('[data-quiz-progress-fill]');
+            const progressLabel = form.closest('.quiz-container')?.querySelector('[data-quiz-step-num]');
+            if (progressFill) progressFill.style.width = '100%';
+            if (progressLabel) progressLabel.textContent = 'Завершено';
+          }
+
           const consent = form.querySelector('.form-consent');
           if (consent) consent.hidden = true;
+
+          if (successEl) successEl.hidden = false;
 
         } catch (error) {
           saveError({ at: new Date().toISOString(), message: error.message, payload });
@@ -598,6 +656,210 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     });
   }
 
+  /* ─── ОБРАБОТЧИК БЫСТРЫХ ЛИД-ФОРМ (2 ШАГА) ─── */
+  function initFastLeadForms() {
+    document.querySelectorAll('[data-fast-lead-form]').forEach((form) => {
+      const step2Wrap = form.querySelector('[data-fast-step-2]');
+      const toggleStep2Btn = form.querySelector('[data-toggle-step-2]');
+      const photosInput = form.querySelector('[data-photos-input]');
+      const previewList = form.querySelector('[data-file-preview]');
+
+      form._selectedFiles = [];
+
+      // Шаг 2: раскрытие/скрытие
+      if (toggleStep2Btn && step2Wrap) {
+        toggleStep2Btn.addEventListener('click', () => {
+          const isHidden = step2Wrap.hidden;
+          step2Wrap.hidden = !isHidden;
+          toggleStep2Btn.setAttribute('aria-expanded', String(isHidden));
+        });
+      }
+
+      // Работа с загрузкой файлов
+      if (photosInput && previewList) {
+        const updatePreviews = () => {
+          previewList.innerHTML = '';
+          (form._selectedFiles || []).forEach((file, index) => {
+            const chip = document.createElement('span');
+            chip.className = 'file-preview-item';
+            const sizeKb = Math.round(file.size / 1024);
+            const sizeStr = sizeKb > 1024 ? `${(sizeKb / 1024).toFixed(1)} МБ` : `${sizeKb} КБ`;
+            chip.textContent = `${file.name} (${sizeStr}) `;
+            const rmBtn = document.createElement('button');
+            rmBtn.type = 'button';
+            rmBtn.className = 'file-preview-remove';
+            rmBtn.setAttribute('aria-label', `Удалить файл ${file.name}`);
+            rmBtn.textContent = '×';
+            rmBtn.addEventListener('click', () => {
+              form._selectedFiles.splice(index, 1);
+              updatePreviews();
+            });
+            chip.appendChild(rmBtn);
+            previewList.appendChild(chip);
+          });
+        };
+
+        photosInput.addEventListener('change', () => {
+          const files = Array.from(photosInput.files || []);
+          form._selectedFiles = form._selectedFiles || [];
+          for (const f of files) {
+            if (f.size > 8 * 1024 * 1024) {
+              alert(`Файл "${f.name}" превышает 8 МБ. Пожалуйста, выберите файл меньшего размера.`);
+              continue;
+            }
+            if (form._selectedFiles.length >= 5) {
+              alert('Максимальное количество файлов — 5.');
+              break;
+            }
+            form._selectedFiles.push(f);
+          }
+          photosInput.value = '';
+          updatePreviews();
+        });
+      }
+    });
+  }
+
+  /* ─── ОБРАБОТЧИК ИНТЕРАКТИВНЫХ КВИЗОВ ─── */
+  function initQuizzes() {
+    document.querySelectorAll('[data-quiz-form]').forEach((form) => {
+      const quizId = form.dataset.quizId || 'quiz';
+      const serviceCode = form.dataset.serviceCode || 'quiz_lead';
+      const steps = Array.from(form.querySelectorAll('.quiz-step'));
+      const totalSteps = steps.length;
+      const progressFill = form.closest('.quiz-container')?.querySelector('[data-quiz-progress-fill]');
+      const progressLabel = form.closest('.quiz-container')?.querySelector('[data-quiz-step-num]');
+      const photosInput = form.querySelector('[data-photos-input]');
+      const previewList = form.querySelector('[data-file-preview]');
+
+      let currentStep = 1;
+      form._selectedFiles = [];
+      let quizStarted = false;
+
+      const updateProgress = () => {
+        const pct = Math.round((currentStep / totalSteps) * 100);
+        if (progressFill) progressFill.style.width = `${pct}%`;
+        if (progressLabel) {
+          progressLabel.textContent = currentStep;
+        }
+      };
+
+      const goToStep = (stepNum) => {
+        if (stepNum < 1 || stepNum > totalSteps) return;
+        currentStep = stepNum;
+        steps.forEach((s) => {
+          const num = parseInt(s.dataset.step, 10);
+          s.classList.toggle('is-active', num === currentStep);
+        });
+        updateProgress();
+
+        if (currentStep === totalSteps) {
+          reachGoal('quiz_complete', { quiz: quizId, service_code: serviceCode });
+          const phoneInput = form.querySelector('[data-step="' + totalSteps + '"] [data-phone-input]');
+          if (phoneInput) setTimeout(() => phoneInput.focus(), 150);
+        }
+      };
+
+      // Выбор опций (radio/checkbox)
+      steps.forEach((stepEl) => {
+        const inputs = stepEl.querySelectorAll('.quiz-option-input');
+        inputs.forEach((input) => {
+          input.addEventListener('change', () => {
+            if (!quizStarted) {
+              quizStarted = true;
+              reachGoal('quiz_start', { quiz: quizId, service_code: serviceCode });
+            }
+            if (input.type === 'radio') {
+              stepEl.querySelectorAll('.quiz-option-card').forEach((card) => {
+                const checked = card.querySelector('.quiz-option-input')?.checked;
+                card.classList.toggle('is-selected', !!checked);
+              });
+              // Плавный переход к следующему шагу при клике на radio
+              setTimeout(() => {
+                if (currentStep < totalSteps - 1) {
+                  goToStep(currentStep + 1);
+                }
+              }, 280);
+            } else {
+              const card = input.closest('.quiz-option-card');
+              if (card) card.classList.toggle('is-selected', input.checked);
+            }
+          });
+        });
+
+        // Кнопка Далее
+        const nextBtn = stepEl.querySelector('[data-quiz-next]');
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => {
+            const checkedInputs = stepEl.querySelectorAll('.quiz-option-input:checked');
+            if (!checkedInputs.length) {
+              stepEl.classList.add('shake-anim');
+              setTimeout(() => stepEl.classList.remove('shake-anim'), 500);
+              alert('Пожалуйста, выберите хотя бы один вариант ответа для продолжения.');
+              return;
+            }
+            if (!quizStarted) {
+              quizStarted = true;
+              reachGoal('quiz_start', { quiz: quizId, service_code: serviceCode });
+            }
+            goToStep(currentStep + 1);
+          });
+        }
+
+        // Кнопка Назад
+        const prevBtn = stepEl.querySelector('[data-quiz-prev]');
+        if (prevBtn) {
+          prevBtn.addEventListener('click', () => {
+            goToStep(currentStep - 1);
+          });
+        }
+      });
+
+      // Загрузка файлов на финальном шаге
+      if (photosInput && previewList) {
+        const updatePreviews = () => {
+          previewList.innerHTML = '';
+          (form._selectedFiles || []).forEach((file, index) => {
+            const chip = document.createElement('span');
+            chip.className = 'file-preview-item';
+            const sizeKb = Math.round(file.size / 1024);
+            const sizeStr = sizeKb > 1024 ? `${(sizeKb / 1024).toFixed(1)} МБ` : `${sizeKb} КБ`;
+            chip.textContent = `${file.name} (${sizeStr}) `;
+            const rmBtn = document.createElement('button');
+            rmBtn.type = 'button';
+            rmBtn.className = 'file-preview-remove';
+            rmBtn.setAttribute('aria-label', `Удалить файл ${file.name}`);
+            rmBtn.textContent = '×';
+            rmBtn.addEventListener('click', () => {
+              form._selectedFiles.splice(index, 1);
+              updatePreviews();
+            });
+            chip.appendChild(rmBtn);
+            previewList.appendChild(chip);
+          });
+        };
+
+        photosInput.addEventListener('change', () => {
+          const files = Array.from(photosInput.files || []);
+          form._selectedFiles = form._selectedFiles || [];
+          for (const f of files) {
+            if (f.size > 8 * 1024 * 1024) {
+              alert(`Файл "${f.name}" превышает 8 МБ. Пожалуйста, выберите файл меньшего размера.`);
+              continue;
+            }
+            if (form._selectedFiles.length >= 5) {
+              alert('Максимальное количество файлов — 5.');
+              break;
+            }
+            form._selectedFiles.push(f);
+          }
+          photosInput.value = '';
+          updatePreviews();
+        });
+      }
+    });
+  }
+
   loadIntegrations();
   initNav();
   initFloatingRail();
@@ -605,5 +867,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
   initHomeAnimations();
   initPhoneMasks();
   initLeadForms();
+  initFastLeadForms();
+  initQuizzes();
   initPhotoPopup();
 })();
