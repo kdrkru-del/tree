@@ -113,103 +113,109 @@
     </div>
   </section>
     
-  <section class="section section-fast-lead" id="lead-lep_clearing">
-    <span id="lead-form" class="sr-only" aria-hidden="true"></span>
+  <section class="section section-what-we-clear" id="what-we-clear-lep">
     <div class="container">
-      <div class="fast-lead-wrapper">
-        <div class="fast-lead-header">
-          <h2>Расчёт по объекту или техническому заданию</h2>
-          <p class="fast-lead-subtitle">Оставьте контакты — свяжемся после получения заявки, уточним параметры объекта или примем ТЗ на расчёт.</p>
+      <div class="section-head">
+        <h2>Что мы расчищаем</h2>
+        <p class="section-subhead">Выполняем полный комплекс работ по расчистке полос отвода линейных объектов, охранных зон и прилегающих территорий.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">⚡</span>
+          <h3>Просеки ЛЭП</h3>
+          <p>Систематическая вырубка деревьев и кустарника в пределах установленной ширины просеки для безаварийной эксплуатации воздушных линий электропередачи.</p>
         </div>
-
-        <form class="lead-form fast-lead-form" data-fast-lead-form data-service-code="lep_clearing" data-form-id="fast-lead-lep" id="fast-lead-lep">
-          <input type="hidden" name="service" value="Расчистка просек ЛЭП">
-          <input type="hidden" name="service_code" value="lep_clearing">
-          <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
-
-          <!-- Шаг 1: Телефон и быстрая отправка -->
-          <div class="fast-step-1" data-fast-step-1>
-            <div class="fast-phone-row">
-              <div class="lead-field-group fast-phone-group">
-                <label class="lead-field-label sr-only" for="fast_phone_lep_clearing">Номер телефона</label>
-                <input id="fast_phone_lep_clearing" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" data-phone-input>
-              </div>
-              <button class="btn btn-accent fast-submit-btn" type="submit" data-submit-btn>Получить расчёт объекта</button>
-            </div>
-            <div class="fast-step-toggle-wrap">
-              <button type="button" class="fast-step-toggle" data-toggle-step-2 aria-expanded="false">
-                <span>+ Прикрепить ТЗ / фото или указать реквизиты (необязательно)</span>
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Шаг 2: Необязательные детали -->
-          <div class="fast-step-2" data-fast-step-2 hidden>
-            <div class="fast-fields-grid">
-              <div class="lead-field-group">
-                <label class="lead-field-label" for="fast_name_lep_clearing">Контактное лицо / Имя</label>
-                <input id="fast_name_lep_clearing" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться">
-              </div>
-              <div class="lead-field-group">
-                <label class="lead-field-label" for="fast_city_lep_clearing">Организация / СНТ / Район</label>
-                <input id="fast_city_lep_clearing" name="city" type="text" placeholder="Например, СНТ Березка, Дмитровский р-н">
-              </div>
-            </div>
-            <div class="lead-field-group">
-              <label class="lead-field-label" for="fast_comment_lep_clearing">Комментарий к задаче</label>
-              <textarea id="fast_comment_lep_clearing" name="comment" rows="2" placeholder="Укажите протяжённость трассы (км), ширину полосы (м), площадь в га или особенности"></textarea>
-            </div>
-            <div class="lead-field-group file-upload-group">
-              <label class="file-upload-label" for="fast_photos_lep_clearing">
-                <span class="file-upload-icon">📷</span>
-                <span class="file-upload-text"><strong>Прикрепить фото объекта или схемы (до 5 шт.)</strong><br><small>Фото с телефона: просека, деревья, подъезд. ТЗ и документы можно выслать в мессенджеры или на почту</small></span>
-              </label>
-              <input id="fast_photos_lep_clearing" name="photos" type="file" accept="image/*" multiple data-photos-input class="sr-only">
-              <div class="file-preview-list" data-file-preview></div>
-            </div>
-          </div>
-
-          <div class="fast-micro-trust">
-            <span class="micro-trust-badge">✓ Стоимость до начала работ</span>
-            <span class="micro-trust-badge">✓ Москва и МО</span>
-            <span class="micro-trust-badge">✓ Работа по договору</span>
-          </div>
-
-          <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a>.</p>
-
-          <!-- Успех -->
-          <div class="form-success fast-form-success" data-form-success hidden>
-            <div class="form-success-header">
-              <span class="form-success-badge" aria-hidden="true">✓</span>
-              <div class="form-success-text">
-                <h3 class="form-success-heading">Заявка принята!</h3>
-                <p class="form-success-sub">Свяжемся после получения заявки для предварительной оценки стоимости.</p>
-              </div>
-            </div>
-            <div class="fast-success-step2-prompt" data-success-step2-prompt>
-              <p class="fast-step2-invite">Хотите прислать фото или ТЗ напрямую мастеру?</p>
-              <div class="fast-success-msgr-chips">
-                <a class="btn btn-small btn-wa" href="https://wa.me/79998081951?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D1%83%D0%B6%D0%B5%D0%BD%20%D1%80%D0%B0%D1%81%D1%87%D1%91%D1%82%20%D1%80%D0%B0%D1%81%D1%87%D0%B8%D1%81%D1%82%D0%BA%D0%B8%20%D0%BF%D1%80%D0%BE%D1%81%D0%B5%D0%BA%D0%B8%20%2F%20%D1%82%D0%B5%D1%80%D1%80%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B8%20%D0%BF%D0%BE%D0%B4%20%D0%9B%D0%AD%D0%9F." target="_blank" rel="noopener" data-goal="click_whatsapp">Отправить в WhatsApp</a>
-                <a class="btn btn-small btn-tg" href="https://t.me/Romatran" target="_blank" rel="noopener" data-goal="click_telegram">Отправить в Telegram</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-error fast-form-error" data-form-error hidden>
-    <div class="form-error-title">Не удалось отправить заявку через сервер. Попробуйте ещё раз или свяжитесь с нами напрямую:</div>
-    <div class="form-error-actions">
-      <a href="tel:+79998081951" class="form-error-btn form-error-call" data-goal="click_phone">📞 Позвонить: 8 999 808 19 51</a>
-      <a href="https://wa.me/79998081951?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D1%83%D0%B6%D0%B5%D0%BD%20%D1%80%D0%B0%D1%81%D1%87%D1%91%D1%82%20%D1%80%D0%B0%D1%81%D1%87%D0%B8%D1%81%D1%82%D0%BA%D0%B8%20%D0%BF%D1%80%D0%BE%D1%81%D0%B5%D0%BA%D0%B8%20%2F%20%D1%82%D0%B5%D1%80%D1%80%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B8%20%D0%BF%D0%BE%D0%B4%20%D0%9B%D0%AD%D0%9F." target="_blank" rel="noopener" class="form-error-btn form-error-wa" data-goal="click_whatsapp">Написать в WhatsApp</a>
-      <a href="https://t.me/Romatran" target="_blank" rel="noopener" class="form-error-btn form-error-tg" data-goal="click_telegram">Написать в Telegram</a>
+        <div class="feature-card">
+          <span class="feature-icon">🛡️</span>
+          <h3>Охранные зоны ЛЭП</h3>
+          <p>Удаление древесно-кустарниковой растительности в границах охранных зон вдоль трасс воздушных линий с обеспечением безопасных расстояний.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📐</span>
+          <h3>Трассы воздушных линий (ВЛ)</h3>
+          <p>Расчистка коридоров прохождения воздушных линий ВЛ 0,4–10 кВ и выше, опиловка нависающих ветвей и крон, приближающихся к токоведущим проводам.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌿</span>
+          <h3>Древесно-кустарниковую растительность (ДКР)</h3>
+          <p>Сплошное и выборочное удаление дикорастущего кустарника, ивняка, мелколесья, подлеска и самосевной поросли под уровень земли.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⚠️</span>
+          <h3>Аварийные и угрожающие деревья</h3>
+          <p>Спил деревьев с опасным наклоном, сухих, треснувших стволов за пределами охранной зоны, способных упасть на провода при сильном ветре или снегопаде.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🚜</span>
+          <h3>Заросшие территории вдоль линий</h3>
+          <p>Ликвидация многолетних завалов, бурьяна, поваленных стволов и застарелых зарослей вдоль технологических проездов и подъездных путей к опорам.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🏗️</span>
+          <h3>Территории под новые линейные объекты</h3>
+          <p>Подготовка и расчистка лесных коридоров перед проектированием, строительством, расширением и монтажом новых линий электропередачи.</p>
+        </div>
+      </div>
+      <div class="section-cta-repeat">
+        <a class="btn btn-accent" href="#quiz-lep" data-goal="click_calculate">Рассчитать стоимость расчистки</a>
+      </div>
     </div>
-  </div>
-        </form>
+  </section>
+    
+  <section class="section section-muted section-workflow-lep" id="workflow-lep">
+    <div class="container">
+      <div class="section-head">
+        <h2>Что входит в работу: полный цикл расчистки</h2>
+        <p class="section-subhead">Организуем полный технологический процесс от предварительного обследования до сдачи чистой полосы заказчику.</p>
+      </div>
+      <div class="features-grid">
+        <div class="lep-step-card">
+          <span class="lep-step-badge">1</span>
+          <h3>Осмотр объекта</h3>
+          <p>Выезд специалистов на трассу, обследование рельефа, подъездных путей, типа грунта и видового состава насаждений.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">2</span>
+          <h3>Оценка площади и плотности</h3>
+          <p>Точный замер площади в гектарах или сотках, протяжённости трассы, таксация древостоя и определение густоты ДКР.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">3</span>
+          <h3>Определение способа расчистки</h3>
+          <p>Подбор оптимальной технологии: сплошная валка с земли, спил по частям в стеснённых условиях, обрезка крон, измельчение на месте.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">4</span>
+          <h3>Валка / спил / обрезка</h3>
+          <p>Безопасная валка деревьев в заданном направлении, спил аварийных стволов рядом с опорами, опиловка нависающих ветвей.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">5</span>
+          <h3>Удаление кустарника и мелколесья</h3>
+          <p>Сплошной срез дикорастущего кустарника, ивняка и поросли мощными кусторезами и бензопилами под уровень земли.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">6</span>
+          <h3>Измельчение веток и порубочных остатков</h3>
+          <p>Переработка срезанных ветвей и древесных отходов собственным мобильным щепорезом в щепу прямо на трассе (сокращение объёма до 7 раз).</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">7</span>
+          <h3>Сбор или вывоз отходов</h3>
+          <p>Складирование щепы в валы на границе полосы отвода, распределение по грунту либо погрузка и вывоз контейнерами на утилизацию.</p>
+        </div>
+        <div class="lep-step-card">
+          <span class="lep-step-badge">8</span>
+          <h3>Сдача очищенной территории заказчику</h3>
+          <p>Совместный контрольный осмотр выполненного участка с заказчиком, подписание двустороннего акта сдачи-приёмки и передача закрывающих документов.</p>
+        </div>
       </div>
     </div>
   </section>
     
   <section class="section section-quiz" id="quiz-lep">
+    <span id="lead-form" class="sr-only" aria-hidden="true"></span>
+    <span id="lead-lep_clearing" class="sr-only" aria-hidden="true"></span>
     <div class="container">
       <div class="section-head text-center">
         <h2>Расчёт стоимости расчистки просеки / территории под ЛЭП</h2>
@@ -596,106 +602,6 @@
     </div>
   </section>
     
-  <section class="section section-what-we-clear" id="what-we-clear-lep">
-    <div class="container">
-      <div class="section-head">
-        <h2>Что мы расчищаем</h2>
-        <p class="section-subhead">Выполняем полный комплекс работ по расчистке полос отвода линейных объектов, охранных зон и прилегающих территорий.</p>
-      </div>
-      <div class="features-grid">
-        <div class="feature-card">
-          <span class="feature-icon">⚡</span>
-          <h3>Просеки ЛЭП</h3>
-          <p>Систематическая вырубка деревьев и кустарника в пределах установленной ширины просеки для безаварийной эксплуатации воздушных линий электропередачи.</p>
-        </div>
-        <div class="feature-card">
-          <span class="feature-icon">🛡️</span>
-          <h3>Охранные зоны ЛЭП</h3>
-          <p>Удаление древесно-кустарниковой растительности в границах охранных зон вдоль трасс воздушных линий с обеспечением безопасных расстояний.</p>
-        </div>
-        <div class="feature-card">
-          <span class="feature-icon">📐</span>
-          <h3>Трассы воздушных линий (ВЛ)</h3>
-          <p>Расчистка коридоров прохождения воздушных линий ВЛ 0,4–10 кВ и выше, опиловка нависающих ветвей и крон, приближающихся к токоведущим проводам.</p>
-        </div>
-        <div class="feature-card">
-          <span class="feature-icon">🌿</span>
-          <h3>Древесно-кустарниковую растительность (ДКР)</h3>
-          <p>Сплошное и выборочное удаление дикорастущего кустарника, ивняка, мелколесья, подлеска и самосевной поросли под уровень земли.</p>
-        </div>
-        <div class="feature-card">
-          <span class="feature-icon">⚠️</span>
-          <h3>Аварийные и угрожающие деревья</h3>
-          <p>Спил деревьев с опасным наклоном, сухих, треснувших стволов за пределами охранной зоны, способных упасть на провода при сильном ветре или снегопаде.</p>
-        </div>
-        <div class="feature-card">
-          <span class="feature-icon">🚜</span>
-          <h3>Заросшие территории вдоль линий</h3>
-          <p>Ликвидация многолетних завалов, бурьяна, поваленных стволов и застарелых зарослей вдоль технологических проездов и подъездных путей к опорам.</p>
-        </div>
-        <div class="feature-card">
-          <span class="feature-icon">🏗️</span>
-          <h3>Территории под новые линейные объекты</h3>
-          <p>Подготовка и расчистка лесных коридоров перед проектированием, строительством, расширением и монтажом новых линий электропередачи.</p>
-        </div>
-      </div>
-      <div class="section-cta-repeat">
-        <a class="btn btn-accent" href="#quiz-lep" data-goal="click_calculate">Рассчитать стоимость расчистки</a>
-      </div>
-    </div>
-  </section>
-    
-  <section class="section section-muted section-workflow-lep" id="workflow-lep">
-    <div class="container">
-      <div class="section-head">
-        <h2>Что входит в работу: полный цикл расчистки</h2>
-        <p class="section-subhead">Организуем полный технологический процесс от предварительного обследования до сдачи чистой полосы заказчику.</p>
-      </div>
-      <div class="features-grid">
-        <div class="lep-step-card">
-          <span class="lep-step-badge">1</span>
-          <h3>Осмотр объекта</h3>
-          <p>Выезд специалистов на трассу, обследование рельефа, подъездных путей, типа грунта и видового состава насаждений.</p>
-        </div>
-        <div class="lep-step-card">
-          <span class="lep-step-badge">2</span>
-          <h3>Оценка площади и плотности</h3>
-          <p>Точный замер площади в гектарах или сотках, протяжённости трассы, таксация древостоя и определение густоты ДКР.</p>
-        </div>
-        <div class="lep-step-card">
-          <span class="lep-step-badge">3</span>
-          <h3>Определение способа расчистки</h3>
-          <p>Подбор оптимальной технологии: сплошная валка с земли, спил по частям в стеснённых условиях, обрезка крон, измельчение на месте.</p>
-        </div>
-        <div class="lep-step-card">
-          <span class="lep-step-badge">4</span>
-          <h3>Валка / спил / обрезка</h3>
-          <p>Безопасная валка деревьев в заданном направлении, спил аварийных стволов рядом с опорами, опиловка нависающих ветвей.</p>
-        </div>
-        <div class="lep-step-card">
-          <span class="lep-step-badge">5</span>
-          <h3>Удаление кустарника и мелколесья</h3>
-          <p>Сплошной срез дикорастущего кустарника, ивняка и поросли мощными кусторезами и бензопилами под уровень земли.</p>
-        </div>
-        <div class="lep-step-card">
-          <span class="lep-step-badge">6</span>
-          <h3>Измельчение веток и порубочных остатков</h3>
-          <p>Переработка срезанных ветвей и древесных отходов собственным мобильным щепорезом в щепу прямо на трассе (сокращение объёма до 7 раз).</p>
-        </div>
-        <div class="lep-step-card">
-          <span class="lep-step-badge">7</span>
-          <h3>Сбор или вывоз отходов</h3>
-          <p>Складирование щепы в валы на границе полосы отвода, распределение по грунту либо погрузка и вывоз контейнерами на утилизацию.</p>
-        </div>
-        <div class="lep-step-card">
-          <span class="lep-step-badge">8</span>
-          <h3>Сдача очищенной территории заказчику</h3>
-          <p>Совместный контрольный осмотр выполненного участка с заказчиком, подписание двустороннего акта сдачи-приёмки и передача закрывающих документов.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-    
   <section class="section section-dark section-b2b-lep" id="b2b-lep">
     <div class="container">
       <div class="lep-b2b-header">
@@ -743,7 +649,7 @@
           <p>Присылайте файлы технического задания, дефектные ведомости и схемы трассы на почту <strong>srez.z@yandex.ru</strong> или в мессенджеры WhatsApp и Telegram — оперативно изучим материалы и подготовим коммерческое предложение.</p>
         </div>
         <div class="lep-tz-banner-actions">
-          <a class="btn btn-accent" href="#lead-lep_clearing" data-goal="click_calculate">Отправить ТЗ для расчёта</a>
+          <a class="btn btn-accent" href="#quiz-lep" data-goal="click_calculate">Отправить ТЗ для расчёта</a>
           <a class="btn btn-outline" href="https://wa.me/79998081951?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D1%83%D0%B6%D0%B5%D0%BD%20%D1%80%D0%B0%D1%81%D1%87%D1%91%D1%82%20%D1%80%D0%B0%D1%81%D1%87%D0%B8%D1%81%D1%82%D0%BA%D0%B8%20%D0%BF%D1%80%D0%BE%D1%81%D0%B5%D0%BA%D0%B8%20%2F%20%D1%82%D0%B5%D1%80%D1%80%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B8%20%D0%BF%D0%BE%D0%B4%20%D0%9B%D0%AD%D0%9F." target="_blank" rel="noopener" data-goal="click_whatsapp">WhatsApp</a>
           <a class="btn btn-outline" href="https://t.me/Romatran" target="_blank" rel="noopener" data-goal="click_telegram">Telegram</a>
         </div>

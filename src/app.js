@@ -295,7 +295,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       });
     });
 
-    document.querySelectorAll('[data-lead-form], [data-fast-lead-form], [data-quiz-form]').forEach((form) => {
+    document.querySelectorAll('[data-lead-form], [data-quiz-form]').forEach((form) => {
       const phoneInput = form.querySelector('[data-phone-input]');
       const nameInput  = form.querySelector('[name="name"]');
       const submitBtn  = form.querySelector('[data-submit-btn]');
@@ -632,74 +632,6 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     });
   }
 
-  /* ─── ОБРАБОТЧИК БЫСТРЫХ ЛИД-ФОРМ (2 ШАГА) ─── */
-  function initFastLeadForms() {
-    document.querySelectorAll('[data-fast-lead-form]').forEach((form) => {
-      const step2Wrap = form.querySelector('[data-fast-step-2]');
-      const toggleStep2Btn = form.querySelector('[data-toggle-step-2]');
-      const photosInput = form.querySelector('[data-photos-input]');
-      const previewList = form.querySelector('[data-file-preview]');
-
-      form._selectedFiles = [];
-
-      // Шаг 2: раскрытие/скрытие
-      if (toggleStep2Btn && step2Wrap) {
-        toggleStep2Btn.addEventListener('click', () => {
-          const isHidden = step2Wrap.hidden;
-          step2Wrap.hidden = !isHidden;
-          toggleStep2Btn.setAttribute('aria-expanded', String(isHidden));
-        });
-      }
-
-      // Работа с загрузкой файлов
-      if (photosInput && previewList) {
-        const updatePreviews = () => {
-          previewList.innerHTML = '';
-          (form._selectedFiles || []).forEach((file, index) => {
-            const chip = document.createElement('span');
-            chip.className = 'file-preview-item';
-            const sizeKb = Math.round(file.size / 1024);
-            const sizeStr = sizeKb > 1024 ? `${(sizeKb / 1024).toFixed(1)} МБ` : `${sizeKb} КБ`;
-            chip.textContent = `${file.name} (${sizeStr}) `;
-            const rmBtn = document.createElement('button');
-            rmBtn.type = 'button';
-            rmBtn.className = 'file-preview-remove';
-            rmBtn.setAttribute('aria-label', `Удалить файл ${file.name}`);
-            rmBtn.textContent = '×';
-            rmBtn.addEventListener('click', () => {
-              form._selectedFiles.splice(index, 1);
-              updatePreviews();
-            });
-            chip.appendChild(rmBtn);
-            previewList.appendChild(chip);
-          });
-        };
-
-        photosInput.addEventListener('change', () => {
-          const files = Array.from(photosInput.files || []);
-          form._selectedFiles = form._selectedFiles || [];
-          for (const f of files) {
-            if (f.type && !f.type.startsWith('image/')) {
-              alert(`Файл "${f.name}" не является изображением. Пожалуйста, прикрепляйте фото (JPG, PNG, WebP). Документы ТЗ можно отправить в WhatsApp/Telegram или на почту.`);
-              continue;
-            }
-            if (f.size > 8 * 1024 * 1024) {
-              alert(`Файл "${f.name}" превышает 8 МБ. Пожалуйста, выберите файл меньшего размера.`);
-              continue;
-            }
-            if (form._selectedFiles.length >= 5) {
-              alert('Максимальное количество файлов — 5.');
-              break;
-            }
-            form._selectedFiles.push(f);
-          }
-          photosInput.value = '';
-          updatePreviews();
-        });
-      }
-    });
-  }
-
   /* ─── ОБРАБОТЧИК ИНТЕРАКТИВНЫХ КВИЗОВ ─── */
   function initQuizzes() {
     document.querySelectorAll('[data-quiz-form]').forEach((form) => {
@@ -851,7 +783,6 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
   initHomeAnimations();
   initPhoneMasks();
   initLeadForms();
-  initFastLeadForms();
   initQuizzes();
   initPhotoPopup();
 })();

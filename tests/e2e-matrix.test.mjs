@@ -14,42 +14,36 @@ const LANDING_PAGES = [
     slug: 'spil-derevev',
     serviceCode: 'spil',
     serviceName: 'Спил и удаление деревьев',
-    formId: 'fast-lead-spil',
     quizId: 'quiz-spil'
   },
   {
     slug: 'udalenie-avariynyh-derevev',
     serviceCode: 'emergency_tree',
     serviceName: 'Удаление аварийных деревьев',
-    formId: 'fast-lead-emergency',
     quizId: 'quiz-emergency'
   },
   {
     slug: 'raschistka-uchastkov',
     serviceCode: 'land_clearing',
     serviceName: 'Расчистка участков',
-    formId: 'fast-lead-clearing',
     quizId: 'quiz-clearing'
   },
   {
     slug: 'obrezka-derevev',
     serviceCode: 'tree_pruning',
     serviceName: 'Обрезка деревьев',
-    formId: 'fast-lead-pruning',
     quizId: 'quiz-pruning'
   },
   {
     slug: 'izmelchenie-vetok',
     serviceCode: 'branch_chipping',
     serviceName: 'Измельчение веток',
-    formId: 'fast-lead-chipping',
     quizId: 'quiz-chipping'
   },
   {
     slug: 'raschistka-prosek-lep',
     serviceCode: 'lep_clearing',
     serviceName: 'Расчистка просек ЛЭП',
-    formId: 'fast-lead-lep',
     quizId: 'quiz-lep'
   }
 ];
@@ -65,8 +59,8 @@ test('E2E Matrix: All 6 landing pages exist in dist with correct meta and viewpo
     const html = readHtml(page.slug);
     assert.match(html, /<meta name="viewport" content="width=device-width, initial-scale=1">/);
     assert.match(html, /<link rel="canonical" href="https:\/\/zelsrez\.ru\//);
-    assert.match(html, new RegExp(`id="${page.formId}"`));
     assert.match(html, new RegExp(`id="${page.quizId}"`));
+    assert.ok(!html.includes('data-fast-lead-form'), `Page ${page.slug} must not have fast-lead form`);
     assert.match(html, new RegExp(`value="${page.serviceCode}"`));
     assert.match(html, new RegExp(`value="${page.serviceName}"`));
   }
@@ -100,7 +94,7 @@ test('E2E Matrix: Scenario 1 - Phone-only submission across all 6 pages', async 
       phone: '+7 (999) 808-19-51',
       service: page.serviceName,
       service_code: page.serviceCode,
-      page: `https://zelsrez.ru/${page.slug}/#${page.formId}`,
+      page: `https://zelsrez.ru/${page.slug}/#${page.quizId}`,
       created_at: new Date().toISOString()
     };
 

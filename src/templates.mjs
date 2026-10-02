@@ -1043,101 +1043,6 @@ function heroTrustBadges(extraBadges = []) {
   return `<div class="hero-trust-badges" aria-label="Гарантии">${all.map((b) => `<span class="hero-trust-pill">${esc(b)}</span>`).join('')}</div>`;
 }
 
-function renderFastLeadForm({ serviceCode, serviceName, formId, title, subtitle, submitText, commentPlaceholder, waText = '', isLep = false }) {
-  const waLink = messengerHref('#lead-form', waText);
-  const tgLink = telegramHref('#lead-form');
-
-  return `
-  <section class="section section-fast-lead" id="lead-${serviceCode}">
-    <span id="lead-form" class="sr-only" aria-hidden="true"></span>
-    <div class="container">
-      <div class="fast-lead-wrapper">
-        <div class="fast-lead-header">
-          <h2>${esc(title)}</h2>
-          <p class="fast-lead-subtitle">${esc(subtitle)}</p>
-        </div>
-
-        <form class="lead-form fast-lead-form" data-fast-lead-form data-service-code="${serviceCode}" data-form-id="${formId}" id="${formId}">
-          <input type="hidden" name="service" value="${esc(serviceName)}">
-          <input type="hidden" name="service_code" value="${serviceCode}">
-          <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
-
-          <!-- Шаг 1: Телефон и быстрая отправка -->
-          <div class="fast-step-1" data-fast-step-1>
-            <div class="fast-phone-row">
-              <div class="lead-field-group fast-phone-group">
-                <label class="lead-field-label sr-only" for="fast_phone_${serviceCode}">Номер телефона</label>
-                <input id="fast_phone_${serviceCode}" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" data-phone-input>
-              </div>
-              <button class="btn btn-accent fast-submit-btn" type="submit" data-submit-btn>${esc(submitText)}</button>
-            </div>
-            <div class="fast-step-toggle-wrap">
-              <button type="button" class="fast-step-toggle" data-toggle-step-2 aria-expanded="false">
-                <span>+ ${isLep ? 'Прикрепить ТЗ / фото или указать реквизиты (необязательно)' : 'Уточнить задачу и прикрепить фото (необязательно)'}</span>
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Шаг 2: Необязательные детали -->
-          <div class="fast-step-2" data-fast-step-2 hidden>
-            <div class="fast-fields-grid">
-              <div class="lead-field-group">
-                <label class="lead-field-label" for="fast_name_${serviceCode}">${isLep ? 'Контактное лицо / Имя' : 'Ваше имя'}</label>
-                <input id="fast_name_${serviceCode}" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться">
-              </div>
-              <div class="lead-field-group">
-                <label class="lead-field-label" for="fast_city_${serviceCode}">${isLep ? 'Организация / СНТ / Район' : 'Город / район / СНТ'}</label>
-                <input id="fast_city_${serviceCode}" name="city" type="text" placeholder="${isLep ? 'Например, СНТ Березка, Дмитровский р-н' : 'Например, Истринский район'}">
-              </div>
-            </div>
-            <div class="lead-field-group">
-              <label class="lead-field-label" for="fast_comment_${serviceCode}">Комментарий к задаче</label>
-              <textarea id="fast_comment_${serviceCode}" name="comment" rows="2" placeholder="${esc(commentPlaceholder)}"></textarea>
-            </div>
-            <div class="lead-field-group file-upload-group">
-              <label class="file-upload-label" for="fast_photos_${serviceCode}">
-                <span class="file-upload-icon">📷</span>
-                <span class="file-upload-text"><strong>${isLep ? 'Прикрепить фото объекта или схемы (до 5 шт.)' : 'Прикрепить фотографии (до 5 шт.)'}</strong><br><small>${isLep ? 'Фото с телефона: просека, деревья, подъезд. ТЗ и документы можно выслать в мессенджеры или на почту' : 'Подойдут фото с телефона: общий вид, ствол, окружение'}</small></span>
-              </label>
-              <input id="fast_photos_${serviceCode}" name="photos" type="file" accept="image/*" multiple data-photos-input class="sr-only">
-              <div class="file-preview-list" data-file-preview></div>
-            </div>
-          </div>
-
-          <div class="fast-micro-trust">
-            <span class="micro-trust-badge">✓ Стоимость до начала работ</span>
-            <span class="micro-trust-badge">✓ Москва и МО</span>
-            <span class="micro-trust-badge">✓ Работа по договору</span>
-          </div>
-
-          <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a>.</p>
-
-          <!-- Успех -->
-          <div class="form-success fast-form-success" data-form-success hidden>
-            <div class="form-success-header">
-              <span class="form-success-badge" aria-hidden="true">✓</span>
-              <div class="form-success-text">
-                <h3 class="form-success-heading">Заявка принята!</h3>
-                <p class="form-success-sub">Свяжемся после получения заявки для предварительной оценки стоимости.</p>
-              </div>
-            </div>
-            <div class="fast-success-step2-prompt" data-success-step2-prompt>
-              <p class="fast-step2-invite">Хотите прислать фото или ТЗ напрямую мастеру?</p>
-              <div class="fast-success-msgr-chips">
-                <a class="btn btn-small btn-wa" href="${waLink}" target="_blank" rel="noopener" data-goal="click_whatsapp">Отправить в WhatsApp</a>
-                <a class="btn btn-small btn-tg" href="${tgLink}" target="_blank" rel="noopener" data-goal="click_telegram">Отправить в Telegram</a>
-              </div>
-            </div>
-          </div>
-
-          ${formErrorMarkup('fast-form-error', waText)}
-        </form>
-      </div>
-    </div>
-  </section>`;
-}
-
 function renderQuiz({ serviceCode, serviceName, quizId, title, subtitle, steps, finalCtaText, submitNote, waText = '', isLep = false }) {
   const totalSteps = steps.length + 1;
   const waLink = messengerHref('#lead-form', waText);
@@ -1145,6 +1050,8 @@ function renderQuiz({ serviceCode, serviceName, quizId, title, subtitle, steps, 
 
   return `
   <section class="section section-quiz" id="${quizId}">
+    <span id="lead-form" class="sr-only" aria-hidden="true"></span>
+    <span id="lead-${serviceCode}" class="sr-only" aria-hidden="true"></span>
     <div class="container">
       <div class="section-head text-center">
         <h2>${esc(title)}</h2>
@@ -1289,17 +1196,6 @@ export function spilLandingPage(service) {
       </aside>
     </div>
   </section>`;
-
-  const fastLead = renderFastLeadForm({
-    serviceCode: 'spil',
-    serviceName: 'Спил и удаление деревьев',
-    formId: 'fast-lead-spil',
-    title: 'Быстрый расчёт стоимости спила',
-    subtitle: 'Оставьте номер телефона — свяжемся после получения заявки и предварительно оценим стоимость.',
-    submitText: 'Получить расчёт спила',
-    commentPlaceholder: 'Укажите породу дерева, примерную высоту или опишите окружение (дом, забор, провода)',
-    waText: waDirectTexts.spil
-  });
 
   const quiz = renderQuiz({
     serviceCode: 'spil',
@@ -1450,9 +1346,8 @@ export function spilLandingPage(service) {
 
   const body = `
     ${hero}
-    ${fastLead}
-    ${quiz}
     ${whatWeDo}
+    ${quiz}
     ${realWorks}
     ${pricingSection}
     ${faqSection(spilDirectFaq)}
@@ -1524,17 +1419,6 @@ export function emergencyLandingPage(service) {
       </aside>
     </div>
   </section>`;
-
-  const fastLead = renderFastLeadForm({
-    serviceCode: 'emergency_tree',
-    serviceName: 'Удаление аварийных деревьев',
-    formId: 'fast-lead-emergency',
-    title: 'Срочная оценка аварийного дерева',
-    subtitle: 'Введите номер телефона — свяжемся после получения заявки для оценки опасности и расчёта.',
-    submitText: 'Оценить опасное дерево',
-    commentPlaceholder: 'Опишите проблему: угол наклона, трещины, нависание над крышей или проводами',
-    waText: waDirectTexts.emergency_tree
-  });
 
   const quiz = renderQuiz({
     serviceCode: 'emergency_tree',
@@ -1684,10 +1568,9 @@ export function emergencyLandingPage(service) {
 
   const body = `
     ${hero}
-    ${fastLead}
+    ${whatWeDo}
     ${quiz}
     ${pricingSection}
-    ${whatWeDo}
     ${realWorks}
     ${faqSection(emergencyDirectFaq)}
     ${repeatCta}
@@ -1754,17 +1637,6 @@ export function raschistkaLandingPage(service) {
       </aside>
     </div>
   </section>`;
-
-  const fastLead = renderFastLeadForm({
-    serviceCode: 'land_clearing',
-    serviceName: 'Расчистка участков',
-    formId: 'fast-lead-clearing',
-    title: 'Быстрый расчёт стоимости расчистки',
-    subtitle: 'Оставьте номер телефона — свяжемся после получения заявки и предварительно оценим объём и стоимость.',
-    submitText: 'Получить расчёт расчистки',
-    commentPlaceholder: 'Укажите примерную площадь в сотках, степень зарослей или что нужно сделать',
-    waText: waDirectTexts.land_clearing
-  });
 
   const quiz = renderQuiz({
     serviceCode: 'land_clearing',
@@ -1923,9 +1795,8 @@ export function raschistkaLandingPage(service) {
 
   const body = `
     ${hero}
-    ${fastLead}
-    ${quiz}
     ${whatWeDo}
+    ${quiz}
     ${realWorks}
     ${pricingSection}
     ${faqSection(clearingDirectFaq)}
@@ -1993,17 +1864,6 @@ export function pruningLandingPage(service) {
       </aside>
     </div>
   </section>`;
-
-  const fastLead = renderFastLeadForm({
-    serviceCode: 'tree_pruning',
-    serviceName: 'Обрезка деревьев',
-    formId: 'fast-lead-pruning',
-    title: 'Быстрый расчёт стоимости обрезки',
-    subtitle: 'Оставьте номер телефона — свяжемся после получения заявки и предварительно оценим объём и стоимость.',
-    submitText: 'Получить расчёт обрезки',
-    commentPlaceholder: 'Укажите породу дерева, примерную высоту, количество деревьев или что мешает',
-    waText: waDirectTexts.tree_pruning
-  });
 
   const quiz = renderQuiz({
     serviceCode: 'tree_pruning',
@@ -2139,9 +1999,8 @@ export function pruningLandingPage(service) {
 
   const body = `
     ${hero}
-    ${fastLead}
-    ${quiz}
     ${whatWeDo}
+    ${quiz}
     ${realWorks}
     ${pricingSection}
     ${faqSection(pruningDirectFaq)}
@@ -2216,18 +2075,6 @@ export function raschistkaProsekLepLandingPage() {
       </aside>
     </div>
   </section>`;
-
-  const fastLead = renderFastLeadForm({
-    serviceCode: 'lep_clearing',
-    serviceName: 'Расчистка просек ЛЭП',
-    formId: 'fast-lead-lep',
-    isLep: true,
-    title: 'Расчёт по объекту или техническому заданию',
-    subtitle: 'Оставьте контакты — свяжемся после получения заявки, уточним параметры объекта или примем ТЗ на расчёт.',
-    submitText: 'Получить расчёт объекта',
-    commentPlaceholder: 'Укажите протяжённость трассы (км), ширину полосы (м), площадь в га или особенности',
-    waText: waDirectTexts.lep_clearing
-  });
 
   const quiz = renderQuiz({
     serviceCode: 'lep_clearing',
@@ -2392,9 +2239,9 @@ export function raschistkaProsekLepLandingPage() {
           <p>Присылайте файлы технического задания, дефектные ведомости и схемы трассы на почту <strong>${esc(site.email)}</strong> или в мессенджеры WhatsApp и Telegram — оперативно изучим материалы и подготовим коммерческое предложение.</p>
         </div>
         <div class="lep-tz-banner-actions">
-          <a class="btn btn-accent" href="#lead-lep_clearing" data-goal="click_calculate">Отправить ТЗ для расчёта</a>
-          ${hasValue(site.messengerUrl) ? `<a class="btn btn-outline" href="${messengerHref('#lead-lep_clearing', waDirectTexts.lep_clearing)}" target="_blank" rel="noopener" data-goal="click_whatsapp">WhatsApp</a>` : ''}
-          ${hasValue(site.telegramUrl) ? `<a class="btn btn-outline" href="${telegramHref('#lead-lep_clearing')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram</a>` : ''}
+          <a class="btn btn-accent" href="#quiz-lep" data-goal="click_calculate">Отправить ТЗ для расчёта</a>
+          ${hasValue(site.messengerUrl) ? `<a class="btn btn-outline" href="${messengerHref('#quiz-lep', waDirectTexts.lep_clearing)}" target="_blank" rel="noopener" data-goal="click_whatsapp">WhatsApp</a>` : ''}
+          ${hasValue(site.telegramUrl) ? `<a class="btn btn-outline" href="${telegramHref('#quiz-lep')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram</a>` : ''}
         </div>
       </div>
     </div>
@@ -2573,10 +2420,9 @@ export function raschistkaProsekLepLandingPage() {
 
   const body = `
     ${hero}
-    ${fastLead}
-    ${quiz}
     ${whatWeClear}
     ${workflow}
+    ${quiz}
     ${b2bSection}
     ${pricingFactors}
     ${objectsSection}
@@ -2656,17 +2502,6 @@ export function izmelchenieLandingPage(service) {
       </aside>
     </div>
   </section>`;
-
-  const fastLead = renderFastLeadForm({
-    serviceCode: 'branch_chipping',
-    serviceName: 'Измельчение веток',
-    formId: 'fast-lead-chipping',
-    title: 'Быстрый расчёт стоимости измельчения веток',
-    subtitle: 'Оставьте номер телефона — свяжемся после получения заявки, оценим объём работ и стоимость.',
-    submitText: 'Получить расчёт измельчения',
-    commentPlaceholder: 'Опишите примерный объём кучи веток (длина, ширина, высота) или породу',
-    waText: waDirectTexts.branch_chipping
-  });
 
   const branchesReadyBlock = `
   <section class="section section-chipping-ready" id="branches-ready">
@@ -2856,10 +2691,9 @@ export function izmelchenieLandingPage(service) {
 
   const body = `
     ${hero}
-    ${fastLead}
     ${branchesReadyBlock}
-    ${quiz}
     ${whatWeDo}
+    ${quiz}
     ${realProof}
     ${pricingSection}
     ${whatWithChips}
