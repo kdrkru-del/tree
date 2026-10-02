@@ -147,7 +147,6 @@ async function build() {
   await add('works', worksPage());
   await add('faq', faqPage());
   await add('contacts', contactsPage());
-  await add('raschistka-prosek-lep', raschistkaProsekLepLandingPage());
   const notFoundHtml = notFoundPage();
   await write('404', notFoundHtml);
   await writeFile(path.join(dist, '404.html'), notFoundHtml, 'utf8');
@@ -163,6 +162,8 @@ async function build() {
       await add(service.slug, raschistkaLandingPage(service));
     } else if (service.slug === 'izmelchenie-vetok') {
       await add(service.slug, izmelchenieLandingPage(service));
+    } else if (service.slug === 'raschistka-prosek-lep') {
+      await add(service.slug, raschistkaProsekLepLandingPage(service));
     } else {
       await add(service.slug, servicePage(service));
     }

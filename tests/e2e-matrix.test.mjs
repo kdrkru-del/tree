@@ -261,3 +261,71 @@ test('E2E Matrix: Scenario 8 - UTM and yclid retention across landings', () => {
   assert.equal(nextAttr.utm_source, 'yandex');
   assert.equal(nextAttr.yclid, '998877665544');
 });
+
+test('E2E Matrix: Home page has exactly 7 service cards including LEP', () => {
+  const html = readHtml('');
+  const cards = [...html.matchAll(/<article class="main-service-card"/g)];
+  assert.equal(cards.length, 7, 'Home page must have exactly 7 service cards');
+  assert.match(html, /id="lep"/);
+  assert.match(html, /Расчистка просек под ЛЭП/);
+  assert.match(html, /По расчёту объекта/);
+  assert.match(html, /href="\/raschistka-prosek-lep\/"/);
+  assert.match(html, /src="\/assets\/raschistka-real\.png"/);
+});
+
+test('E2E Matrix: Home page has 100% сохранность имущества, мат. ответственность, выезд от 2 часов', () => {
+  const html = readHtml('');
+  assert.match(html, /100% сохранность имущества/);
+  assert.match(html, /Материальная ответственность по договору/);
+  assert.match(html, /Выезд (?:бригады )?от 2 часов/);
+});
+
+test('E2E Matrix: No user-visible word "квиз" across any landing page', () => {
+  for (const page of LANDING_PAGES) {
+    const html = readHtml(page.slug);
+    const cleaned = html
+      .replace(/data-quiz[^=]*="[^"]*"/g, '')
+      .replace(/id="quiz-[^"]*"/g, '')
+      .replace(/href="#quiz-[^"]*"/g, '')
+      .replace(/form-quiz-[^"]*/g, '')
+      .replace(/quiz_answers/g, '')
+      .replace(/quiz_step/g, '')
+      .replace(/quiz_complete/g, '')
+      .replace(/quiz_start/g, '')
+      .replace(/реквизиты|реквизитов/gi, '');
+
+    assert.doesNotMatch(cleaned, /квиз/i, `Page ${page.slug} still contains visible word "квиз"`);
+  }
+});
+
+test('E2E Matrix: Emergency trees page CTA priority and badges', () => {
+  const html = readHtml('udalenie-avariynyh-derevev');
+  const actionsMatch = html.match(/<div class="landing-hero-actions">([\s\S]*?)<\/div>/);
+  assert.ok(actionsMatch, 'Hero actions must exist');
+  const actionsContent = actionsMatch[1];
+  const phoneIndex = actionsContent.indexOf('tel:+79998081951');
+  const calcIndex = actionsContent.indexOf('#quiz-emergency');
+  assert.ok(phoneIndex !== -1, 'Phone CTA must be present');
+  assert.ok(calcIndex !== -1, 'Calculate CTA must be present');
+  assert.ok(phoneIndex < calcIndex, '1st CTA must be phone call, 2nd CTA must be estimate');
+  assert.match(actionsContent, /Позвонить сейчас/);
+  assert.match(html, /Выезд бригады — от 2 часов/);
+});
+
+test('E2E Matrix: Chipping page has no unconfirmed "15 см" or "смену щепореза"', () => {
+  const html = readHtml('izmelchenie-vetok');
+  assert.match(html, /<h1>Измельчение веток \(Щепорез\)/);
+  assert.doesNotMatch(html, /15 см/);
+  assert.doesNotMatch(html, /смену щепореза/i);
+  assert.doesNotMatch(html, /смены щепореза/i);
+  assert.match(html, /Рассчитать стоимость измельчения веток/);
+});
+
+test('E2E Matrix: LEP page has no unconfirmed engineer claims and has B2B VAT options', () => {
+  const html = readHtml('raschistka-prosek-lep');
+  assert.match(html, /Расчистка просек и территорий под ЛЭП/);
+  assert.match(html, /Специалист/i);
+  assert.doesNotMatch(html, /инженер/i);
+  assert.match(html, /с НДС/);
+  assert.match(html, /Собственный щепорез с оператором/);
+});

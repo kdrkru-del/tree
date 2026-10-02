@@ -394,7 +394,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
             }
           });
           if (answersSummary.length) {
-            comment = `Ответы квиза (${service}):\n` + answersSummary.join('\n');
+            comment = `Параметры расчёта (${service}):\n` + answersSummary.join('\n');
           }
         }
 
