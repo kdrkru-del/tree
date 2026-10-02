@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { clearingVideos, complexVideos, legalPages, services, site } from '../src/data.mjs';
 import {
   contactsPage,
+  emergencyLandingPage,
   faqPage,
   homePage,
   izmelchenieLandingPage,
@@ -11,6 +12,7 @@ import {
   notFoundPage,
   pagePath,
   pricesPage,
+  pruningLandingPage,
   raschistkaLandingPage,
   raschistkaProsekLepLandingPage,
   servicePage,
@@ -153,6 +155,10 @@ async function build() {
   for (const service of services) {
     if (service.slug === 'spil-derevev') {
       await add(service.slug, spilLandingPage(service));
+    } else if (service.slug === 'udalenie-avariynyh-derevev') {
+      await add(service.slug, emergencyLandingPage(service));
+    } else if (service.slug === 'obrezka-derevev') {
+      await add(service.slug, pruningLandingPage(service));
     } else if (service.slug === 'raschistka-uchastkov') {
       await add(service.slug, raschistkaLandingPage(service));
     } else if (service.slug === 'izmelchenie-vetok') {
