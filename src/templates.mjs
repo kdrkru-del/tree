@@ -1098,9 +1098,9 @@ function renderFastLeadForm({ serviceCode, serviceName, formId, title, subtitle,
             <div class="lead-field-group file-upload-group">
               <label class="file-upload-label" for="fast_photos_${serviceCode}">
                 <span class="file-upload-icon">📷</span>
-                <span class="file-upload-text"><strong>${isLep ? 'Прикрепить ТЗ, документы или фото (до 5 файлов)' : 'Прикрепить фотографии (до 5 шт.)'}</strong><br><small>${isLep ? 'Файлы ТЗ, карты местности, схемы, фото растительности' : 'Подойдут фото с телефона: общий вид, ствол, окружение'}</small></span>
+                <span class="file-upload-text"><strong>${isLep ? 'Прикрепить фото объекта или схемы (до 5 шт.)' : 'Прикрепить фотографии (до 5 шт.)'}</strong><br><small>${isLep ? 'Фото с телефона: просека, деревья, подъезд. ТЗ и документы можно выслать в мессенджеры или на почту' : 'Подойдут фото с телефона: общий вид, ствол, окружение'}</small></span>
               </label>
-              <input id="fast_photos_${serviceCode}" name="photos" type="file" accept="${isLep ? 'image/*,.pdf,.doc,.docx,.xls,.xlsx' : 'image/*'}" multiple data-photos-input class="sr-only">
+              <input id="fast_photos_${serviceCode}" name="photos" type="file" accept="image/*" multiple data-photos-input class="sr-only">
               <div class="file-preview-list" data-file-preview></div>
             </div>
           </div>
@@ -1209,9 +1209,9 @@ function renderQuiz({ serviceCode, serviceName, quizId, title, subtitle, steps, 
               <div class="lead-field-group file-upload-group">
                 <label class="file-upload-label" for="photos_${quizId}">
                   <span class="file-upload-icon">📷</span>
-                  <span class="file-upload-text"><strong>${isLep ? 'Прикрепить ТЗ, документы или фото (до 5 файлов)' : 'Прикрепить фото объекта (необязательно)'}</strong><br><small>${isLep ? 'Файлы ТЗ, схемы, фото растительности' : 'По фото назовём точный ориентир стоимости до выезда'}</small></span>
+                  <span class="file-upload-text"><strong>${isLep ? 'Прикрепить фото объекта или схемы (до 5 шт.)' : 'Прикрепить фото объекта (необязательно)'}</strong><br><small>${isLep ? 'Фото с телефона: просека, деревья, подъезд' : 'По фото назовём точный ориентир стоимости до выезда'}</small></span>
                 </label>
-                <input id="photos_${quizId}" name="photos" type="file" accept="${isLep ? 'image/*,.pdf,.doc,.docx,.xls,.xlsx' : 'image/*'}" multiple data-photos-input class="sr-only">
+                <input id="photos_${quizId}" name="photos" type="file" accept="image/*" multiple data-photos-input class="sr-only">
                 <div class="file-preview-list" data-file-preview></div>
               </div>
             </div>
@@ -2253,7 +2253,7 @@ export function raschistkaProsekLepLandingPage() {
         <div class="feature-card">
           <span class="feature-icon">⚡</span>
           <h3>Просеки ЛЭП</h3>
-          <p>Систематическая вырубка деревьев и кустарника в пределах установленной ширины просеки для безаварийной эксплуатации линий электропередачи всех классов напряжения.</p>
+          <p>Систематическая вырубка деревьев и кустарника в пределах установленной ширины просеки для безаварийной эксплуатации воздушных линий электропередачи.</p>
         </div>
         <div class="feature-card">
           <span class="feature-icon">🛡️</span>
@@ -2350,12 +2350,12 @@ export function raschistkaProsekLepLandingPage() {
       <div class="lep-b2b-header">
         <span class="lep-b2b-badge">Для юридических лиц и подрядчиков</span>
         <h2>Расчистка ЛЭП для организаций и подрядчиков</h2>
-        <p>Работаем с электросетевыми компаниями, подрядчиками энергетического сектора, строительными организациями, СНТ, промышленными предприятиями и балансодержателями линейных объектов.</p>
+        <p>Выполняем расчистку для организаций, СНТ, подрядчиков, строительных компаний, промышленных предприятий и владельцев территорий.</p>
       </div>
       <div class="features-grid">
         <div class="lep-b2b-card">
           <h3>Расчистка больших площадей</h3>
-          <p>Формируем автономные звенья специалистов для оперативной расчистки протяжённых трасс и участков площадью в десятки гектаров.</p>
+          <p>Формируем автономные звенья специалистов для оперативной расчистки протяжённых трасс и масштабных участков любой сложности.</p>
         </div>
         <div class="lep-b2b-card">
           <h3>Работа по техническому заданию</h3>
@@ -2371,7 +2371,7 @@ export function raschistkaProsekLepLandingPage() {
         </div>
         <div class="lep-b2b-card">
           <h3>Безналичный расчёт</h3>
-          <p>Оплата по безналичному расчёту (варианты с НДС и без НДС) с предоставлением полного комплекта закрывающих документов (договор, смета, акты выполненных работ).</p>
+          <p>Официальный безналичный расчёт. Возможна работа с НДС или без НДС — вариант расчёта и комплект документов согласовываются при заключении договора.</p>
         </div>
         <div class="lep-b2b-card">
           <h3>Фото- и видеофиксация</h3>
@@ -2476,7 +2476,7 @@ export function raschistkaProsekLepLandingPage() {
         <div class="feature-card">
           <span class="feature-icon">⚡</span>
           <h3>Линии электропередачи</h3>
-          <p>Магистральные и распределительные ЛЭП всех классов напряжения, расширение и поддержание нормативной полосы просеки.</p>
+          <p>Расчистка коридоров распределительных и магистральных ЛЭП, расширение и поддержание нормативной полосы просеки.</p>
         </div>
         <div class="feature-card">
           <span class="feature-icon">🔌</span>
@@ -2548,7 +2548,7 @@ export function raschistkaProsekLepLandingPage() {
         <div class="trust-item-lp">
           <span class="trust-icon-lp">📄</span>
           <h3>Официальный договор и безнал</h3>
-          <p>Работаем как юридическое лицо (ООО «ЮНАТ», ИНН 2536345868). Договор, подробная смета, безналичный расчёт (с НДС и без НДС), закрывающие акты.</p>
+          <p>Работаем как юридическое лицо (ООО «ЮНАТ», ИНН 2536345868). Договор, подробная смета, безналичный расчёт (с НДС или без НДС — согласовывается при заключении договора), закрывающие акты.</p>
         </div>
         <div class="trust-item-lp">
           <span class="trust-icon-lp">🛡️</span>

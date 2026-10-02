@@ -679,6 +679,10 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
           const files = Array.from(photosInput.files || []);
           form._selectedFiles = form._selectedFiles || [];
           for (const f of files) {
+            if (f.type && !f.type.startsWith('image/')) {
+              alert(`Файл "${f.name}" не является изображением. Пожалуйста, прикрепляйте фото (JPG, PNG, WebP). Документы ТЗ можно отправить в WhatsApp/Telegram или на почту.`);
+              continue;
+            }
             if (f.size > 8 * 1024 * 1024) {
               alert(`Файл "${f.name}" превышает 8 МБ. Пожалуйста, выберите файл меньшего размера.`);
               continue;
@@ -819,6 +823,10 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
           const files = Array.from(photosInput.files || []);
           form._selectedFiles = form._selectedFiles || [];
           for (const f of files) {
+            if (f.type && !f.type.startsWith('image/')) {
+              alert(`Файл "${f.name}" не является изображением. Пожалуйста, прикрепляйте фото (JPG, PNG, WebP). Документы ТЗ можно отправить в WhatsApp/Telegram или на почту.`);
+              continue;
+            }
             if (f.size > 8 * 1024 * 1024) {
               alert(`Файл "${f.name}" превышает 8 МБ. Пожалуйста, выберите файл меньшего размера.`);
               continue;

@@ -326,6 +326,12 @@ test('E2E Matrix: LEP page has no unconfirmed engineer claims and has B2B VAT op
   assert.match(html, /Расчистка просек и территорий под ЛЭП/);
   assert.match(html, /Специалист/i);
   assert.doesNotMatch(html, /инженер/i);
+  assert.doesNotMatch(html, /электросетевыми компаниями/i);
+  assert.doesNotMatch(html, /десятки гектаров/i);
+  assert.doesNotMatch(html, /всех классов напряжения/i);
   assert.match(html, /с НДС/);
   assert.match(html, /Собственный щепорез с оператором/);
+  assert.match(html, /accept="image\/\*"/);
+  assert.doesNotMatch(html, /\.pdf,\.doc/);
 });
+
