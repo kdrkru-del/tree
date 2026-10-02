@@ -5659,3 +5659,132 @@ body.has-modal-open {
   }
 }
 
+/* ─── ЛЭП Посадочная страница (/raschistka-prosek-lep/) ─── */
+.landing-hero--lep {
+  background: linear-gradient(135deg, #071e13 0%, #0e2d1d 50%, #17422b 100%);
+}
+
+.lep-step-card {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lep-step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--green-700);
+  color: #fff;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 0.92rem;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.lep-step-card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--green-950);
+  margin: 0 0 8px;
+}
+
+.lep-step-card p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.lep-b2b-header {
+  margin-bottom: 32px;
+}
+
+.lep-b2b-badge {
+  display: inline-block;
+  background: rgba(34, 197, 94, 0.18);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #86efac;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.lep-b2b-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius);
+  padding: 24px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.lep-b2b-card h3 {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.lep-b2b-card p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.lep-tz-banner {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-top: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.lep-tz-banner-text h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+.lep-tz-banner-text p {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  max-width: 620px;
+  line-height: 1.5;
+}
+
+.lep-tz-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.lep-tz-banner-actions .btn {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .lep-tz-banner {
+    padding: 20px 18px;
+  }
+}
+
