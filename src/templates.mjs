@@ -367,8 +367,7 @@ export function homePage() {
   ${organizationsSection()}
   ${experienceProofSection()}
   ${videosSection()}
-  ${faqSection(homeFaq)}
-  ${leadSection('Покажите задачу — рассчитаем стоимость', 'Можно начать с фотографии. После согласования фиксируем цену и выполняем работы с оплатой по факту.', 'Фото на оценку', homeLeadOptions)}
+  ${leadSection('Покажите задачу — рассчитаем точную стоимость', 'Пришлите 2–3 фотографии с расстояния 10–15 метров. Назовём способ работы и точную цену до выезда бригады. Оплата строго по факту приёмки.', 'Фото на оценку', homeLeadOptions)}
   ${seoContentSection()}`;
   return renderPage({ title, description, path: '/', body, jsonLd: [professionalServiceSchema(), faqSchema(homeFaq), breadcrumbSchema([{ name: 'Главная', url: '/' }])] });
 }
@@ -379,9 +378,9 @@ function heroSection() {
   <div class="hero-shade"></div>
   <div class="container hero-content">
     <div class="hero-copy">
-      <p class="hero-badge">Москва и Московская область • Работаем ежедневно</p>
-      <h1>Спил деревьев, расчистка участков, корчевание пней и&nbsp;измельчение веток</h1>
-      <p class="hero-lead">Безопасно удаляем деревья любой сложности, дробим пни и перерабатываем ветки в щепу. Фиксированная смета по фото до выезда, договор и материальная ответственность.</p>
+      <p class="hero-badge">Москва и Московская область • Работаем ежедневно без выходных</p>
+      <h1>Безопасный спил деревьев, расчистка участков и&nbsp;измельчение веток</h1>
+      <p class="hero-lead">Аккуратно разбираем деревья возле домов, заборов и проводов. Дробим пни и перерабатываем ветки в щепу своим щепорезом. Точная стоимость по фото до выезда, договор и материальная ответственность.</p>
 
       <div class="hero-price-anchors" aria-label="Стартовые ценовые ориентиры">
         <a href="#spil" class="hero-price-pill"><span>Спил дерева</span><strong>от 1 000 ₽</strong></a>
@@ -410,7 +409,7 @@ function heroSection() {
         <span class="trust-dot">·</span>
         <span>Оплата по факту</span>
       </div>
-      <p class="hero-cta-note">Для предварительной оценки отправьте фотографию дерева и контактный номер.</p>
+      <p class="hero-cta-note">Для предварительной оценки отправьте фотографию дерева и контактный номер. Назовём способ работы и точную цену за 15 минут.</p>
     </div>
   </div>
 </section>`;
@@ -424,28 +423,28 @@ function trustBarSection() {
         <span class="trust-bar-card-icon" aria-hidden="true">🛡️</span>
         <div>
           <h3>100% сохранность имущества</h3>
-          <p>Дом, забор, постройки и территория защищены при выполнении работ</p>
+          <p>Спускаем ветви на верёвках частями: дом, забор, кровля и посадки защищены</p>
         </div>
       </article>
       <article class="trust-bar-card">
         <span class="trust-bar-card-icon" aria-hidden="true">📄</span>
         <div>
           <h3>Материальная ответственность по договору</h3>
-          <p>Отвечаем за сохранность имущества при выполнении работ</p>
+          <p>Договор с ООО «ЮНАТ»: отвечаем за сохранность вашего имущества на объекте</p>
         </div>
       </article>
       <article class="trust-bar-card">
         <span class="trust-bar-card-icon" aria-hidden="true">⚡</span>
         <div>
           <h3>Выезд бригады от 2 часов</h3>
-          <p>Оперативный выезд при срочных и аварийных задачах</p>
+          <p>Срочный выезд при аварийной угрозе или плановые работы в удобный для вас день</p>
         </div>
       </article>
       <article class="trust-bar-card">
         <span class="trust-bar-card-icon" aria-hidden="true">🚜</span>
         <div>
           <h3>Свой парк техники</h3>
-          <p>Используем собственную технику и щепорез</p>
+          <p>Собственный мощный щепорез, пнедробилка и бензопилы Stihl без наценок за субаренду</p>
         </div>
       </article>
     </div>
@@ -460,7 +459,7 @@ function mainServicesSection() {
       title: 'Спил и удаление деревьев',
       slug: 'spil-derevev',
       image: '/assets/spil-main.jpg',
-      result: 'Безопасный спил целиком или разбор по частям рядом с домом, забором и проводами.',
+      result: 'Спил целиком или аккуратный разбор сверху вниз со спуском частей на верёвках рядом со строениями.',
       price: 'от 1 000 ₽',
       service: 'Спил и удаление деревьев'
     },
@@ -469,7 +468,7 @@ function mainServicesSection() {
       title: 'Аварийные и сложные деревья',
       slug: 'udalenie-avariynyh-derevev',
       image: '/assets/avarijnoe-main.jpg',
-      result: 'Срочный демонтаж опасных, наклонённых, сухих и треснувших стволов после ветра.',
+      result: 'Срочное удаление треснувших, зависших и наклонившихся стволов после ветра без повреждения крыш.',
       price: 'от 4 000 ₽',
       service: 'Удаление аварийных деревьев'
     },
@@ -478,7 +477,7 @@ function mainServicesSection() {
       title: 'Расчистка участков',
       slug: 'raschistka-uchastkov',
       image: '/assets/raschistka-real.png',
-      result: 'Комплексная расчистка от деревьев, кустарника, поросли и бурьяна под ключ.',
+      result: 'Очистка участка под строительство или продажу: удаление мелколесья, поросли, бурьяна и выравнивание.',
       price: 'от 5 000 ₽',
       service: 'Расчистка участков'
     },
@@ -487,7 +486,7 @@ function mainServicesSection() {
       title: 'Измельчение веток (Щепорез)',
       slug: 'izmelchenie-vetok',
       image: '/assets/izmelchenie-main.jpg',
-      result: 'Переработка веток мощным щепорезом с нашим оператором в чистую щепу на месте.',
+      result: 'Переработка веток в чистую щепу на месте: сокращаем объём кучи в 7–10 раз и экономим на вывозе контейнеров.',
       price: 'от 2 500 ₽',
       service: 'Измельчение веток'
     },
@@ -505,7 +504,7 @@ function mainServicesSection() {
       title: 'Дробление и удаление пней',
       slug: 'droblenie-pney',
       image: '/assets/droblenie-main.png',
-      result: 'Измельчение пня фрезой ниже уровня грунта без раскопки ям и повреждения газона.',
+      result: 'Удаление пня фрезой на 20 см ниже земли: без раскопки ям, повреждения газона и соседних корней.',
       price: 'от 1 500 ₽',
       service: 'Дробление пней'
     },
@@ -514,7 +513,7 @@ function mainServicesSection() {
       title: 'Обрезка и кронирование',
       slug: 'obrezka-derevev',
       image: '/assets/obrezka-main.jpg',
-      result: 'Санитарная и омолаживающая обрезка кроны, удаление опасных ветвей над постройками.',
+      result: 'Санитарная и омолаживающая обрезка кроны: удаление сухих и нависающих ветвей над постройками.',
       price: 'от 1 500 ₽',
       service: 'Обрезка деревьев'
     }
