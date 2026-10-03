@@ -99,6 +99,7 @@ async function build() {
     'izmelchenie-main.jpg',
     'raschistka-main.jpg',
     'raschistka-real.png',
+    'lep-prosek-main.jpg',
     'hero-bg.jpg',
     'hero-bg.webp',
     'hero-bg-mobile.webp'

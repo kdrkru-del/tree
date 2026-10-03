@@ -494,7 +494,7 @@ function mainServicesSection() {
       id: 'lep',
       title: 'Расчистка просек под ЛЭП',
       slug: 'raschistka-prosek-lep',
-      image: '/assets/raschistka-real.png',
+      image: '/assets/lep-prosek-main.jpg',
       result: 'Удаление деревьев, кустарника, поросли и ДКР вдоль линий электропередачи.',
       price: 'По расчёту объекта',
       service: 'Расчистка просек под ЛЭП'
@@ -2055,7 +2055,7 @@ export function raschistkaProsekLepLandingPage() {
       </div>
       <aside class="landing-hero-card" aria-label="Расчёт стоимости расчистки просеки">
         <div class="landing-hero-media">
-          <img src="/assets/raschistka-real.png" alt="Расчистка просеки и охранной зоны ЛЭП в Подмосковье" width="1086" height="1448" fetchpriority="high">
+          <img src="/assets/lep-prosek-main.jpg" alt="Расчистка просеки и охранной зоны ЛЭП в Подмосковье" width="1200" height="896" fetchpriority="high">
           <span class="landing-hero-tag">Комплексная расчистка под ключ</span>
         </div>
         <div class="landing-hero-prices">
@@ -2442,7 +2442,7 @@ export function raschistkaProsekLepLandingPage() {
     title: 'Расчистка просек под ЛЭП в Москве и МО | Вырубка деревьев и ДКР — Зелёный Срез',
     description: 'Расчистка просек и охранных зон ЛЭП в Москве и Московской области. Вырубка деревьев и кустарника, удаление ДКР, аварийных деревьев, измельчение и вывоз. Расчёт стоимости по объекту.',
     path,
-    image: images.clearing,
+    image: '/assets/lep-prosek-main.jpg',
     leadHref: '#quiz-lep',
     waText: waDirectTexts.lep_clearing,
     body,
