@@ -151,7 +151,7 @@ function header(leadHref, waText = '') {
   return `<header class="site-header" data-header>
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="${esc(site.brand)}">
-      <img src="/assets/logo-zelenyi-srez.png" alt="${esc(site.brand)}" class="brand-logo brand-logo-header" width="177" height="59">
+      <img src="/assets/logo-zelsrez.svg" alt="${esc(site.brand)}" class="brand-logo brand-logo-header" width="177" height="59">
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-nav-toggle>
       <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
@@ -237,7 +237,7 @@ function footer(waText = '') {
   return `<footer class="site-footer" id="contacts">
   <div class="container footer-grid">
     <div>
-      <a class="brand footer-brand" href="/" aria-label="${esc(site.brand)}"><img src="/assets/logo-zelenyi-srez.png" alt="${esc(site.brand)}" class="brand-logo brand-logo-footer" width="210" height="70"></a>
+      <a class="brand footer-brand" href="/" aria-label="${esc(site.brand)}"><img src="/assets/logo-zelsrez-footer.svg" alt="${esc(site.brand)}" class="brand-logo brand-logo-footer" width="210" height="70"></a>
       <p>Выполняем работы с деревьями на частных и коммерческих территориях. Стоимость и состав работ согласуются до начала выполнения.</p>
       <p class="muted">${esc(site.addressNote)}</p>
     </div>
@@ -347,7 +347,7 @@ function photoModal(waText = '') {
 }
 
 export function homePage() {
-  const title = 'Спил деревьев, расчистка участков и измельчение веток в Москве и МО — Зеленый Срез';
+  const title = 'Спил деревьев, расчистка участков и измельчение веток в Москве и МО — Зельсрез';
   const description = 'Спиливаем деревья целиком и по частям, расчищаем участки, измельчаем ветки щепорезом, дробим пни и выполняем обрезку. Фиксированная цена по фото, материальная ответственность по договору. Москва и МО.';
   const homeLeadOptions = {
     formId: 'bottom-lead-form',
@@ -760,7 +760,7 @@ function seoContentSection() {
   <div class="container">
     <div class="seo-content-inner">
       <h2>Профессиональные услуги арбористов и расчистка территорий в Москве и МО</h2>
-      <p>Компания «Зелёный Срез» специализируется на выполнении безопасных и технически сложных работ с зелёными насаждениями. Мы работаем по всей территории Москвы и Московской области, обслуживая как частные загородные участки, так и территории СНТ, коттеджных посёлков, предприятий и управляющих компаний.</p>
+      <p>Компания «Зельсрез» специализируется на выполнении безопасных и технически сложных работ с зелёными насаждениями. Мы работаем по всей территории Москвы и Московской области, обслуживая как частные загородные участки, так и территории СНТ, коттеджных посёлков, предприятий и управляющих компаний.</p>
       <p>Основными направлениями нашей деятельности являются спил и удаление деревьев целиком и по частям, санитарная и омолаживающая обрезка, кронирование, ликвидация последствий ветровала и удаление аварийных деревьев. Для переработки древесных отходов мы используем собственный профессиональный щепорез (измельчитель веток) с оператором, что позволяет значительно уменьшить объём веток и сократить расходы на вывоз. Удаление пней выполняется методом фрезерования (дробления) пнедробилкой ниже уровня земли, благодаря чему сохраняется целостность газона и окружающего ландшафта.</p>
       <p>Все работы проводятся строго по договору с закреплением материальной ответственности за сохранность построек, кровли, заборов и коммуникаций. Выезд бригады возможен в день обращения или в согласованное удобное время. Предварительный расчёт стоимости производится по фотографиям до выезда бригады.</p>
     </div>
@@ -2398,7 +2398,7 @@ export function raschistkaProsekLepLandingPage() {
   <section class="section section-trust-lep" id="trust-lep">
     <div class="container">
       <div class="section-head">
-        <h2>Подтверждённый опыт и оснащение «Зелёного Среза»</h2>
+        <h2>Подтверждённый опыт и оснащение «Зельсрез»</h2>
         <p class="section-subhead">Опытные специалисты, профессиональный бензоинструмент, собственная база измельчителей и проверенные технологии.</p>
       </div>
       <div class="trust-grid-lp">
@@ -2470,7 +2470,7 @@ export function raschistkaProsekLepLandingPage() {
   `;
 
   return renderPage({
-    title: 'Расчистка просек под ЛЭП в Москве и МО | Вырубка деревьев и ДКР — Зелёный Срез',
+    title: 'Расчистка просек под ЛЭП в Москве и МО | Вырубка деревьев и ДКР — Зельсрез',
     description: 'Расчистка просек и охранных зон ЛЭП в Москве и Московской области. Вырубка деревьев и кустарника, удаление ДКР, аварийных деревьев, измельчение и вывоз. Расчёт стоимости по объекту.',
     path,
     image: '/assets/lep-prosek-main.jpg',
@@ -2766,7 +2766,7 @@ export function legalPage(page) {
       .map((item) => `<p>${esc(item.trim())}</p>`)
       .join('');
   };
-  const body = `${simpleHero(page.h1, 'Официальная юридическая информация сервиса «Зеленый Срез».')}<section class="section"><div class="container text-page">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: page.title, url: path }])}${page.sections.map(([heading, text]) => `<section><h2>${esc(heading)}</h2>${renderParagraphs(text)}</section>`).join('')}</div></section>`;
+  const body = `${simpleHero(page.h1, 'Официальная юридическая информация сервиса «Зельсрез».')}<section class="section"><div class="container text-page">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: page.title, url: path }])}${page.sections.map(([heading, text]) => `<section><h2>${esc(heading)}</h2>${renderParagraphs(text)}</section>`).join('')}</div></section>`;
   return renderPage({ title: page.title, description: `${page.title}: условия обработки данных и обращений.`, path, body, leadHref: '/#lead-form', jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: page.title, url: path }])] });
 }
 
@@ -2814,7 +2814,7 @@ function professionalServiceSchema() {
     '@context': 'https://schema.org',
     '@type': 'ProfessionalService',
     name: site.brand,
-    image: pathUrl('/assets/logo-zelenyi-srez.png'),
+    image: pathUrl('/assets/logo-zelsrez.svg'),
     url: site.baseUrl,
     telephone: hasValue(site.phone) ? site.phone : undefined,
     email: hasValue(site.email) ? site.email : undefined,

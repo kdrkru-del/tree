@@ -192,7 +192,7 @@ test('E2E Matrix: Scenario 5 - Network / Backend error: error markup shown, lead
     assert.match(html, /class="[^"]*form-error[^"]*"/);
     assert.match(html, /form-error-wa/);
     assert.match(html, /form-error-tg/);
-    assert.match(html, /href="https:\/\/wa\.me\/79998081951\?text=/);
+    assert.match(html, /href="https:\/\/wa\.me\/79257577888\?text=/);
     assert.match(html, /href="https:\/\/t\.me\/Romatran"/);
 
     // Verify delivery failure throws and does not emit lead_form
@@ -297,7 +297,7 @@ test('E2E Matrix: Emergency trees page CTA priority and badges', () => {
   const actionsMatch = html.match(/<div class="landing-hero-actions">([\s\S]*?)<\/div>/);
   assert.ok(actionsMatch, 'Hero actions must exist');
   const actionsContent = actionsMatch[1];
-  const phoneIndex = actionsContent.indexOf('tel:+79998081951');
+  const phoneIndex = actionsContent.indexOf(site.phoneHref);
   const calcIndex = actionsContent.indexOf('#quiz-emergency');
   assert.ok(phoneIndex !== -1, 'Phone CTA must be present');
   assert.ok(calcIndex !== -1, 'Calculate CTA must be present');

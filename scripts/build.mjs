@@ -85,6 +85,8 @@ async function build() {
   await copyFile(path.join(root, 'src', 'tracking.mjs'), path.join(dist, 'assets', 'tracking.mjs'));
   for (const asset of [
     'logo-zelenyi-srez.png',
+    'logo-zelsrez.svg',
+    'logo-zelsrez-footer.svg',
     'favicon-32.png',
     'favicon-192.png',
     'favicon-512.png',
