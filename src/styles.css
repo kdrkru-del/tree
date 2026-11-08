@@ -6238,4 +6238,146 @@ body.has-modal-open {
   }
 }
 
+/* --- Quick CTA Buttons & Price Banners (CRO Optimization) --- */
+.hero-cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 22px 0 16px;
+  align-items: center;
+}
+
+.btn-hero-wa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 26px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff !important;
+  background: #25d366;
+  border-radius: var(--radius-md, 12px);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35);
+  border: none;
+}
+.btn-hero-wa:hover {
+  background: #20bd5a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+}
+
+.btn-hero-phone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-md, 12px);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-hero-phone:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.price-table-cta-banner {
+  margin-top: 24px;
+  padding: 22px 26px;
+  background: linear-gradient(135deg, #f0fdf4, #ffffff);
+  border: 1.5px solid #86efac;
+  border-radius: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(22, 101, 52, 0.08);
+}
+
+.price-cta-text strong {
+  display: block;
+  font-size: 1.15rem;
+  color: #14532d;
+  margin-bottom: 4px;
+}
+
+.price-cta-text p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #475569;
+}
+
+.price-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.inner-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.inner-hero-price-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fef08a;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 640px) {
+  .hero-cta-buttons,
+  .inner-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .hero-cta-buttons .btn,
+  .inner-hero-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .price-table-cta-banner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 18px 16px;
+  }
+
+  .price-cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .price-cta-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
 

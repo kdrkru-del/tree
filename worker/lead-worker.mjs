@@ -4,7 +4,9 @@ const DEFAULT_ALLOWED_ORIGINS = [
   'http://tehuchet24.ru',
   'https://tehuchet24.ru',
   'http://www.tehuchet24.ru',
-  'https://www.tehuchet24.ru'
+  'https://www.tehuchet24.ru',
+  'http://spb.tehuchet24.ru',
+  'https://spb.tehuchet24.ru'
 ];
 const MAX_PHOTOS = 10;
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
@@ -15,7 +17,23 @@ function allowedOrigins(env) {
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
-  return configured.length ? configured : DEFAULT_ALLOWED_ORIGINS;
+  return [...new Set([...DEFAULT_ALLOWED_ORIGINS, ...configured])];
+}
+
+function isOriginAllowed(origin, env) {
+  if (!origin) return true;
+  if (allowedOrigins(env).includes(origin)) return true;
+  try {
+    const { hostname } = new URL(origin);
+    return (
+      hostname === 'tehuchet24.ru' ||
+      hostname.endsWith('.tehuchet24.ru') ||
+      hostname === 'zelsrez.ru' ||
+      hostname.endsWith('.zelsrez.ru')
+    );
+  } catch {
+    return false;
+  }
 }
 
 function corsHeaders(request, env) {
@@ -28,7 +46,7 @@ function corsHeaders(request, env) {
     'Content-Type': 'application/json; charset=utf-8',
     'Vary': 'Origin'
   };
-  if (allowedOrigins(env).includes(origin)) {
+  if (origin && isOriginAllowed(origin, env)) {
     headers['Access-Control-Allow-Origin'] = origin;
   }
   return headers;
@@ -213,7 +231,7 @@ async function sendPhotos(env, photos, leadId) {
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
-    const originAllowed = !origin || allowedOrigins(env).includes(origin);
+    const originAllowed = isOriginAllowed(origin, env);
 
     if (request.method === 'OPTIONS') {
       return originAllowed
