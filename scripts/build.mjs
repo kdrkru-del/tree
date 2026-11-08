@@ -86,6 +86,8 @@ async function build() {
   for (const asset of [
     'logo-zelenyi-srez.png',
     'logo-zelsrez.svg',
+    'logo-zelsrez.png',
+    'logo-zelsrez-dark.png',
     'logo-zelsrez-footer.svg',
     'favicon-32.png',
     'favicon-192.png',

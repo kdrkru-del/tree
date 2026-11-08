@@ -151,7 +151,7 @@ function header(leadHref, waText = '') {
   return `<header class="site-header" data-header>
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="${esc(site.brand)}">
-      <img src="/assets/logo-zelsrez.svg" alt="${esc(site.brand)}" class="brand-logo brand-logo-header" width="177" height="59">
+      <img src="/assets/logo-zelsrez.png" alt="${esc(site.brand)}" class="brand-logo brand-logo-header" width="178" height="43">
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-nav-toggle>
       <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
@@ -237,7 +237,7 @@ function footer(waText = '') {
   return `<footer class="site-footer" id="contacts">
   <div class="container footer-grid">
     <div>
-      <a class="brand footer-brand" href="/" aria-label="${esc(site.brand)}"><img src="/assets/logo-zelsrez-footer.svg" alt="${esc(site.brand)}" class="brand-logo brand-logo-footer" width="210" height="70"></a>
+      <a class="brand footer-brand" href="/" aria-label="${esc(site.brand)}"><img src="/assets/logo-zelsrez-dark.png" alt="${esc(site.brand)}" class="brand-logo brand-logo-footer" width="210" height="50"></a>
       <p>Выполняем работы с деревьями на частных и коммерческих территориях. Стоимость и состав работ согласуются до начала выполнения.</p>
       <p class="muted">${esc(site.addressNote)}</p>
     </div>
@@ -2814,7 +2814,7 @@ function professionalServiceSchema() {
     '@context': 'https://schema.org',
     '@type': 'ProfessionalService',
     name: site.brand,
-    image: pathUrl('/assets/logo-zelsrez.svg'),
+    image: pathUrl('/assets/logo-zelsrez.png'),
     url: site.baseUrl,
     telephone: hasValue(site.phone) ? site.phone : undefined,
     email: hasValue(site.email) ? site.email : undefined,

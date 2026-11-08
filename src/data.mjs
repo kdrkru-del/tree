@@ -1,5 +1,5 @@
 export const site = {
-  brand: 'Зельсрез',
+  brand: 'ЗелСрез',
   legalBrand: 'ООО «ЮНАТ»',
   inn: '2536345868',
   kpp: '253601001',
