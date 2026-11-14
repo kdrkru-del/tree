@@ -125,7 +125,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">${wikimediaPreconnect}
-  <link rel="stylesheet" href="/assets/styles.css?v=20261002-conv-direct-1">
+  <link rel="stylesheet" href="/assets/styles.css?v=20261114-conv-direct-2">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   ${metrikaCounter()}
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
@@ -137,9 +137,9 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <main id="main">${body}</main>
   ${footer(waText)}
   ${floatingContacts(waText)}
-  ${mobileBar(leadHref)}
+  ${mobileBar(leadHref, waText)}
   ${photoModal(waText)}
-  <script src="/assets/app.js?v=20261002-conv-direct-1" type="module"></script>
+  <script src="/assets/app.js?v=20261114-conv-direct-2" type="module"></script>
 </body>
 </html>`;
 }
@@ -256,23 +256,32 @@ function footer(waText = '') {
 
 function floatingContacts(waText = '') {
   const buttons = [
-    hasValue(site.maxUrl) ? `<a class="floating-contact-button floating-contact-max" href="${maxHref()}" target="_blank" rel="noopener" aria-label="Открыть MAX" data-goal="click_max"><span class="floating-contact-max-mark" aria-hidden="true">MAX</span><span class="floating-contact-label">MAX</span></a>` : '',
-    hasValue(site.messengerUrl) ? `<a class="floating-contact-button floating-contact-whatsapp" href="${messengerHref('#lead-form', waText)}" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" data-goal="click_whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span class="floating-contact-label">WhatsApp</span></a>` : '',
-    hasValue(site.telegramUrl) ? `<a class="floating-contact-button floating-contact-telegram" href="${telegramHref()}" target="_blank" rel="noopener" aria-label="Написать в Telegram" data-goal="click_telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span class="floating-contact-label">Telegram</span></a>` : '',
-    hasValue(site.email) ? `<a class="floating-contact-button floating-contact-email" href="mailto:${esc(site.email)}" aria-label="Написать на почту" data-goal="click_email"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="floating-contact-label">Почта</span></a>` : ''
+    hasValue(site.maxUrl) ? `<a class="floating-contact-button floating-contact-max" href="${maxHref()}" target="_blank" rel="noopener" aria-label="Открыть MAX" data-goal="click_max" data-placement="floating"><span class="floating-contact-max-mark" aria-hidden="true">MAX</span><span class="floating-contact-label">MAX</span></a>` : '',
+    hasValue(site.messengerUrl) ? `<a class="floating-contact-button floating-contact-whatsapp" href="${messengerHref('#lead-form', waText)}" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" data-goal="click_whatsapp" data-placement="floating"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span class="floating-contact-label">WhatsApp</span></a>` : '',
+    hasValue(site.telegramUrl) ? `<a class="floating-contact-button floating-contact-telegram" href="${telegramHref()}" target="_blank" rel="noopener" aria-label="Написать в Telegram" data-goal="click_telegram" data-placement="floating"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span class="floating-contact-label">Telegram</span></a>` : '',
+    hasValue(site.email) ? `<a class="floating-contact-button floating-contact-email" href="mailto:${esc(site.email)}" aria-label="Написать на почту" data-goal="click_email" data-placement="floating"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="floating-contact-label">Почта</span></a>` : ''
   ].filter(Boolean).join('');
-  return buttons ? `<aside class="floating-contact-rail" aria-label="Быстрая связь">${buttons}</aside>` : '';
+  return buttons ? `<aside class="floating-contact-rail" aria-label="Быстрая связь" data-placement="floating">${buttons}</aside>` : '';
 }
 
-function mobileBar(leadHref = '#lead-form') {
-  const callBtn = `<a class="mobile-btn mobile-btn-call" href="${phoneHref()}" data-goal="click_phone"><span class="mobile-btn-icon">📞</span><span>Позвонить</span></a>`;
+function mobileBar(leadHref = '#lead-form', waText = '') {
+  const callBtn = `<a class="mobile-btn mobile-btn-call" href="${phoneHref()}" data-goal="click_phone" data-placement="bottom" aria-label="Позвонить"><span class="mobile-btn-icon">📞</span><span>Звонок</span></a>`;
+  const waBtn = hasValue(site.messengerUrl)
+    ? `<a class="mobile-btn mobile-btn-wa" href="${messengerHref('#lead-form', waText)}" target="_blank" rel="noopener" data-goal="click_whatsapp" data-placement="bottom" aria-label="WhatsApp"><span>WA</span></a>`
+    : '';
+  const maxBtn = hasValue(site.maxUrl)
+    ? `<a class="mobile-btn mobile-btn-max" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max" data-placement="bottom" aria-label="MAX"><span>MAX</span></a>`
+    : '';
+  const tgBtn = hasValue(site.telegramUrl)
+    ? `<a class="mobile-btn mobile-btn-tg" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram" data-placement="bottom" aria-label="Telegram"><span>TG</span></a>`
+    : '';
   let calcBtn;
   if (leadHref && leadHref.startsWith('#') && leadHref !== '#calc-popup') {
-    calcBtn = `<a class="mobile-btn mobile-btn-calc" href="${leadHref}" data-goal="click_calculate"><span class="mobile-btn-icon">📋</span><span>Рассчитать</span></a>`;
+    calcBtn = `<a class="mobile-btn mobile-btn-calc" href="${leadHref}" data-goal="click_calculate" data-placement="bottom"><span>Расчёт</span></a>`;
   } else {
-    calcBtn = `<button type="button" class="mobile-btn mobile-btn-calc" data-open-popup="calc-popup" data-goal="click_calculate"><span class="mobile-btn-icon">📋</span><span>Рассчитать</span></button>`;
+    calcBtn = `<button type="button" class="mobile-btn mobile-btn-calc" data-open-popup="calc-popup" data-goal="click_calculate" data-placement="bottom"><span>Расчёт</span></button>`;
   }
-  return `<div class="mobile-action-bar" aria-label="Быстрые действия">${calcBtn}${callBtn}</div>`;
+  return `<div class="mobile-action-bar" aria-label="Быстрая связь" data-placement="bottom">${callBtn}${waBtn}${maxBtn}${tgBtn}${calcBtn}</div>`;
 }
 
 function formErrorMarkup(customClass = '', waText = '') {
@@ -302,7 +311,7 @@ function photoModal(waText = '') {
       </button>
     </div>
     <div class="photo-popup-body">
-      <form class="lead-form popup-lead-form" data-lead-form data-form-id="popup-lead-form" id="popup-lead-form">
+      <form class="lead-form popup-lead-form" data-lead-form data-form-id="popup-lead-form" data-placement="popup" id="popup-lead-form">
         <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
         <input type="hidden" name="service" value="Спил деревьев">
         <div data-form-fields>
@@ -336,10 +345,10 @@ function photoModal(waText = '') {
         ${formErrorMarkup('', waText)}
       </form>
       <div class="popup-messengers-divider"><span>или напишите напрямую</span></div>
-      <div class="popup-messenger-row">
-        ${hasValue(site.messengerUrl) ? `<a class="popup-msgr-chip popup-msgr-wa" href="${messengerHref('#calc-popup', waText)}" target="_blank" rel="noopener" data-goal="click_whatsapp" title="WhatsApp"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
-        ${hasValue(site.telegramUrl) ? `<a class="popup-msgr-chip popup-msgr-tg" href="${telegramHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_telegram" title="Telegram"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
-        ${hasValue(site.maxUrl) ? `<a class="popup-msgr-chip popup-msgr-max" href="${maxHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_max" title="MAX"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg><span>MAX</span></a>` : ''}
+      <div class="popup-messenger-row" data-placement="popup">
+        ${hasValue(site.messengerUrl) ? `<a class="popup-msgr-chip popup-msgr-wa" href="${messengerHref('#calc-popup', waText)}" target="_blank" rel="noopener" data-goal="click_whatsapp" data-placement="popup" title="WhatsApp"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
+        ${hasValue(site.telegramUrl) ? `<a class="popup-msgr-chip popup-msgr-tg" href="${telegramHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_telegram" data-placement="popup" title="Telegram"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
+        ${hasValue(site.maxUrl) ? `<a class="popup-msgr-chip popup-msgr-max" href="${maxHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_max" data-placement="popup" title="MAX"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg><span>MAX</span></a>` : ''}
       </div>
     </div>
   </div>
@@ -372,21 +381,72 @@ export function homePage() {
   return renderPage({ title, description, path: '/', body, jsonLd: [professionalServiceSchema(), faqSchema(homeFaq), breadcrumbSchema([{ name: 'Главная', url: '/' }])] });
 }
 
+function heroMessengerRow(placement = 'hero', waText = '', primaryLabel = 'Быстрая связь в 1 клик:') {
+  const waBtn = hasValue(site.messengerUrl)
+    ? `<a class="hero-msgr-chip hero-msgr-wa" href="${messengerHref('#lead-form', waText)}" target="_blank" rel="noopener" data-goal="click_whatsapp" data-placement="${esc(placement)}" title="Написать в WhatsApp"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>`
+    : '';
+  const maxBtn = hasValue(site.maxUrl)
+    ? `<a class="hero-msgr-chip hero-msgr-max" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max" data-placement="${esc(placement)}" title="Написать в MAX"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg><span>MAX</span></a>`
+    : '';
+  const tgBtn = hasValue(site.telegramUrl)
+    ? `<a class="hero-msgr-chip hero-msgr-tg" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram" data-placement="${esc(placement)}" title="Написать в Telegram"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>`
+    : '';
+  return `<div class="hero-messengers-compact" aria-label="Быстрая связь в мессенджерах" data-placement="${esc(placement)}">
+    <span class="hero-msgr-label">${esc(primaryLabel)}</span>
+    <div class="hero-msgr-links">${waBtn}${maxBtn}${tgBtn}</div>
+  </div>`;
+}
+
+function heroInlineForm({ formId, serviceName, serviceCode, submitLabel = 'Получить расчёт', waText = '', title = 'Оставьте номер — перезвоним и рассчитаем стоимость', placement = 'hero' }) {
+  return `<div class="hero-inline-box" data-placement="${esc(placement)}">
+    <p class="hero-inline-title">${esc(title)}</p>
+    <form class="lead-form lead-form--hero-inline" data-lead-form data-form-id="${esc(formId)}" data-placement="${esc(placement)}"${serviceCode ? ` data-service-code="${esc(serviceCode)}"` : ''} id="${esc(formId)}">
+      <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
+      <input type="hidden" name="service" value="${esc(serviceName)}">
+      ${serviceCode ? `<input type="hidden" name="service_code" value="${esc(serviceCode)}">` : ''}
+      <div class="hero-inline-fields" data-form-fields>
+        <div class="lead-field-group">
+          <label class="sr-only" for="${esc(formId)}_name">Имя (необязательно)</label>
+          <input id="${esc(formId)}_name" name="name" type="text" autocomplete="name" placeholder="Имя (необязательно)">
+        </div>
+        <div class="lead-field-group">
+          <label class="sr-only" for="${esc(formId)}_phone">Телефон</label>
+          <input id="${esc(formId)}_phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" data-phone-input>
+        </div>
+        <button class="btn btn-accent btn-full" type="submit" data-submit-btn>${esc(submitLabel)}</button>
+      </div>
+      <p class="hero-inline-note">Если удобно — отправьте фото в WhatsApp, MAX или Telegram для быстрой оценки.</p>
+      <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку данных</a>.</p>
+      <div class="form-success" data-form-success hidden>
+        <div class="form-success-header">
+          <span class="form-success-badge" aria-hidden="true">✓</span>
+          <div class="form-success-text">
+            <h3 class="form-success-heading">Заявка принята!</h3>
+            <p class="form-success-sub">Свяжемся с вами в ближайшее время.</p>
+          </div>
+        </div>
+      </div>
+      ${formErrorMarkup('', waText)}
+    </form>
+  </div>`;
+}
+
 function heroSection() {
-  return `<section class="hero hero-direct" id="hero">
+  return `<section class="hero hero-direct" id="hero" data-placement="hero">
   <img class="hero-bg" src="${esc(images.hero)}" srcset="${esc(images.heroMobile)} 800w, ${esc(images.hero)} 1920w" sizes="100vw" alt="Спил деревьев, расчистка участков, корчевание пней и измельчение веток" fetchpriority="high">
   <div class="hero-shade"></div>
-  <div class="container hero-content">
+  <div class="container hero-content hero-content--with-form">
     <div class="hero-copy">
       <p class="hero-badge">Москва и Московская область • Работаем ежедневно без выходных</p>
       <h1>Безопасный спил деревьев, расчистка участков и&nbsp;измельчение веток</h1>
-      <p class="hero-lead">Аккуратно разбираем деревья возле домов, заборов и проводов. Дробим пни и перерабатываем ветки в щепу своим щепорезом. Точная стоимость по фото до выезда, договор и материальная ответственность.</p>
+      <p class="hero-lead">Аккуратно разбираем деревья возле домов, заборов и проводов. Дробим пни и перерабатываем ветки в щепу своим щепорезом. Назовём цену по звонку или заявке, договор с ООО «ЮНАТ».</p>
 
-      <div class="hero-cta-buttons">
-        <a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="Спил деревьев" data-goal="click_calculate">📷 Оценить по фото за 5 минут</a>
-        ${hasValue(site.messengerUrl) ? `<a class="btn btn-hero-wa" href="${messengerHref('#lead-form', 'Здравствуйте! Хочу рассчитать стоимость, отправляю фото:')}" target="_blank" rel="noopener" data-goal="click_whatsapp">💬 Написать в WhatsApp</a>` : ''}
-        <a class="btn btn-hero-phone" href="${phoneHref()}" data-goal="click_phone">📞 ${site.phone}</a>
+      <div class="hero-cta-buttons" data-placement="hero">
+        <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
+        <a class="btn btn-hero-phone" href="#lead-form" data-open-form data-service="Спил деревьев" data-goal="click_calculate" data-placement="hero">Перезвоните мне</a>
       </div>
+
+      ${heroMessengerRow('hero', 'Здравствуйте! Хочу рассчитать стоимость работ.')}
 
       <div class="hero-price-anchors" aria-label="Стартовые ценовые ориентиры">
         <a href="#spil" class="hero-price-pill"><span>Спил дерева</span><strong>от 1 000 ₽</strong></a>
@@ -395,17 +455,8 @@ function heroSection() {
         <a href="#izmelchenie" class="hero-price-pill"><span>Измельчение веток</span><strong>от 2 500 ₽</strong></a>
       </div>
 
-      <div class="hero-messengers-compact" aria-label="Написать в мессенджер">
-          <span class="hero-msgr-label">Написать:</span>
-          <div class="hero-msgr-links">
-            ${hasValue(site.messengerUrl) ? `<a class="hero-msgr-chip hero-msgr-wa" href="${messengerHref('#calc-popup')}" data-goal="click_whatsapp" title="Написать в WhatsApp"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>` : ''}
-            ${hasValue(site.telegramUrl) ? `<a class="hero-msgr-chip hero-msgr-tg" href="${telegramHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_telegram" title="Написать в Telegram"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Telegram</span></a>` : ''}
-            ${hasValue(site.maxUrl) ? `<a class="hero-msgr-chip hero-msgr-max" href="${maxHref('#calc-popup')}" target="_blank" rel="noopener" data-goal="click_max" title="Открыть профиль в MAX"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg><span>MAX</span></a>` : ''}
-          </div>
-        </div>
-
       <div class="hero-trust-line" aria-label="Преимущества">
-        <span>100% сохранность имущества</span>
+        <span>Сохранность построек и участка по договору</span>
         <span class="trust-dot">·</span>
         <span>Материальная ответственность по договору</span>
         <span class="trust-dot">·</span>
@@ -415,8 +466,17 @@ function heroSection() {
         <span class="trust-dot">·</span>
         <span>Оплата по факту</span>
       </div>
-      <p class="hero-cta-note">Для предварительной оценки отправьте фотографию дерева и контактный номер. Назовём способ работы и точную цену за 15 минут.</p>
+      <p class="hero-cta-note">Быстрая оценка по телефону или в мессенджере. Если удобно — отправьте фото в WhatsApp, MAX или Telegram.</p>
     </div>
+    <aside class="hero-inline-card" aria-label="Быстрая заявка на расчёт">
+      ${heroInlineForm({
+        formId: 'hero-inline-home',
+        serviceName: 'Спил деревьев и расчистка',
+        serviceCode: '',
+        submitLabel: 'Получить расчёт',
+        title: 'Рассчитать стоимость работ'
+      })}
+    </aside>
   </div>
 </section>`;
 }
@@ -428,8 +488,8 @@ function trustBarSection() {
       <article class="trust-bar-card">
         <span class="trust-bar-card-icon" aria-hidden="true">🛡️</span>
         <div>
-          <h3>100% сохранность имущества</h3>
-          <p>Спускаем ветви на верёвках частями: дом, забор, кровля и посадки защищены</p>
+          <h3>Бережная работа рядом с постройками</h3>
+          <p>Спускаем ветви на верёвках частями, чтобы защитить дом, забор, кровлю и газон</p>
         </div>
       </article>
       <article class="trust-bar-card">
@@ -584,20 +644,20 @@ function safetySection() {
       <p class="safety-lead">Главный страх при спиле деревьев — повредить крышу, забор, теплицу, провода или газон. Мы исключаем такие риски благодаря отработанной технологии арбористики.</p>
       <ul class="safety-list">
         <li>
-          <strong>100% сохранность имущества</strong>
+          <strong>Сохранность построек и участка по договору</strong>
           <p>Каждая часть дерева аккуратно подвязывается и плавно спускается вниз на верёвках строго в отведённую зону сброса.</p>
         </li>
         <li>
           <strong>Материальная ответственность закрепляется договором</strong>
-          <p>Фиксируем официальную гарантию сохранности вашего дома, забора и коммуникаций в договоре.</p>
+          <p>Фиксируем условия и ответственность за сохранность вашего дома, забора и коммуникаций в договоре с ООО «ЮНАТ».</p>
         </li>
         <li>
           <strong>Стоимость работ фиксируется до начала</strong>
-          <p>Названная до выезда цена является окончательной и не повышается в процессе выполнения.</p>
+          <p>Названная до выезда цена является окончательной и не повышается при согласованном объёме.</p>
         </li>
         <li>
-          <strong>Работают обученные арбористы</strong>
-          <p>Опытные специалисты, сертифицированное снаряжение и профессиональные бензопилы.</p>
+          <strong>Опытные арбористы и профильный инструмент</strong>
+          <p>Бригады с опытом работы в стеснённых условиях, профессиональное арбористическое снаряжение и бензопилы.</p>
         </li>
       </ul>
       <a class="btn btn-accent" href="#lead-form" data-open-form data-service="Сложный спил дерева" data-goal="click_calculate">Рассчитать безопасный спил</a>
@@ -681,7 +741,7 @@ function priceTableSection() {
       <h3>От чего зависит итоговая стоимость</h3>
       <div class="factors-grid">
         <div class="factor-card"><span>📏</span><strong>Размер и диаметр</strong><p>Толщина ствола и высота кроны определяют трудоёмкость и объём древесины.</p></div>
-        <div class="factor-card"><span>⚠️</span><strong>Состояние дерева</strong><p>Сухостой, наклон, трещины и гниль требуют повышенного внимания и страховки.</p></div>
+        <div class="factor-card"><span>⚠️</span><strong>Состояние дерева</strong><p>Сухостой, наклон, трещины и гниль требуют повышенного внимания и завешивания на верёвках.</p></div>
         <div class="factor-card"><span>🏠</span><strong>Постройки рядом</strong><p>Наличие дома, забора, теплицы, посадок или ЛЭП требует разбора по частям.</p></div>
         <div class="factor-card"><span>🎯</span><strong>Свободное место</strong><p>Наличие площадки для сброса частей или необходимость полного завешивания.</p></div>
         <div class="factor-card"><span>🚜</span><strong>Подъезд техники</strong><p>Возможность заезда автовышки или щепореза напрямую к месту работы.</p></div>
@@ -845,18 +905,20 @@ function leadSection(title, text, selectedService = 'Фото на оценку'
   const formOptions = {
     ...options,
     formId: options.formId || 'bottom-lead-form',
-    submitText: options.submitText || 'Рассчитать стоимость'
+    submitText: options.submitText || 'Рассчитать стоимость',
+    placement: options.placement || 'bottom'
   };
 
-  return `<section class="section lead-section" id="lead-form"><span id="lead" class="lead-anchor" aria-hidden="true"></span><div class="container lead-grid"><div><h2>${esc(title)}</h2><p>${esc(text)}</p><div class="lead-actions">${hasValue(site.phone) ? `<a class="btn btn-light" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>` : ''}${hasValue(site.messengerUrl) ? `<a class="btn btn-ghost-dark" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">WhatsApp</a>` : ''}${hasValue(site.maxUrl) ? `<a class="btn btn-ghost-dark" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max">MAX</a>` : ''}${hasValue(site.telegramUrl) ? `<a class="btn btn-ghost-dark" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram">Telegram</a>` : ''}</div><p class="call-note">В целях контроля качества разговор может быть записан.</p></div>${leadForm(selectedService, formOptions)}</div></section>`;
+  return `<section class="section lead-section" id="lead-form" data-placement="bottom"><span id="lead" class="lead-anchor" aria-hidden="true"></span><div class="container lead-grid"><div><h2>${esc(title)}</h2><p>${esc(text)}</p><div class="lead-actions" data-placement="bottom">${hasValue(site.phone) ? `<a class="btn btn-light" href="${phoneHref()}" data-goal="click_phone" data-placement="bottom">Позвонить</a>` : ''}${hasValue(site.messengerUrl) ? `<a class="btn btn-ghost-dark" href="${messengerHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_whatsapp" data-placement="bottom">WhatsApp</a>` : ''}${hasValue(site.maxUrl) ? `<a class="btn btn-ghost-dark" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max" data-placement="bottom">MAX</a>` : ''}${hasValue(site.telegramUrl) ? `<a class="btn btn-ghost-dark" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram" data-placement="bottom">Telegram</a>` : ''}</div><p class="call-note">В целях контроля качества разговор может быть записан.</p></div>${leadForm(selectedService, formOptions)}</div></section>`;
 }
 
 function leadForm(selectedService, options = {}) {
   const btnText = options.submitText || 'Рассчитать стоимость';
   const formId = options.formId || 'main-lead-form';
   const customClass = options.customClass ? ` ${options.customClass}` : '';
+  const placement = options.placement || 'bottom';
 
-  return `<form class="lead-form${customClass}" data-lead-form data-form-id="${esc(formId)}" id="${esc(formId)}">
+  return `<form class="lead-form${customClass}" data-lead-form data-form-id="${esc(formId)}" data-placement="${esc(placement)}" id="${esc(formId)}">
   <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
   <input type="hidden" name="service" value="${esc(selectedService)}">
   <div data-form-fields>
@@ -869,7 +931,7 @@ function leadForm(selectedService, options = {}) {
       <input id="${esc(formId)}_phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" data-phone-input>
     </div>
     <button class="btn btn-accent btn-full" type="submit" data-submit-btn>${esc(btnText)}</button>
-    <p class="lead-photo-note">Фото можно отправить после заявки в удобный мессенджер или на почту.</p>
+    <p class="lead-photo-note">Для предварительной оценки отправьте фотографию дерева и контактный номер.</p>
   </div>
   <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a>.</p>
   <div class="form-success" data-form-success hidden>
@@ -888,8 +950,40 @@ function breadcrumbs(items) {
   return `<nav class="breadcrumbs" aria-label="Хлебные крошки">${items.map((item, index) => index === items.length - 1 ? `<span>${esc(item.name)}</span>` : `<a href="${item.url}">${esc(item.name)}</a>`).join('<span>/</span>')}</nav>`;
 }
 
-function innerHero(title, text, image, label, price = '') {
-  return `<section class="inner-hero"><img src="${esc(image)}" alt="${esc(label)}" width="1024" height="768" loading="eager"><div class="inner-hero-shade"></div><div class="container inner-hero-content">${price ? `<span class="inner-hero-price-badge">Стоимость: ${esc(price)}</span>` : ''}<h1>${esc(title)}</h1><p>${esc(text)}</p><div class="inner-hero-actions"><a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="${esc(label)}" data-goal="click_calculate">📷 Рассчитать по фото</a>${hasValue(site.messengerUrl) ? `<a class="btn btn-hero-wa" href="${messengerHref('#lead-form', `Здравствуйте! Интересует ${label}, прикрепляю фото:`)}" target="_blank" rel="noopener" data-goal="click_whatsapp">💬 В WhatsApp</a>` : ''}<a class="btn btn-hero-phone" href="${phoneHref()}" data-goal="click_phone">📞 ${site.phone}</a></div></div></section>`;
+function innerHero(title, text, image, label, price = '', slug = '') {
+  const formCode = slug ? slug.replace(/[^a-z0-9]/gi, '_') : 'service_page';
+  const formId = `hero-inline-${formCode}`;
+  return `<section class="inner-hero inner-hero--with-form" data-placement="service_page">
+    <img src="${esc(image)}" alt="${esc(label)}" width="1024" height="768" loading="eager">
+    <div class="inner-hero-shade"></div>
+    <div class="container inner-hero-grid">
+      <div class="inner-hero-content">
+        ${price ? `<span class="inner-hero-price-badge">Стоимость: ${esc(price)}</span>` : ''}
+        <h1>${esc(title)}</h1>
+        <p>${esc(text)}</p>
+        <div class="inner-hero-actions" data-placement="hero">
+          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
+          ${hasValue(site.messengerUrl) ? `<a class="btn btn-hero-wa" href="${messengerHref('#lead-form', `Здравствуйте! Интересует ${label}.`)}" target="_blank" rel="noopener" data-goal="click_whatsapp" data-placement="hero">WhatsApp</a>` : ''}
+          ${hasValue(site.maxUrl) ? `<a class="hero-msgr-chip hero-msgr-max" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max" data-placement="hero">MAX</a>` : ''}
+          ${hasValue(site.telegramUrl) ? `<a class="hero-msgr-chip hero-msgr-tg" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram" data-placement="hero">Telegram</a>` : ''}
+        </div>
+        <p class="hero-cta-note">Перезвоним и назовём ориентир цены. Если удобно — отправьте фото в WhatsApp, MAX или Telegram.</p>
+      </div>
+      <aside class="landing-hero-card inner-hero-card" aria-label="Быстрый расчёт стоимости">
+        <div class="landing-hero-form-box" id="hero-form-${esc(formCode)}">
+          ${heroInlineForm({
+            formId,
+            serviceName: label,
+            serviceCode: '',
+            submitLabel: 'Получить расчёт',
+            waText: `Здравствуйте! Интересует ${label}.`,
+            title: 'Рассчитать стоимость',
+            placement: 'hero'
+          })}
+        </div>
+      </aside>
+    </div>
+  </section>`;
 }
 
 function simpleHero(title, text) {
@@ -915,7 +1009,7 @@ export function servicePage(service) {
   };
   const foundPrice = priceRows.find(([s]) => s.toLowerCase().includes(service.title.toLowerCase()) || service.title.toLowerCase().includes(s.toLowerCase()));
   const priceText = slugPriceMap[service.slug] || (foundPrice ? foundPrice[1] : (service.priceFrom || ''));
-  const body = `${innerHero(service.h1, service.lead, service.image, service.title, priceText)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Услуги', url: '/#services' }, { name: service.title, url: path }])}<h2>Что входит в работу</h2><ul class="rich-list">${service.includes.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><div class="honest-note">${esc(service.warning)}</div><h2>Что влияет на расчет</h2><div class="factor-cloud">${service.priceFactors.map((factor) => `<span>${esc(factor)}</span>`).join('')}</div>${isChipping ? `<h2>Что делать со щепой после измельчения?</h2><div class="branch-what-block"><div><strong>Оставить</strong><p>Щепа остается заказчику.</p></div><div><strong>Измельчить</strong><p>Переработаем ветки в щепу.</p></div><div><strong>Вывезти</strong><p>Подготовим и организуем вывоз.</p></div></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Измельчение веток в щепу" data-goal="click_branch_chipping">Рассчитать работу под ключ</a>` : ''}<h2>Как проходит заявка</h2><div class="mini-steps">${processSteps.map(([step, text], index) => `<article><span class="mini-step-arrow" aria-hidden="true">${index < processSteps.length - 1 ? '→' : '✓'}</span><h3>${esc(step)}</h3><p>${esc(text)}</p></article>`).join('')}</div></article><aside class="side-panel"><h2>Расчет стоимости</h2><p>${esc(service.directTitle)}. Передайте фотографии, адрес объекта и желаемый результат.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать</a><a class="btn btn-ghost btn-full" href="${phoneHref()}" data-goal="click_phone">Позвонить</a></aside></div></section><section class="section section-muted"><div class="container"><div class="section-head"><h2>Может понадобиться вместе с услугой</h2></div><div class="service-grid compact">${related.map(serviceCard).join('')}</div></div></section>${faqSection([...service.faq, ...faq.slice(0, 4)])}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', service.title, { submitText: 'Рассчитать стоимость' })}`;
+  const body = `${innerHero(service.h1, service.lead, service.image, service.title, priceText, service.slug)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Услуги', url: '/#services' }, { name: service.title, url: path }])}<h2>Что входит в работу</h2><ul class="rich-list">${service.includes.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><div class="honest-note">${esc(service.warning)}</div><h2>Что влияет на расчет</h2><div class="factor-cloud">${service.priceFactors.map((factor) => `<span>${esc(factor)}</span>`).join('')}</div>${isChipping ? `<h2>Что делать со щепой после измельчения?</h2><div class="branch-what-block"><div><strong>Оставить</strong><p>Щепа остается заказчику.</p></div><div><strong>Измельчить</strong><p>Переработаем ветки в щепу.</p></div><div><strong>Вывезти</strong><p>Подготовим и организуем вывоз.</p></div></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Измельчение веток в щепу" data-goal="click_branch_chipping">Рассчитать работу под ключ</a>` : ''}<h2>Как проходит заявка</h2><div class="mini-steps">${processSteps.map(([step, text], index) => `<article><span class="mini-step-arrow" aria-hidden="true">${index < processSteps.length - 1 ? '→' : '✓'}</span><h3>${esc(step)}</h3><p>${esc(text)}</p></article>`).join('')}</div></article><aside class="side-panel"><h2>Расчет стоимости</h2><p>${esc(service.directTitle)}. Передайте фотографии, адрес объекта и желаемый результат.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать</a><a class="btn btn-ghost btn-full" href="${phoneHref()}" data-goal="click_phone">Позвонить</a></aside></div></section><section class="section section-muted"><div class="container"><div class="section-head"><h2>Может понадобиться вместе с услугой</h2></div><div class="service-grid compact">${related.map(serviceCard).join('')}</div></div></section>${faqSection([...service.faq, ...faq.slice(0, 4)])}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', service.title, { submitText: 'Рассчитать стоимость' })}`;
   const descSuffix = /фото/i.test(service.short) ? '' : ' Предварительная оценка по фото.';
   const pageDescription = `${service.short}${descSuffix}`.trim();
   return renderPage({ title: service.h1, description: pageDescription, path, image: service.image, body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: service.title, url: path }]), serviceSchema(service, path), faqSchema(service.faq)] });
@@ -1061,10 +1155,9 @@ const lepQuizSteps = [
 
 function heroTrustBadges(extraBadges = []) {
   const baseBadges = [
-    '✓ 100% сохранность имущества',
+    '✓ Бережная работа рядом с постройками',
     '✓ Материальная ответственность по договору',
     '✓ Стоимость согласовываем до начала работ',
-    '✓ Предварительная оценка по фото',
     '✓ Москва и Московская область'
   ];
   const all = [...baseBadges, ...extraBadges];
@@ -1094,7 +1187,7 @@ function renderQuiz({ serviceCode, serviceName, quizId, title, subtitle, steps, 
           </div>
         </div>
 
-        <form class="quiz-form" data-quiz-form id="form-${quizId}">
+        <form class="quiz-form" data-quiz-form data-placement="service_page" id="form-${quizId}">
           <input type="hidden" name="service" value="${esc(serviceName)}">
           <input type="hidden" name="service_code" value="${serviceCode}">
           <label class="hp-field">Не заполняйте<input name="website" tabindex="-1" autocomplete="off"></label>
@@ -1192,15 +1285,16 @@ export function spilLandingPage(service) {
   );
 
   const hero = `
-  <section class="landing-hero landing-hero--spil">
+  <section class="landing-hero landing-hero--spil" data-placement="hero">
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
         <h1>Спил и удаление деревьев<br><span class="hero-subline">в Москве и Московской области</span></h1>
-        <p class="hero-lead">Спилим дерево целиком или безопасно разберём по частям возле дома, забора, проводов и других объектов. Предварительно рассчитаем стоимость по фотографии.</p>
-        <div class="landing-hero-actions">
-          <a class="btn btn-hero-primary" href="#quiz-spil" data-goal="click_calculate">Рассчитать стоимость спила</a>
-          <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
+        <p class="hero-lead">Спилим дерево целиком или безопасно разберём по частям возле дома, забора, проводов и других объектов. Перезвоним и назовём ориентир стоимости по звонку или заявке.</p>
+        <div class="landing-hero-actions" data-placement="hero">
+          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
+          <a class="btn btn-hero-secondary" href="#quiz-spil" data-goal="click_calculate" data-placement="hero">Подробный расчёт</a>
         </div>
+        ${heroMessengerRow('hero', waDirectTexts.spil, 'Написать в мессенджер:')}
         ${heroTrustBadges(['✓ Опытные арбористы'])}
       </div>
       <aside class="landing-hero-card" aria-label="Расчёт стоимости спила">
@@ -1209,7 +1303,7 @@ export function spilLandingPage(service) {
           <span class="landing-hero-tag">Сложный спил возле строений</span>
         </div>
         <div class="landing-hero-prices">
-          <p class="hero-prices-label">Подтверждённые стартовые цены</p>
+          <p class="hero-prices-label">Стартовые цены</p>
           <ul class="hero-prices-list">
             <li><span>Спил дерева целиком</span><strong>от 1 000 ₽</strong></li>
             <li><span>Спил по частям</span><strong>от 3 500 ₽</strong></li>
@@ -1219,7 +1313,14 @@ export function spilLandingPage(service) {
           <p class="hero-prices-note">Окончательная цена зависит от высоты, диаметра и условий вокруг дерева.</p>
         </div>
         <div class="landing-hero-form-box" id="hero-form-spil">
-          <a class="btn btn-accent btn-full" href="#quiz-spil" data-goal="click_calculate">Рассчитать стоимость спила</a>
+          ${heroInlineForm({
+            formId: 'hero-inline-spil',
+            serviceName: 'Спил и удаление деревьев',
+            serviceCode: 'spil',
+            submitLabel: 'Получить расчёт',
+            waText: waDirectTexts.spil,
+            title: 'Перезвоним и рассчитаем спил'
+          })}
         </div>
       </aside>
     </div>
@@ -1415,16 +1516,16 @@ export function emergencyLandingPage(service) {
   );
 
   const hero = `
-  <section class="landing-hero landing-hero--emergency">
+  <section class="landing-hero landing-hero--emergency" data-placement="hero">
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
         <h1>Удаление аварийных деревьев<br><span class="hero-subline">в Москве и Московской области</span></h1>
         <p class="hero-lead">Срочное и безопасное удаление опасных, наклонённых, сухих и повреждённых деревьев после ветра. Работаем рядом с домами, крышами, заборами и проводами.</p>
         <div class="landing-hero-actions">
-          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone">📞 Позвонить сейчас</a>
-          ${hasValue(site.messengerUrl) ? `<a class="btn btn-hero-wa" href="${messengerHref('#quiz-emergency', 'Срочно! Нужна оценка аварийного дерева по фото:')}" target="_blank" rel="noopener" data-goal="click_whatsapp">💬 Срочно в WhatsApp (3 мин)</a>` : ''}
-          <a class="btn btn-hero-secondary" href="#quiz-emergency" data-goal="click_calculate">Оценить дерево по фото</a>
+          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить сейчас</a>
+          <a class="btn btn-hero-secondary" href="#quiz-emergency" data-goal="click_calculate" data-placement="hero">Оценить дерево по фото</a>
         </div>
+        ${heroMessengerRow('hero', waDirectTexts.emergency_tree, 'Срочная связь в мессенджере:')}
         ${heroTrustBadges(['✓ Выезд бригады — от 2 часов'])}
       </div>
       <aside class="landing-hero-card" aria-label="Оценка опасного дерева">
@@ -1433,7 +1534,7 @@ export function emergencyLandingPage(service) {
           <span class="landing-hero-tag">Выезд бригады — от 2 часов</span>
         </div>
         <div class="landing-hero-prices">
-          <p class="hero-prices-label">Подтверждённые стартовые цены</p>
+          <p class="hero-prices-label">Стартовые цены</p>
           <ul class="hero-prices-list">
             <li><span>Аварийное дерево</span><strong>от 4 000 ₽</strong></li>
             <li><span>Спил по частям</span><strong>от 3 500 ₽</strong></li>
@@ -1443,8 +1544,14 @@ export function emergencyLandingPage(service) {
           <p class="hero-prices-note">Окончательная цена зависит от степени аварийности, наклона и строений рядом.</p>
         </div>
         <div class="landing-hero-form-box" id="hero-form-emergency">
-          ${hasValue(site.messengerUrl) ? `<a class="btn btn-hero-wa btn-full" href="${messengerHref('#quiz-emergency', 'Срочно! Нужна оценка аварийного дерева по фото:')}" target="_blank" rel="noopener" data-goal="click_whatsapp" style="margin-bottom: 8px;">💬 Срочно в WhatsApp (ответ за 3 мин)</a>` : ''}
-          <a class="btn btn-accent btn-full" href="#quiz-emergency" data-goal="click_calculate">Оценить дерево по фото</a>
+          ${heroInlineForm({
+            formId: 'hero-inline-emergency',
+            serviceName: 'Удаление аварийных деревьев',
+            serviceCode: 'emergency_tree',
+            submitLabel: 'Перезвоните мне',
+            waText: waDirectTexts.emergency_tree,
+            title: 'Срочный звонок и расчёт'
+          })}
         </div>
       </aside>
     </div>
@@ -1635,15 +1742,16 @@ export function raschistkaLandingPage(service) {
   const related = services.filter((item) => item.slug !== service.slug && !['izmelchenie-vetok', 'droblenie-pney', 'korchevanie-pney'].includes(item.slug)).slice(0, 4);
 
   const hero = `
-  <section class="landing-hero landing-hero--clearing">
+  <section class="landing-hero landing-hero--clearing" data-placement="hero">
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
         <h1>Расчистка участков от деревьев, кустарника и поросли<br><span class="hero-subline">в Москве и Московской области</span></h1>
-        <p class="hero-lead">Спил деревьев, вырубка мелколесья, измельчение веток в щепу, корчевание или дробление пней. Предварительно оценим стоимость по фото и площади участка.</p>
-        <div class="landing-hero-actions">
-          <a class="btn btn-hero-primary" href="#quiz-clearing" data-goal="click_calculate">Рассчитать стоимость расчистки</a>
-          <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
+        <p class="hero-lead">Спил деревьев, вырубка мелколесья, измельчение веток в щепу, корчевание или дробление пней. Перезвоним и назовём ориентир стоимости по площади и задачам.</p>
+        <div class="landing-hero-actions" data-placement="hero">
+          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
+          <a class="btn btn-hero-secondary" href="#quiz-clearing" data-goal="click_calculate" data-placement="hero">Подробный расчёт</a>
         </div>
+        ${heroMessengerRow('hero', waDirectTexts.land_clearing, 'Написать в мессенджер:')}
         ${heroTrustBadges(['✓ Собственный щепорез и бензоинструмент'])}
       </div>
       <aside class="landing-hero-card" aria-label="Расчёт стоимости расчистки">
@@ -1652,7 +1760,7 @@ export function raschistkaLandingPage(service) {
           <span class="landing-hero-tag">Комплексная расчистка под ключ</span>
         </div>
         <div class="landing-hero-prices">
-          <p class="hero-prices-label">Подтверждённые стартовые цены</p>
+          <p class="hero-prices-label">Стартовые цены</p>
           <ul class="hero-prices-list">
             <li><span>Расчистка участка</span><strong>от 5 000 ₽</strong></li>
             <li><span>Измельчение веток</span><strong>от 2 500 ₽</strong></li>
@@ -1662,7 +1770,14 @@ export function raschistkaLandingPage(service) {
           <p class="hero-prices-note">Стоимость зависит от площади в сотках, плотности кустарника и объёма деревьев.</p>
         </div>
         <div class="landing-hero-form-box" id="hero-form-clearing">
-          <a class="btn btn-accent btn-full" href="#quiz-clearing" data-goal="click_calculate">Рассчитать стоимость расчистки</a>
+          ${heroInlineForm({
+            formId: 'hero-inline-clearing',
+            serviceName: 'Расчистка участков',
+            serviceCode: 'land_clearing',
+            submitLabel: 'Получить расчёт',
+            waText: waDirectTexts.land_clearing,
+            title: 'Рассчитать расчистку участка'
+          })}
         </div>
       </aside>
     </div>
@@ -1862,15 +1977,16 @@ export function pruningLandingPage(service) {
   const related = services.filter((item) => item.slug !== service.slug && !['spil-derevev-po-chastyam', 'udalenie-avariynyh-derevev', 'udalenie-suhih-derevev'].includes(item.slug)).slice(0, 4);
 
   const hero = `
-  <section class="landing-hero landing-hero--pruning">
+  <section class="landing-hero landing-hero--pruning" data-placement="hero">
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
         <h1>Обрезка деревьев<br><span class="hero-subline">в Москве и Московской области</span></h1>
-        <p class="hero-lead">Санитарная, омолаживающая и формовочная обрезка, удаление сухих и нависающих ветвей арбористами и с автовышки. Предварительно оценим стоимость по фото до выезда.</p>
-        <div class="landing-hero-actions">
-          <a class="btn btn-hero-primary" href="#quiz-pruning" data-goal="click_calculate">Рассчитать стоимость обрезки</a>
-          <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
+        <p class="hero-lead">Санитарная, омолаживающая и формовочная обрезка, удаление сухих и нависающих ветвей арбористами и с автовышки. Назовём цену по звонку или заявке.</p>
+        <div class="landing-hero-actions" data-placement="hero">
+          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
+          <a class="btn btn-hero-secondary" href="#quiz-pruning" data-goal="click_calculate" data-placement="hero">Подробный расчёт</a>
         </div>
+        ${heroMessengerRow('hero', waDirectTexts.tree_pruning, 'Написать в мессенджер:')}
         ${heroTrustBadges(['✓ Профессиональные арбористы'])}
       </div>
       <aside class="landing-hero-card" aria-label="Расчёт стоимости обрезки">
@@ -1879,7 +1995,7 @@ export function pruningLandingPage(service) {
           <span class="landing-hero-tag">Аккуратная обрезка и кронирование</span>
         </div>
         <div class="landing-hero-prices">
-          <p class="hero-prices-label">Подтверждённые стартовые цены</p>
+          <p class="hero-prices-label">Стартовые цены</p>
           <ul class="hero-prices-list">
             <li><span>Санитарная обрезка</span><strong>от 1 500 ₽</strong></li>
             <li><span>Омолаживающая обрезка</span><strong>от 2 500 ₽</strong></li>
@@ -1889,7 +2005,14 @@ export function pruningLandingPage(service) {
           <p class="hero-prices-note">Окончательная цена зависит от высоты, густоты кроны и условий вокруг дерева.</p>
         </div>
         <div class="landing-hero-form-box" id="hero-form-pruning">
-          <a class="btn btn-accent btn-full" href="#quiz-pruning" data-goal="click_calculate">Рассчитать стоимость обрезки</a>
+          ${heroInlineForm({
+            formId: 'hero-inline-pruning',
+            serviceName: 'Обрезка деревьев',
+            serviceCode: 'tree_pruning',
+            submitLabel: 'Получить расчёт',
+            waText: waDirectTexts.tree_pruning,
+            title: 'Рассчитать стоимость обрезки'
+          })}
         </div>
       </aside>
     </div>
@@ -2068,7 +2191,7 @@ export function raschistkaProsekLepLandingPage() {
   );
 
   const hero = `
-  <section class="landing-hero landing-hero--lep">
+  <section class="landing-hero landing-hero--lep" data-placement="hero">
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
         ${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Расчистка просек и охранных зон ЛЭП', url: path }])}
@@ -2078,10 +2201,11 @@ export function raschistkaProsekLepLandingPage() {
         </div>
         <h1>Расчистка просек и территорий под ЛЭП<br><span class="hero-subline">в Москве и Московской области</span></h1>
         <p class="hero-lead">Удаление деревьев, кустарника, поросли и ДКР вдоль линий электропередачи. Расчистка отдельных участков и протяжённых территорий. Для СНТ, организаций, подрядчиков и частных заказчиков.</p>
-        <div class="landing-hero-actions">
-          <a class="btn btn-hero-primary" href="#quiz-lep" data-goal="click_calculate">Получить расчёт по фото или ТЗ</a>
-          <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">📞 Связаться со специалистом</a>
+        <div class="landing-hero-actions" data-placement="hero">
+          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Связаться со специалистом</a>
+          <a class="btn btn-hero-secondary" href="#quiz-lep" data-goal="click_calculate" data-placement="hero">Получить расчёт по фото или ТЗ</a>
         </div>
+        ${heroMessengerRow('hero', waDirectTexts.lep_clearing, 'Написать в мессенджер:')}
         ${heroTrustBadges(['✓ Официальный договор (ООО «ЮНАТ»)', '✓ Безналичный расчёт, с НДС / без НДС', '✓ Собственный щепорез с оператором'])}
       </div>
       <aside class="landing-hero-card" aria-label="Расчёт стоимости расчистки просеки">
@@ -2100,7 +2224,14 @@ export function raschistkaProsekLepLandingPage() {
           <p class="hero-prices-note">Итоговая стоимость рассчитывается индивидуально по площади, протяжённости и плотности ДКР.</p>
         </div>
         <div class="landing-hero-form-box" id="hero-form-lep">
-          <a class="btn btn-accent btn-full" href="#quiz-lep" data-goal="click_calculate">Рассчитать стоимость объекта</a>
+          ${heroInlineForm({
+            formId: 'hero-inline-lep',
+            serviceName: 'Расчистка просек ЛЭП',
+            serviceCode: 'lep_clearing',
+            submitLabel: 'Рассчитать стоимость объекта',
+            waText: waDirectTexts.lep_clearing,
+            title: 'Запросить расчёт объекта'
+          })}
         </div>
       </aside>
     </div>
@@ -2496,7 +2627,7 @@ export function izmelchenieLandingPage(service) {
   const related = services.filter((item) => item.slug !== service.slug).slice(0, 4);
 
   const hero = `
-  <section class="landing-hero landing-hero--chipping">
+  <section class="landing-hero landing-hero--chipping" data-placement="hero">
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
         <div class="operator-badge" role="note">
@@ -2504,11 +2635,12 @@ export function izmelchenieLandingPage(service) {
           <span>Работаем с оператором. Технику без оператора не сдаём.</span>
         </div>
         <h1>Измельчение веток (Щепорез)<br><span class="hero-subline">в Москве и Московской области</span></h1>
-        <p class="hero-lead">Собственный мощный измельчитель с опытным оператором на ваш участок. Быстро переработаем ветки после спила или расчистки в однородную щепу, значительно уменьшив объём порубочных остатков.</p>
-        <div class="landing-hero-actions">
-          <a class="btn btn-hero-primary" href="#quiz-chipping" data-goal="click_calculate">Рассчитать измельчение веток</a>
-          <a class="btn btn-hero-secondary" href="${phoneHref()}" data-goal="click_phone">Позвонить</a>
+        <p class="hero-lead">Собственный мощный измельчитель с опытным оператором на ваш участок. Быстро переработаем ветки после спила или расчистки в однородную щепу. Назовём цену по звонку или заявке.</p>
+        <div class="landing-hero-actions" data-placement="hero">
+          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
+          <a class="btn btn-hero-secondary" href="#quiz-chipping" data-goal="click_calculate" data-placement="hero">Подробный расчёт</a>
         </div>
+        ${heroMessengerRow('hero', waDirectTexts.branch_chipping, 'Написать в мессенджер:')}
         ${heroTrustBadges(['✓ Собственный щепорез с оператором'])}
       </div>
       <aside class="landing-hero-card" aria-label="Расчёт стоимости измельчения веток">
@@ -2517,17 +2649,24 @@ export function izmelchenieLandingPage(service) {
           <span class="landing-hero-tag">Щепорез высокой производительности</span>
         </div>
         <div class="landing-hero-prices">
-          <p class="hero-prices-label">Подтверждённая стоимость</p>
+          <p class="hero-prices-label">Стартовая стоимость</p>
           <ul class="hero-prices-list">
             <li><span>Измельчение веток</span><strong>от 2 500 ₽</strong></li>
             <li><span>Работа опытного оператора</span><strong>Включена</strong></li>
             <li><span>Сокращение объёма отходов</span><strong>значительное</strong></li>
             <li><span>Вывоз щепы (по желанию)</span><strong>по согласованию</strong></li>
           </ul>
-          <p class="hero-prices-note">Оценим объём работ и стоимость по фотографии веток.</p>
+          <p class="hero-prices-note">Оценим объём работ по звонку, заявке или фотографии веток.</p>
         </div>
         <div class="landing-hero-form-box" id="hero-form-chipping">
-          <a class="btn btn-accent btn-full" href="#quiz-chipping" data-goal="click_calculate">Рассчитать стоимость измельчения веток</a>
+          ${heroInlineForm({
+            formId: 'hero-inline-chipping',
+            serviceName: 'Измельчение веток',
+            serviceCode: 'branch_chipping',
+            submitLabel: 'Рассчитать стоимость измельчения веток',
+            waText: waDirectTexts.branch_chipping,
+            title: 'Перезвоним и рассчитаем измельчение'
+          })}
         </div>
       </aside>
     </div>

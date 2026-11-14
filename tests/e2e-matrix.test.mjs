@@ -267,11 +267,50 @@ test('E2E Matrix: Home page has exactly 7 service cards including LEP', () => {
   assert.match(html, /src="\/assets\/raschistka-real\.png"/);
 });
 
-test('E2E Matrix: Home page has 100% сохранность имущества, мат. ответственность, выезд от 2 часов', () => {
+test('E2E Matrix: Home page has honest safety wording, мат. ответственность, выезд от 2 часов', () => {
   const html = readHtml('');
-  assert.match(html, /100% сохранность имущества/);
+  assert.doesNotMatch(html, /100% сохранность имущества/i);
+  assert.doesNotMatch(html, /сертифицированн(ое|ым|ого) снаряжени/i);
+  assert.match(html, /Сохранность построек и участка по договору/);
   assert.match(html, /Материальная ответственность по договору/);
   assert.match(html, /Выезд (?:бригады )?от 2 часов/);
+});
+
+test('E2E Matrix: Hero inline forms, contact channels, stump pages & clean copy', () => {
+  const pageForms = [
+    ['', 'hero-inline-home'],
+    ['spil-derevev', 'hero-inline-spil'],
+    ['udalenie-avariynyh-derevev', 'hero-inline-emergency'],
+    ['raschistka-uchastkov', 'hero-inline-clearing'],
+    ['obrezka-derevev', 'hero-inline-pruning'],
+    ['raschistka-prosek-lep', 'hero-inline-lep'],
+    ['izmelchenie-vetok', 'hero-inline-chipping'],
+    ['droblenie-pney', 'hero-inline-droblenie_pney'],
+    ['korchevanie-pney', 'hero-inline-korchevanie_pney']
+  ];
+  for (const [slug, formId] of pageForms) {
+    const html = readHtml(slug);
+    assert.match(html, new RegExp(`id="${formId}"`), `${slug} missing ${formId}`);
+    assert.match(html, /data-placement="hero"/, `${slug} missing hero placement`);
+    assert.match(html, /data-goal="click_phone"/, `${slug} missing click_phone`);
+    assert.match(html, /data-goal="click_whatsapp"/, `${slug} missing click_whatsapp`);
+    assert.match(html, /data-goal="click_max"/, `${slug} missing click_max`);
+    assert.match(html, /data-goal="click_telegram"/, `${slug} missing click_telegram`);
+    assert.doesNotMatch(html, /100% сохранность имущества/i, `${slug} still contains unverified claim`);
+  }
+});
+
+test('E2E Matrix: app.js emits form_start, form_submit_success, lead_submit, click_max with placement', async () => {
+  const fsSync = await import('node:fs');
+  const pathMod = await import('node:path');
+  const urlMod = await import('node:url');
+  const testDir = pathMod.dirname(urlMod.fileURLToPath(import.meta.url));
+  const appSource = fsSync.readFileSync(pathMod.resolve(testDir, '..', 'src', 'app.js'), 'utf8');
+  const trackingSource = fsSync.readFileSync(pathMod.resolve(testDir, '..', 'src', 'tracking.mjs'), 'utf8');
+  for (const token of ['form_start', 'form_submit_success', 'lead_submit', 'click_${messengerChannel}', 'getMessengerChannel', 'placement']) {
+    assert.ok(appSource.includes(token), `src/app.js missing ${token}`);
+  }
+  assert.ok(trackingSource.includes("'max'"), "src/tracking.mjs missing 'max'");
 });
 
 test('E2E Matrix: No user-visible word "квиз" across any landing page', () => {
