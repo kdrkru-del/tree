@@ -416,7 +416,7 @@ export function homePage() {
   ${organizationsSection()}
   ${experienceProofSection()}
   ${videosSection()}
-  ${leadSection('Покажите задачу — рассчитаем точную стоимость', 'Пришлите 2–3 фотографии с расстояния 10–15 метров. Назовём способ работы и точную цену до выезда бригады. Оплата строго по факту приёмки.', 'Фото на оценку', homeLeadOptions)}
+  ${leadSection('Рассчитаем стоимость работ', 'Позвоните или оставьте номер — уточним задачу и назовём стоимость. Фото можно прислать позже, если удобно. Оплата по факту приёмки.', 'Расчёт стоимости', homeLeadOptions)}
   ${seoContentSection()}`;
   return renderPage({ title, description, path: '/', body, jsonLd: [professionalServiceSchema(), faqSchema(homeFaq), breadcrumbSchema([{ name: 'Главная', url: '/' }])] });
 }
@@ -728,7 +728,7 @@ function priceTableSection() {
   <div class="container">
     <div class="section-head">
       <h2>Цены на работы</h2>
-      <p>Честные базовые ориентиры стоимости. Точную смету назовём по 2–3 фото до выезда на объект.</p>
+      <p>Честные базовые ориентиры стоимости. Точную смету согласуем после обсуждения задачи.</p>
     </div>
     <div class="price-table-wrap">
       <table class="price-table">
@@ -752,11 +752,11 @@ function priceTableSection() {
     <div class="price-table-cta-banner">
       <div class="price-cta-text">
         <strong>Узнайте точную смету по вашему объекту за 5 минут</strong>
-        <p>Пришлите 2–3 фото в мессенджер или оставьте заявку — назовём итоговую цену до выезда бригады.</p>
+        <p>Позвоните, напишите или оставьте номер — уточним задачу и рассчитаем стоимость.</p>
       </div>
       <div class="price-cta-actions">
-        ${hasValue(site.messengerUrl) ? `<a class="btn btn-hero-wa" href="${messengerHref('#lead-form', 'Здравствуйте! Хочу рассчитать стоимость по прайсу, отправляю фото:')}" target="_blank" rel="noopener" data-goal="click_whatsapp">💬 Рассчитать в WhatsApp</a>` : ''}
-        <a class="btn btn-hero-primary" href="#lead-form" data-goal="click_calculate">📷 Оценить по фото</a>
+        ${hasValue(site.messengerUrl) ? `<a class="btn btn-hero-wa" href="${messengerHref('#lead-form', 'Здравствуйте! Хочу уточнить стоимость работ.')}" target="_blank" rel="noopener" data-goal="click_whatsapp">💬 Написать в WhatsApp</a>` : ''}
+        <a class="btn btn-hero-primary" href="#lead-form" data-goal="click_calculate">Получить расчёт</a>
         <a class="btn btn-hero-phone" href="${phoneHref()}" data-goal="click_phone">📞 ${esc(formatPhoneDisplay(site.phone))}</a>
       </div>
     </div>
@@ -777,10 +777,10 @@ function priceTableSection() {
 
     <div class="price-photo-callout">
       <div>
-        <h3>Пришлите фото — предварительно оценим стоимость</h3>
-        <p>После оценки фиксируем стоимость и закрепляем её в договоре. Никаких скрытых доплат на месте.</p>
+        <h3>Расскажите о задаче — рассчитаем стоимость</h3>
+        <p>Позвоните или оставьте номер. Фото можно прислать, если удобно. Стоимость согласуем до начала работ.</p>
       </div>
-      <a class="btn btn-accent" href="#lead-form" data-open-form data-service="Оценка по фото" data-goal="click_calculate">Рассчитать стоимость по фото</a>
+      <a class="btn btn-accent" href="#lead-form" data-open-form data-service="Расчёт стоимости" data-goal="click_calculate">Получить расчёт</a>
     </div>
   </div>
 </section>`;
@@ -832,7 +832,7 @@ function quickLeadSection() {
           </div>
           ${formErrorMarkup('quick-lead-error')}
         </form>
-        ${hasValue(site.messengerUrl) ? `<a class="btn btn-outline" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">Отправить фото в WhatsApp</a>` : ''}
+        ${hasValue(site.messengerUrl) ? `<a class="btn btn-outline" href="${messengerHref('#lead-form')}" data-goal="click_whatsapp">Написать в WhatsApp</a>` : ''}
       </div>
     </div>
   </div>
@@ -861,7 +861,7 @@ function experienceProofSection() {
 }
 
 function videosSection() {
-  return `<section class="section video-section" id="works"><span id="videos" class="anchor-target" aria-hidden="true"></span><div class="container"><div class="section-head"><h2>Реальные работы</h2><p>Показываем реальные объекты и выполненные работы в Москве и Московской области.</p></div><div class="video-proof-subhead"><p>Посмотрите, как мы работаем на сложных объектах: спил по частям, работа над крышами, возле домов, заборов и в ограниченном пространстве.</p></div><div class="video-group" id="clearing-videos"><div class="video-group-head"><h3>Расчистка и подготовка территории</h3><p>Показываем удаление поросли, работу техники, измельчение веток и пней.</p></div><div class="video-grid">${clearingVideos.map(videoCard).join('')}</div><div class="video-cta"><div><h3>Нужно расчистить участок?</h3><p>Пришлите фото или оставьте номер телефона — оценим объём работ и предварительную стоимость.</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Расчистка участка" data-goal="click_calculate">Отправить фото участка</a></div></div><div class="video-group" id="complex-videos" style="margin-top: 56px;"><div class="video-group-head"><h3>Удаление деревьев в сложных условиях</h3><p>Показываем, как выбираем способ работы рядом с домами, крышами, заборами и другими объектами.</p></div><div class="video-grid">${complexVideos.map(videoCard).join('')}</div>${videoSafety()}<div class="video-cta"><div><h3>Похожая ситуация на вашем участке?</h3><p>Оставьте номер телефона — оценим расположение дерева и предложим подходящий способ выполнения работ.</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Сложное удаление дерева" data-goal="click_calculate">Рассчитать стоимость</a></div></div></div></section>`;
+  return `<section class="section video-section" id="works"><span id="videos" class="anchor-target" aria-hidden="true"></span><div class="container"><div class="section-head"><h2>Реальные работы</h2><p>Показываем реальные объекты и выполненные работы в Москве и Московской области.</p></div><div class="video-proof-subhead"><p>Посмотрите, как мы работаем на сложных объектах: спил по частям, работа над крышами, возле домов, заборов и в ограниченном пространстве.</p></div><div class="video-group" id="clearing-videos"><div class="video-group-head"><h3>Расчистка и подготовка территории</h3><p>Показываем удаление поросли, работу техники, измельчение веток и пней.</p></div><div class="video-grid">${clearingVideos.map(videoCard).join('')}</div><div class="video-cta"><div><h3>Нужно расчистить участок?</h3><p>Оставьте номер или напишите нам — уточним задачу и предварительную стоимость.</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Расчистка участка" data-goal="click_calculate">Получить расчёт</a></div></div><div class="video-group" id="complex-videos" style="margin-top: 56px;"><div class="video-group-head"><h3>Удаление деревьев в сложных условиях</h3><p>Показываем, как выбираем способ работы рядом с домами, крышами, заборами и другими объектами.</p></div><div class="video-grid">${complexVideos.map(videoCard).join('')}</div>${videoSafety()}<div class="video-cta"><div><h3>Похожая ситуация на вашем участке?</h3><p>Оставьте номер телефона — оценим расположение дерева и предложим подходящий способ выполнения работ.</p></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Сложное удаление дерева" data-goal="click_calculate">Рассчитать стоимость</a></div></div></div></section>`;
 }
 
 function videoCard(video) {
@@ -914,7 +914,7 @@ function processSection() {
       <h3>${esc(title)}</h3>
       <p>${esc(text)}</p>
     </article>`;
-  }).join('')}</div><div class="process-cta"><p>Есть фото дерева? Узнайте стоимость сейчас.</p><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Фото на оценку" data-goal="click_calculate">Отправить фото</a></div></div></section>`;
+  }).join('')}</div><div class="process-cta"><p>Расскажите, что нужно сделать — уточним стоимость.</p><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Расчёт стоимости" data-goal="click_calculate">Получить расчёт</a></div></div></section>`;
 }
 
 function organizationsSection() {
@@ -925,7 +925,7 @@ function faqSection(items) {
   return `<section class="section section-muted" id="faq"><div class="container"><div class="section-head"><h2>Частые вопросы</h2></div><div class="faq-list">${items.map(([question, answer]) => `<details><summary>${esc(question)}</summary><p>${esc(answer)}</p></details>`).join('')}</div></div></section>`;
 }
 
-function leadSection(title, text, selectedService = 'Фото на оценку', options = {}) {
+function leadSection(title, text, selectedService = 'Расчёт стоимости', options = {}) {
   const formOptions = {
     ...options,
     formId: options.formId || 'bottom-lead-form',
@@ -955,7 +955,7 @@ function leadForm(selectedService, options = {}) {
       <input id="${esc(formId)}_phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" data-phone-input>
     </div>
     <button class="btn btn-accent btn-full" type="submit" data-submit-btn>${esc(btnText)}</button>
-    <p class="lead-photo-note">Для предварительной оценки отправьте фотографию дерева и контактный номер.</p>
+    <p class="lead-photo-note">Оставьте номер — уточним задачу и рассчитаем стоимость. Фото можно прислать позже, если удобно.</p>
   </div>
   <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a>.</p>
   <div class="form-success" data-form-success hidden>
@@ -1030,7 +1030,7 @@ export function servicePage(service) {
   };
   const foundPrice = priceRows.find(([s]) => s.toLowerCase().includes(service.title.toLowerCase()) || service.title.toLowerCase().includes(s.toLowerCase()));
   const priceText = slugPriceMap[service.slug] || (foundPrice ? foundPrice[1] : (service.priceFrom || ''));
-  const body = `${innerHero(service.h1, service.lead, service.image, service.title, priceText, service.slug)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Услуги', url: '/#services' }, { name: service.title, url: path }])}<h2>Что входит в работу</h2><ul class="rich-list">${service.includes.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><div class="honest-note">${esc(service.warning)}</div><h2>Что влияет на расчет</h2><div class="factor-cloud">${service.priceFactors.map((factor) => `<span>${esc(factor)}</span>`).join('')}</div>${isChipping ? `<h2>Что делать со щепой после измельчения?</h2><div class="branch-what-block"><div><strong>Оставить</strong><p>Щепа остается заказчику.</p></div><div><strong>Измельчить</strong><p>Переработаем ветки в щепу.</p></div><div><strong>Вывезти</strong><p>Подготовим и организуем вывоз.</p></div></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Измельчение веток в щепу" data-goal="click_branch_chipping">Рассчитать работу под ключ</a>` : ''}<h2>Как проходит заявка</h2><div class="mini-steps">${processSteps.map(([step, text], index) => `<article><span class="mini-step-arrow" aria-hidden="true">${index < processSteps.length - 1 ? '→' : '✓'}</span><h3>${esc(step)}</h3><p>${esc(text)}</p></article>`).join('')}</div></article><aside class="side-panel"><h2>Расчет стоимости</h2><p>${esc(service.directTitle)}. Передайте фотографии, адрес объекта и желаемый результат.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать</a><a class="btn btn-ghost btn-full" href="${phoneHref()}" data-goal="click_phone">Позвонить</a></aside></div></section><section class="section section-muted"><div class="container"><div class="section-head"><h2>Может понадобиться вместе с услугой</h2></div><div class="service-grid compact">${related.map(serviceCard).join('')}</div></div></section>${faqSection([...service.faq, ...faq.slice(0, 4)])}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', service.title, { submitText: 'Рассчитать стоимость' })}`;
+  const body = `${innerHero(service.h1, service.lead, service.image, service.title, priceText, service.slug)}<section class="section"><div class="container content-grid"><article class="content-main">${breadcrumbs([{ name: 'Главная', url: '/' }, { name: 'Услуги', url: '/#services' }, { name: service.title, url: path }])}<h2>Что входит в работу</h2><ul class="rich-list">${service.includes.map((item) => `<li>${esc(item)}</li>`).join('')}</ul><div class="honest-note">${esc(service.warning)}</div><h2>Что влияет на расчет</h2><div class="factor-cloud">${service.priceFactors.map((factor) => `<span>${esc(factor)}</span>`).join('')}</div>${isChipping ? `<h2>Что делать со щепой после измельчения?</h2><div class="branch-what-block"><div><strong>Оставить</strong><p>Щепа остается заказчику.</p></div><div><strong>Измельчить</strong><p>Переработаем ветки в щепу.</p></div><div><strong>Вывезти</strong><p>Подготовим и организуем вывоз.</p></div></div><a class="btn btn-accent" href="#lead-form" data-open-form data-service="Измельчение веток в щепу" data-goal="click_branch_chipping">Рассчитать работу под ключ</a>` : ''}<h2>Как проходит заявка</h2><div class="mini-steps">${processSteps.map(([step, text], index) => `<article><span class="mini-step-arrow" aria-hidden="true">${index < processSteps.length - 1 ? '→' : '✓'}</span><h3>${esc(step)}</h3><p>${esc(text)}</p></article>`).join('')}</div></article><aside class="side-panel"><h2>Расчет стоимости</h2><p>${esc(service.directTitle)}. Расскажите, что нужно сделать и где находится объект.</p><a class="btn btn-accent btn-full" href="#lead-form" data-open-form data-service="${esc(service.title)}" data-goal="click_calculate">Рассчитать</a><a class="btn btn-ghost btn-full" href="${phoneHref()}" data-goal="click_phone">Позвонить</a></aside></div></section><section class="section section-muted"><div class="container"><div class="section-head"><h2>Может понадобиться вместе с услугой</h2></div><div class="service-grid compact">${related.map(serviceCard).join('')}</div></div></section>${faqSection([...service.faq, ...faq.slice(0, 4)])}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', service.title, { submitText: 'Рассчитать стоимость' })}`;
   const descSuffix = /фото/i.test(service.short) ? '' : ' Предварительная оценка по фото.';
   const pageDescription = `${service.short}${descSuffix}`.trim();
   return renderPage({ title: service.h1, description: pageDescription, path, image: service.image, body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: service.title, url: path }]), serviceSchema(service, path), faqSchema(service.faq)] });
@@ -1544,7 +1544,7 @@ export function emergencyLandingPage(service) {
         <p class="hero-lead">Срочное и безопасное удаление опасных, наклонённых, сухих и повреждённых деревьев после ветра. Работаем рядом с домами, крышами, заборами и проводами.</p>
         <div class="landing-hero-actions">
           <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить сейчас</a>
-          <a class="btn btn-hero-secondary" href="#quiz-emergency" data-goal="click_calculate" data-placement="hero">Оценить дерево по фото</a>
+          <a class="btn btn-hero-secondary" href="#quiz-emergency" data-goal="click_calculate" data-placement="hero">Получить расчёт</a>
         </div>
         ${heroMessengerRow('hero', waDirectTexts.emergency_tree, 'Срочная связь в мессенджере:')}
         ${heroTrustBadges(['✓ Выезд бригады — от 2 часов'])}
@@ -1585,7 +1585,7 @@ export function emergencyLandingPage(service) {
     title: 'Предварительная оценка аварийного дерева',
     subtitle: 'Ответьте на несколько вопросов — подберём безопасный способ и назовём ориентир стоимости',
     steps: emergencyQuizSteps,
-    finalCtaText: 'Оценить дерево по фото',
+    finalCtaText: 'Получить расчёт',
     submitNote: 'Оценка носит предварительный характер. Окончательные условия подтверждаются до начала работ.',
     waText: waDirectTexts.emergency_tree
   });
@@ -1718,7 +1718,7 @@ export function emergencyLandingPage(service) {
       <h2>Опасное дерево на участке? Не рискуйте постройками</h2>
       <p class="repeat-cta-sub">Сделайте фото с безопасного расстояния — предварительно оценим стоимость и сложность работ до выезда.</p>
       <div class="repeat-cta-actions">
-        <a class="btn btn-accent btn-large" href="#quiz-emergency" data-goal="click_calculate">Оценить дерево по фото</a>
+        <a class="btn btn-accent btn-large" href="#quiz-emergency" data-goal="click_calculate">Получить расчёт</a>
         <a class="btn btn-secondary btn-large" href="${phoneHref()}" data-goal="click_phone">📞 Позвонить сейчас</a>
       </div>
     </div>
@@ -2224,7 +2224,7 @@ export function raschistkaProsekLepLandingPage() {
         <p class="hero-lead">Удаление деревьев, кустарника, поросли и ДКР вдоль линий электропередачи. Расчистка отдельных участков и протяжённых территорий. Для СНТ, организаций, подрядчиков и частных заказчиков.</p>
         <div class="landing-hero-actions" data-placement="hero">
           <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Связаться со специалистом</a>
-          <a class="btn btn-hero-secondary" href="#quiz-lep" data-goal="click_calculate" data-placement="hero">Получить расчёт по фото или ТЗ</a>
+          <a class="btn btn-hero-secondary" href="#quiz-lep" data-goal="click_calculate" data-placement="hero">Получить расчёт</a>
         </div>
         ${heroMessengerRow('hero', waDirectTexts.lep_clearing, 'Написать в мессенджер:')}
         ${heroTrustBadges(['✓ Официальный договор (ООО «ЮНАТ»)', '✓ Безналичный расчёт, с НДС / без НДС', '✓ Собственный щепорез с оператором'])}
@@ -2935,17 +2935,17 @@ const universalLeadOptions = {
 };
 
 export function pricesPage() {
-  const body = `${simpleHero('Стоимость спила, обрезки и расчистки участков', 'Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.')}${priceTableSection()}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Фото на оценку', universalLeadOptions)}`;
+  const body = `${simpleHero('Стоимость спила, обрезки и расчистки участков', 'Показываем стартовые цены, чтобы вы понимали порядок стоимости. Точную цену определим после фото или осмотра.')}${priceTableSection()}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Расчёт стоимости', universalLeadOptions)}`;
   return renderPage({ title: 'Цены на спил и обрезку деревьев', description: 'От чего зависит стоимость спила, обрезки, удаления пней, расчистки участка и вывоза веток.', path: '/prices/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Цены', url: '/prices/' }])] });
 }
 
 export function worksPage() {
-  const body = `${simpleHero('Фото до и стало', 'Подобранные фотопары показывают типовые задачи: аварийное дерево, расчистка территории и удаление пня.')}${worksPreview()}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Фото на оценку', universalLeadOptions)}`;
+  const body = `${simpleHero('Фото до и стало', 'Подобранные фотопары показывают типовые задачи: аварийное дерево, расчистка территории и удаление пня.')}${worksPreview()}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Расчёт стоимости', universalLeadOptions)}`;
   return renderPage({ title: 'Фото до и стало по работам с деревьями', description: 'Фото до и стало по типовым задачам: аварийное дерево, расчистка участка, удаление пня.', path: '/works/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'До / стало', url: '/works/' }])] });
 }
 
 export function faqPage() {
-  const body = `${simpleHero('Частые вопросы', 'Подробные ответы о расчете по фото, разрешениях, уборке, вывозе, пнях, сезонности и работе с организациями.')}${faqSection(faq)}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Фото на оценку', universalLeadOptions)}`;
+  const body = `${simpleHero('Частые вопросы', 'Подробные ответы о расчете по фото, разрешениях, уборке, вывозе, пнях, сезонности и работе с организациями.')}${faqSection(faq)}${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Расчёт стоимости', universalLeadOptions)}`;
   return renderPage({ title: 'Вопросы о спиле и обрезке деревьев', description: 'Ответы на частые вопросы о спиле, обрезке, разрешениях, вывозе веток, удалении пней и расчете стоимости.', path: '/faq/', body, jsonLd: [faqSchema(faq), breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Вопросы', url: '/faq/' }])] });
 }
 
@@ -2956,7 +2956,7 @@ export function contactsPage() {
     hasValue(site.telegramUrl) ? `<a class="contact-messenger-btn contact-messenger-btn--telegram" href="${telegramHref()}" target="_blank" rel="noopener" data-goal="click_telegram"><svg class="contact-messenger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>Telegram</a>` : ''
   ].filter(Boolean).join('');
   const emailBlock = hasValue(site.email) ? `<div class="contact-email-block"><p class="contact-email-label">Электронная почта</p><a class="contact-email-link" href="mailto:${esc(site.email)}">${esc(site.email)}</a></div>` : '';
-  const body = `${simpleHero('Контакты компании', 'Позвоните, отправьте фотографии или оставьте заявку на предварительный расчет.')}<section class="section"><div class="container contact-grid"><div class="contact-card contact-card--contacts"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(formatPhoneDisplay(site.phone))}</a>` : ''}<div class="contact-messenger-btns">${messengerBtns}</div>${emailBlock}</div><div class="contact-card"><h2>Что подготовить</h2><ul class="rich-list"><li>фото дерева целиком</li><li>фото ствола и кроны</li><li>фото препятствий рядом</li><li>адрес объекта и желаемый результат</li></ul></div></div></section>${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Фото на оценку', universalLeadOptions)}`;
+  const body = `${simpleHero('Контакты компании', 'Позвоните, напишите нам или оставьте номер — обсудим задачу и рассчитаем стоимость.')}<section class="section"><div class="container contact-grid"><div class="contact-card contact-card--contacts"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(formatPhoneDisplay(site.phone))}</a>` : ''}<div class="contact-messenger-btns">${messengerBtns}</div>${emailBlock}</div><div class="contact-card"><h2>Что сообщить</h2><ul class="rich-list"><li>адрес объекта</li><li>что нужно сделать</li><li>когда удобно провести работы</li><li>фото можно прислать дополнительно, если удобно</li></ul></div></div></section>${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Расчёт стоимости', universalLeadOptions)}`;
   return renderPage({ title: 'Контакты', description: 'Контакты компании по уходу за деревьями: телефон, email и форма заявки.', path: '/contacts/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Контакты', url: '/contacts/' }])] });
 }
 

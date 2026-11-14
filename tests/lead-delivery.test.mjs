@@ -116,7 +116,7 @@ test('phone-only forms keep data on errors and never count WhatsApp as delivery'
   const templates = readFileSync(new URL('../src/templates.mjs', import.meta.url), 'utf8');
   assert.doesNotMatch(templates, /data-submission-link/);
   assert.match(templates, /в Москве и Московской области/);
-  assert.match(templates, /Для предварительной оценки отправьте фотографию дерева и контактный номер\./);
+  assert.match(templates, /Оставьте номер — уточним задачу и рассчитаем стоимость\. Фото можно прислать позже, если удобно\./);
   assert.match(templates, /name="service" value="Быстрый расчет"/);
   assert.match(templates, /name="service" value="\$\{esc\(selectedService\)\}"/);
   assert.match(templates, /app\.js\?v=2026/);
