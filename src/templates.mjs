@@ -45,6 +45,14 @@ function hasValue(str) {
   return str && !String(str).startsWith('[');
 }
 
+function formatPhoneDisplay(phone = site.phone) {
+  const digits = String(phone || '').replace(/\D/g, '');
+  if (digits.length === 11) {
+    return `${digits[0]} ${digits.slice(1, 4)} ${digits.slice(4, 7)}-${digits.slice(7, 9)}-${digits.slice(9, 11)}`;
+  }
+  return String(phone || '');
+}
+
 function phoneHref() {
   if (site.phoneHref) return site.phoneHref;
   if (hasValue(site.phone)) return `tel:${site.phone.replace(/[^\d+]/g, '')}`;
@@ -125,7 +133,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">${wikimediaPreconnect}
-  <link rel="stylesheet" href="/assets/styles.css?v=20261114-conv-direct-2">
+  <link rel="stylesheet" href="/assets/styles.css?v=20261115-hero-clean-2">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   ${metrikaCounter()}
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
@@ -139,14 +147,48 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${floatingContacts(waText)}
   ${mobileBar(leadHref, waText)}
   ${photoModal(waText)}
-  <script src="/assets/app.js?v=20261114-conv-direct-2" type="module"></script>
+  <script src="/assets/app.js?v=20261115-hero-clean-2" type="module"></script>
 </body>
 </html>`;
 }
 
+/** Shared WhatsApp / MAX / Telegram link items for compact messenger popovers. */
+function messengerPopoverItems(placement, fallbackHref = '#lead-form', waText = '') {
+  const waItem = hasValue(site.messengerUrl)
+    ? `<a class="msgr-menu-item msgr-menu-wa" href="${messengerHref(fallbackHref, waText)}" target="_blank" rel="noopener" data-goal="click_whatsapp" data-placement="${esc(placement)}">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg>
+        <span>WhatsApp</span>
+      </a>`
+    : '';
+  const maxItem = hasValue(site.maxUrl)
+    ? `<a class="msgr-menu-item msgr-menu-max" href="${maxHref(fallbackHref)}" target="_blank" rel="noopener" data-goal="click_max" data-placement="${esc(placement)}">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg>
+        <span>MAX</span>
+      </a>`
+    : '';
+  const tgItem = hasValue(site.telegramUrl)
+    ? `<a class="msgr-menu-item msgr-menu-tg" href="${telegramHref(fallbackHref)}" target="_blank" rel="noopener" data-goal="click_telegram" data-placement="${esc(placement)}">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        <span>Telegram</span>
+      </a>`
+    : '';
+  return [waItem, maxItem, tgItem].filter(Boolean).join('');
+}
+
 function header(leadHref, waText = '') {
+  const displayPhone = formatPhoneDisplay(site.phone);
   const phoneEl = hasValue(site.phone)
-    ? `<a class="phone-link" href="${phoneHref()}" data-goal="click_phone"><svg class="phone-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>${esc(site.phone)}</span></a>${hasValue(site.hours) ? `<span class="header-hours">${esc(site.hours)}</span>` : ''}`
+    ? `<a class="phone-link" href="${phoneHref()}" data-goal="click_phone"><svg class="phone-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>${esc(displayPhone)}</span></a>${hasValue(site.hours) ? `<span class="header-hours">${esc(site.hours)}</span>` : ''}`
+    : '';
+  const msgrItems = messengerPopoverItems('header', leadHref || '#lead-form', waText);
+  const msgrDropdown = msgrItems
+    ? `<div class="header-msgr-dropdown" data-msgr-dropdown data-placement="header">
+        <button type="button" class="btn btn-small header-msgr-toggle" data-msgr-toggle aria-expanded="false" aria-controls="header-msgr-menu">
+          <span>Написать</span>
+          <svg class="msgr-chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="msgr-popover header-msgr-popover" id="header-msgr-menu" data-msgr-menu hidden data-placement="header">${msgrItems}</div>
+      </div>`
     : '';
   return `<header class="site-header" data-header>
   <div class="container header-inner">
@@ -163,20 +205,22 @@ function header(leadHref, waText = '') {
     }).join('')}${mobileNavContacts(waText)}</nav>
     <div class="header-actions">
       ${phoneEl ? `<div class="header-contact">${phoneEl}</div>` : ''}
-      <a class="btn btn-small btn-accent" href="${leadHref}" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать стоимость</a>
+      ${msgrDropdown}
+      <a class="btn btn-small btn-accent header-calc-btn" href="${leadHref}" data-open-form data-service="Расчет стоимости" data-goal="click_calculate">Рассчитать стоимость</a>
     </div>
   </div>
 </header>`;
 }
 
 function mobileNavContacts(waText = '') {
+  const displayPhone = formatPhoneDisplay(site.phone);
   const phoneBtn = hasValue(site.phone)
     ? `<a class="mobile-nav-phone-btn" href="${phoneHref()}" data-goal="click_phone">
         <svg class="mobile-nav-phone-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
         <span class="mobile-nav-phone-content">
-          <span class="mobile-nav-phone-num">${esc(site.phone)}</span>
+          <span class="mobile-nav-phone-num">${esc(displayPhone)}</span>
           ${hasValue(site.hours) ? `<span class="mobile-nav-phone-hours">${esc(site.hours)}</span>` : ''}
         </span>
       </a>`
@@ -213,7 +257,8 @@ function mobileNavContacts(waText = '') {
 }
 
 function footer(waText = '') {
-  const phoneEl = hasValue(site.phone) ? `<a class="phone-link footer-phone" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : '';
+  const displayPhone = formatPhoneDisplay(site.phone);
+  const phoneEl = hasValue(site.phone) ? `<a class="phone-link footer-phone" href="${phoneHref()}" data-goal="click_phone">${esc(displayPhone)}</a>` : '';
   const emailEl = hasValue(site.email) ? `<a class="footer-email" href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : '';
   const waBtn = hasValue(site.messengerUrl)
     ? `<a class="footer-msg-btn footer-msg-wa" href="${messengerHref('/#lead-form', waText)}" target="_blank" rel="noopener" data-goal="click_whatsapp">
@@ -265,23 +310,18 @@ function floatingContacts(waText = '') {
 }
 
 function mobileBar(leadHref = '#lead-form', waText = '') {
-  const callBtn = `<a class="mobile-btn mobile-btn-call" href="${phoneHref()}" data-goal="click_phone" data-placement="bottom" aria-label="Позвонить"><span class="mobile-btn-icon">📞</span><span>Звонок</span></a>`;
-  const waBtn = hasValue(site.messengerUrl)
-    ? `<a class="mobile-btn mobile-btn-wa" href="${messengerHref('#lead-form', waText)}" target="_blank" rel="noopener" data-goal="click_whatsapp" data-placement="bottom" aria-label="WhatsApp"><span>WA</span></a>`
-    : '';
-  const maxBtn = hasValue(site.maxUrl)
-    ? `<a class="mobile-btn mobile-btn-max" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max" data-placement="bottom" aria-label="MAX"><span>MAX</span></a>`
-    : '';
-  const tgBtn = hasValue(site.telegramUrl)
-    ? `<a class="mobile-btn mobile-btn-tg" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram" data-placement="bottom" aria-label="Telegram"><span>TG</span></a>`
-    : '';
-  let calcBtn;
-  if (leadHref && leadHref.startsWith('#') && leadHref !== '#calc-popup') {
-    calcBtn = `<a class="mobile-btn mobile-btn-calc" href="${leadHref}" data-goal="click_calculate" data-placement="bottom"><span>Расчёт</span></a>`;
-  } else {
-    calcBtn = `<button type="button" class="mobile-btn mobile-btn-calc" data-open-popup="calc-popup" data-goal="click_calculate" data-placement="bottom"><span>Расчёт</span></button>`;
-  }
-  return `<div class="mobile-action-bar" aria-label="Быстрая связь" data-placement="bottom">${callBtn}${waBtn}${maxBtn}${tgBtn}${calcBtn}</div>`;
+  const callBtn = `<a class="mobile-btn mobile-btn-call" href="${phoneHref()}" data-goal="click_phone" data-placement="bottom" aria-label="Позвонить"><svg class="mobile-btn-svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Позвонить</span></a>`;
+  const msgrItems = messengerPopoverItems('bottom', '#lead-form', waText);
+  const writeControl = msgrItems
+    ? `<div class="mobile-write-wrap" data-msgr-dropdown data-placement="bottom">
+        <button type="button" class="mobile-btn mobile-btn-write" data-msgr-toggle aria-expanded="false" aria-controls="mobile-msgr-menu">
+          <svg class="mobile-btn-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Написать</span>
+        </button>
+        <div class="msgr-popover mobile-msgr-popover" id="mobile-msgr-menu" data-msgr-menu hidden data-placement="bottom">${msgrItems}</div>
+      </div>`
+    : `<a class="mobile-btn mobile-btn-write" href="${leadHref && leadHref.startsWith('#') ? leadHref : '#lead-form'}" data-open-form data-goal="click_calculate" data-placement="bottom"><span>Написать</span></a>`;
+  return `<div class="mobile-action-bar" aria-label="Быстрая связь" data-placement="bottom">${callBtn}${writeControl}</div>`;
 }
 
 function formErrorMarkup(customClass = '', waText = '') {
@@ -290,7 +330,7 @@ function formErrorMarkup(customClass = '', waText = '') {
   return `<div class="form-error${cls}" data-form-error hidden>
     <div class="form-error-title">Не удалось отправить заявку через сервер. Попробуйте ещё раз или свяжитесь с нами напрямую:</div>
     <div class="form-error-actions">
-      <a href="${esc(site.phoneHref)}" class="form-error-btn form-error-call" data-goal="click_phone">📞 Позвонить: ${esc(site.phone)}</a>
+      <a href="${esc(site.phoneHref)}" class="form-error-btn form-error-call" data-goal="click_phone">📞 Позвонить: ${esc(formatPhoneDisplay(site.phone))}</a>
       <a href="${esc(waLink)}" target="_blank" rel="noopener" class="form-error-btn form-error-wa" data-goal="click_whatsapp">Написать в WhatsApp</a>
       <a href="${esc(site.telegramUrl)}" target="_blank" rel="noopener" class="form-error-btn form-error-tg" data-goal="click_telegram">Написать в Telegram</a>
     </div>
@@ -381,7 +421,7 @@ export function homePage() {
   return renderPage({ title, description, path: '/', body, jsonLd: [professionalServiceSchema(), faqSchema(homeFaq), breadcrumbSchema([{ name: 'Главная', url: '/' }])] });
 }
 
-function heroMessengerRow(placement = 'hero', waText = '', primaryLabel = 'Быстрая связь в 1 клик:') {
+function heroMessengerRow(placement = 'hero', waText = '', primaryLabel = 'Написать в мессенджер:') {
   const waBtn = hasValue(site.messengerUrl)
     ? `<a class="hero-msgr-chip hero-msgr-wa" href="${messengerHref('#lead-form', waText)}" target="_blank" rel="noopener" data-goal="click_whatsapp" data-placement="${esc(placement)}" title="Написать в WhatsApp"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg><span>WhatsApp</span></a>`
     : '';
@@ -397,7 +437,7 @@ function heroMessengerRow(placement = 'hero', waText = '', primaryLabel = 'Бы�
   </div>`;
 }
 
-function heroInlineForm({ formId, serviceName, serviceCode, submitLabel = 'Получить расчёт', waText = '', title = 'Оставьте номер — перезвоним и рассчитаем стоимость', placement = 'hero' }) {
+function heroInlineForm({ formId, serviceName, serviceCode, submitLabel = 'Рассчитать стоимость', waText = '', title = 'Оставьте номер — перезвоним и рассчитаем стоимость', placement = 'hero' }) {
   return `<div class="hero-inline-box" data-placement="${esc(placement)}">
     <p class="hero-inline-title">${esc(title)}</p>
     <form class="lead-form lead-form--hero-inline" data-lead-form data-form-id="${esc(formId)}" data-placement="${esc(placement)}"${serviceCode ? ` data-service-code="${esc(serviceCode)}"` : ''} id="${esc(formId)}">
@@ -415,8 +455,7 @@ function heroInlineForm({ formId, serviceName, serviceCode, submitLabel = 'По�
         </div>
         <button class="btn btn-accent btn-full" type="submit" data-submit-btn>${esc(submitLabel)}</button>
       </div>
-      <p class="hero-inline-note">Если удобно — отправьте фото в WhatsApp, MAX или Telegram для быстрой оценки.</p>
-      <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку данных</a>.</p>
+      <p class="form-consent">Нажимая кнопку, вы соглашаетесь на <a href="/personal-data-consent/" target="_blank" rel="noopener">обработку персональных данных</a>.</p>
       <div class="form-success" data-form-success hidden>
         <div class="form-success-header">
           <span class="form-success-badge" aria-hidden="true">✓</span>
@@ -438,15 +477,13 @@ function heroSection() {
   <div class="container hero-content hero-content--with-form">
     <div class="hero-copy">
       <p class="hero-badge">Москва и Московская область • Работаем ежедневно без выходных</p>
-      <h1>Безопасный спил деревьев, расчистка участков и&nbsp;измельчение веток</h1>
-      <p class="hero-lead">Аккуратно разбираем деревья возле домов, заборов и проводов. Дробим пни и перерабатываем ветки в щепу своим щепорезом. Назовём цену по звонку или заявке, договор с ООО «ЮНАТ».</p>
+      <h1>Безопасный спил деревьев и&nbsp;расчистка участков</h1>
+      <p class="hero-lead">Спиливаем деревья рядом с домами и коммуникациями. Удаляем пни, расчищаем участки и измельчаем ветки.</p>
 
       <div class="hero-cta-buttons" data-placement="hero">
-        <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
-        <a class="btn btn-hero-phone" href="#lead-form" data-open-form data-service="Спил деревьев" data-goal="click_calculate" data-placement="hero">Перезвоните мне</a>
+        <a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="Спил деревьев и расчистка" data-goal="click_calculate" data-placement="hero">Рассчитать стоимость</a>
+        <a class="btn btn-hero-phone" href="${phoneHref()}" data-goal="click_phone" data-placement="hero"><svg class="hero-phone-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>${esc(formatPhoneDisplay(site.phone))}</span></a>
       </div>
-
-      ${heroMessengerRow('hero', 'Здравствуйте! Хочу рассчитать стоимость работ.')}
 
       <div class="hero-price-anchors" aria-label="Стартовые ценовые ориентиры">
         <a href="#spil" class="hero-price-pill"><span>Спил дерева</span><strong>от 1 000 ₽</strong></a>
@@ -454,26 +491,13 @@ function heroSection() {
         <a href="#korchevanie" class="hero-price-pill"><span>Корчевание пней</span><strong>от 1 500 ₽</strong></a>
         <a href="#izmelchenie" class="hero-price-pill"><span>Измельчение веток</span><strong>от 2 500 ₽</strong></a>
       </div>
-
-      <div class="hero-trust-line" aria-label="Преимущества">
-        <span>Сохранность построек и участка по договору</span>
-        <span class="trust-dot">·</span>
-        <span>Материальная ответственность по договору</span>
-        <span class="trust-dot">·</span>
-        <span>Выезд от 2 часов</span>
-        <span class="trust-dot">·</span>
-        <span>Своя спецтехника</span>
-        <span class="trust-dot">·</span>
-        <span>Оплата по факту</span>
-      </div>
-      <p class="hero-cta-note">Быстрая оценка по телефону или в мессенджере. Если удобно — отправьте фото в WhatsApp, MAX или Telegram.</p>
     </div>
     <aside class="hero-inline-card" aria-label="Быстрая заявка на расчёт">
       ${heroInlineForm({
         formId: 'hero-inline-home',
         serviceName: 'Спил деревьев и расчистка',
         serviceCode: '',
-        submitLabel: 'Получить расчёт',
+        submitLabel: 'Рассчитать стоимость',
         title: 'Рассчитать стоимость работ'
       })}
     </aside>
@@ -488,7 +512,7 @@ function trustBarSection() {
       <article class="trust-bar-card">
         <span class="trust-bar-card-icon" aria-hidden="true">🛡️</span>
         <div>
-          <h3>Бережная работа рядом с постройками</h3>
+          <h3>Сохранность построек и участка по договору</h3>
           <p>Спускаем ветви на верёвках частями, чтобы защитить дом, забор, кровлю и газон</p>
         </div>
       </article>
@@ -510,7 +534,7 @@ function trustBarSection() {
         <span class="trust-bar-card-icon" aria-hidden="true">🚜</span>
         <div>
           <h3>Свой парк техники</h3>
-          <p>Собственный мощный щепорез, пнедробилка и бензопилы Stihl без наценок за субаренду</p>
+          <p>Собственный мощный щепорез, пнедробилка и бензопилы Stihl без наценок за субаренду. Оплата по факту приёмки работ</p>
         </div>
       </article>
     </div>
@@ -733,7 +757,7 @@ function priceTableSection() {
       <div class="price-cta-actions">
         ${hasValue(site.messengerUrl) ? `<a class="btn btn-hero-wa" href="${messengerHref('#lead-form', 'Здравствуйте! Хочу рассчитать стоимость по прайсу, отправляю фото:')}" target="_blank" rel="noopener" data-goal="click_whatsapp">💬 Рассчитать в WhatsApp</a>` : ''}
         <a class="btn btn-hero-primary" href="#lead-form" data-goal="click_calculate">📷 Оценить по фото</a>
-        <a class="btn btn-hero-phone" href="${phoneHref()}" data-goal="click_phone">📞 ${site.phone}</a>
+        <a class="btn btn-hero-phone" href="${phoneHref()}" data-goal="click_phone">📞 ${esc(formatPhoneDisplay(site.phone))}</a>
       </div>
     </div>
 
@@ -962,12 +986,9 @@ function innerHero(title, text, image, label, price = '', slug = '') {
         <h1>${esc(title)}</h1>
         <p>${esc(text)}</p>
         <div class="inner-hero-actions" data-placement="hero">
-          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
-          ${hasValue(site.messengerUrl) ? `<a class="btn btn-hero-wa" href="${messengerHref('#lead-form', `Здравствуйте! Интересует ${label}.`)}" target="_blank" rel="noopener" data-goal="click_whatsapp" data-placement="hero">WhatsApp</a>` : ''}
-          ${hasValue(site.maxUrl) ? `<a class="hero-msgr-chip hero-msgr-max" href="${maxHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_max" data-placement="hero">MAX</a>` : ''}
-          ${hasValue(site.telegramUrl) ? `<a class="hero-msgr-chip hero-msgr-tg" href="${telegramHref('#lead-form')}" target="_blank" rel="noopener" data-goal="click_telegram" data-placement="hero">Telegram</a>` : ''}
+          <a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="${esc(label)}" data-goal="click_calculate" data-placement="hero">Рассчитать стоимость</a>
+          <a class="btn btn-hero-phone" href="${phoneHref()}" data-goal="click_phone" data-placement="hero"><svg class="hero-phone-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>${esc(formatPhoneDisplay(site.phone))}</span></a>
         </div>
-        <p class="hero-cta-note">Перезвоним и назовём ориентир цены. Если удобно — отправьте фото в WhatsApp, MAX или Telegram.</p>
       </div>
       <aside class="landing-hero-card inner-hero-card" aria-label="Быстрый расчёт стоимости">
         <div class="landing-hero-form-box" id="hero-form-${esc(formCode)}">
@@ -975,7 +996,7 @@ function innerHero(title, text, image, label, price = '', slug = '') {
             formId,
             serviceName: label,
             serviceCode: '',
-            submitLabel: 'Получить расчёт',
+            submitLabel: 'Рассчитать стоимость',
             waText: `Здравствуйте! Интересует ${label}.`,
             title: 'Рассчитать стоимость',
             placement: 'hero'
@@ -1289,9 +1310,9 @@ export function spilLandingPage(service) {
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
         <h1>Спил и удаление деревьев<br><span class="hero-subline">в Москве и Московской области</span></h1>
-        <p class="hero-lead">Спилим дерево целиком или безопасно разберём по частям возле дома, забора, проводов и других объектов. Перезвоним и назовём ориентир стоимости по звонку или заявке.</p>
+        <p class="hero-lead">Спилим дерево целиком или безопасно разберём по частям возле дома, забора, проводов и других объектов.</p>
         <div class="landing-hero-actions" data-placement="hero">
-          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
+          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(formatPhoneDisplay(site.phone))}</a>
           <a class="btn btn-hero-secondary" href="#quiz-spil" data-goal="click_calculate" data-placement="hero">Подробный расчёт</a>
         </div>
         ${heroMessengerRow('hero', waDirectTexts.spil, 'Написать в мессенджер:')}
@@ -1548,7 +1569,7 @@ export function emergencyLandingPage(service) {
             formId: 'hero-inline-emergency',
             serviceName: 'Удаление аварийных деревьев',
             serviceCode: 'emergency_tree',
-            submitLabel: 'Перезвоните мне',
+            submitLabel: 'Рассчитать стоимость',
             waText: waDirectTexts.emergency_tree,
             title: 'Срочный звонок и расчёт'
           })}
@@ -1748,7 +1769,7 @@ export function raschistkaLandingPage(service) {
         <h1>Расчистка участков от деревьев, кустарника и поросли<br><span class="hero-subline">в Москве и Московской области</span></h1>
         <p class="hero-lead">Спил деревьев, вырубка мелколесья, измельчение веток в щепу, корчевание или дробление пней. Перезвоним и назовём ориентир стоимости по площади и задачам.</p>
         <div class="landing-hero-actions" data-placement="hero">
-          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
+          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(formatPhoneDisplay(site.phone))}</a>
           <a class="btn btn-hero-secondary" href="#quiz-clearing" data-goal="click_calculate" data-placement="hero">Подробный расчёт</a>
         </div>
         ${heroMessengerRow('hero', waDirectTexts.land_clearing, 'Написать в мессенджер:')}
@@ -1981,9 +2002,9 @@ export function pruningLandingPage(service) {
     <div class="container landing-hero-inner">
       <div class="landing-hero-content">
         <h1>Обрезка деревьев<br><span class="hero-subline">в Москве и Московской области</span></h1>
-        <p class="hero-lead">Санитарная, омолаживающая и формовочная обрезка, удаление сухих и нависающих ветвей арбористами и с автовышки. Назовём цену по звонку или заявке.</p>
+        <p class="hero-lead">Санитарная, омолаживающая и формовочная обрезка, удаление сухих и нависающих ветвей арбористами и с автовышки.</p>
         <div class="landing-hero-actions" data-placement="hero">
-          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
+          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(formatPhoneDisplay(site.phone))}</a>
           <a class="btn btn-hero-secondary" href="#quiz-pruning" data-goal="click_calculate" data-placement="hero">Подробный расчёт</a>
         </div>
         ${heroMessengerRow('hero', waDirectTexts.tree_pruning, 'Написать в мессенджер:')}
@@ -2635,9 +2656,9 @@ export function izmelchenieLandingPage(service) {
           <span>Работаем с оператором. Технику без оператора не сдаём.</span>
         </div>
         <h1>Измельчение веток (Щепорез)<br><span class="hero-subline">в Москве и Московской области</span></h1>
-        <p class="hero-lead">Собственный мощный измельчитель с опытным оператором на ваш участок. Быстро переработаем ветки после спила или расчистки в однородную щепу. Назовём цену по звонку или заявке.</p>
+        <p class="hero-lead">Собственный мощный измельчитель с опытным оператором на ваш участок. Быстро переработаем ветки после спила или расчистки в однородную щепу.</p>
         <div class="landing-hero-actions" data-placement="hero">
-          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(site.phone)}</a>
+          <a class="btn btn-hero-primary" href="${phoneHref()}" data-goal="click_phone" data-placement="hero">📞 Позвонить: ${esc(formatPhoneDisplay(site.phone))}</a>
           <a class="btn btn-hero-secondary" href="#quiz-chipping" data-goal="click_calculate" data-placement="hero">Подробный расчёт</a>
         </div>
         ${heroMessengerRow('hero', waDirectTexts.branch_chipping, 'Написать в мессенджер:')}
@@ -2935,7 +2956,7 @@ export function contactsPage() {
     hasValue(site.telegramUrl) ? `<a class="contact-messenger-btn contact-messenger-btn--telegram" href="${telegramHref()}" target="_blank" rel="noopener" data-goal="click_telegram"><svg class="contact-messenger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>Telegram</a>` : ''
   ].filter(Boolean).join('');
   const emailBlock = hasValue(site.email) ? `<div class="contact-email-block"><p class="contact-email-label">Электронная почта</p><a class="contact-email-link" href="mailto:${esc(site.email)}">${esc(site.email)}</a></div>` : '';
-  const body = `${simpleHero('Контакты компании', 'Позвоните, отправьте фотографии или оставьте заявку на предварительный расчет.')}<section class="section"><div class="container contact-grid"><div class="contact-card contact-card--contacts"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(site.phone)}</a>` : ''}<div class="contact-messenger-btns">${messengerBtns}</div>${emailBlock}</div><div class="contact-card"><h2>Что подготовить</h2><ul class="rich-list"><li>фото дерева целиком</li><li>фото ствола и кроны</li><li>фото препятствий рядом</li><li>адрес объекта и желаемый результат</li></ul></div></div></section>${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Фото на оценку', universalLeadOptions)}`;
+  const body = `${simpleHero('Контакты компании', 'Позвоните, отправьте фотографии или оставьте заявку на предварительный расчет.')}<section class="section"><div class="container contact-grid"><div class="contact-card contact-card--contacts"><h2>Связаться</h2>${hasValue(site.phone) ? `<a class="big-contact" href="${phoneHref()}" data-goal="click_phone">${esc(formatPhoneDisplay(site.phone))}</a>` : ''}<div class="contact-messenger-btns">${messengerBtns}</div>${emailBlock}</div><div class="contact-card"><h2>Что подготовить</h2><ul class="rich-list"><li>фото дерева целиком</li><li>фото ствола и кроны</li><li>фото препятствий рядом</li><li>адрес объекта и желаемый результат</li></ul></div></div></section>${leadSection('Рассчитать стоимость работ', 'Оставьте имя и телефон — уточним задачу и рассчитаем стоимость.', 'Фото на оценку', universalLeadOptions)}`;
   return renderPage({ title: 'Контакты', description: 'Контакты компании по уходу за деревьями: телефон, email и форма заявки.', path: '/contacts/', body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: 'Контакты', url: '/contacts/' }])] });
 }
 

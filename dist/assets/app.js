@@ -99,6 +99,67 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     });
   }
 
+  function initMessengerDropdowns() {
+    const dropdowns = Array.from(document.querySelectorAll('[data-msgr-dropdown]'));
+    if (!dropdowns.length) return;
+
+    const closeDropdown = (dropdown) => {
+      const btn = dropdown.querySelector('[data-msgr-toggle]');
+      const menu = dropdown.querySelector('[data-msgr-menu]');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+      if (menu) {
+        menu.classList.remove('is-open');
+        menu.hidden = true;
+      }
+      dropdown.classList.remove('is-open');
+    };
+
+    const closeAll = (except = null) => {
+      dropdowns.forEach((dropdown) => {
+        if (dropdown !== except) closeDropdown(dropdown);
+      });
+    };
+
+    dropdowns.forEach((dropdown) => {
+      const toggle = dropdown.querySelector('[data-msgr-toggle]');
+      const menu = dropdown.querySelector('[data-msgr-menu]');
+      if (!toggle || !menu) return;
+
+      toggle.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+        closeAll(dropdown);
+        if (isOpen) {
+          closeDropdown(dropdown);
+        } else {
+          toggle.setAttribute('aria-expanded', 'true');
+          menu.hidden = false;
+          menu.classList.add('is-open');
+          dropdown.classList.add('is-open');
+        }
+      });
+
+      menu.addEventListener('click', (event) => {
+        const link = event.target.closest('a[href]');
+        if (link) {
+          closeAll();
+        }
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('[data-msgr-dropdown]')) {
+        closeAll();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeAll();
+      }
+    });
+  }
+
   function initFloatingRail() {
     const rail = document.querySelector('.floating-contact-rail');
     if (!rail) return;
@@ -798,6 +859,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
 
   loadIntegrations();
   initNav();
+  initMessengerDropdowns();
   initFloatingRail();
   initGoals();
   initHomeAnimations();
