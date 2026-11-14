@@ -199,7 +199,7 @@ function header(leadHref, waText = '') {
       <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
     </button>
     <nav class="main-nav" id="main-nav" data-nav>${nav.map((item) => {
-      const desktopOnly = item.label === 'Комплекс' || item.label === 'FAQ';
+      const desktopOnly = item.label === 'Комплекс' || item.label === 'Вопросы';
       const cls = desktopOnly ? 'nav-link nav-link--desktop-only' : 'nav-link';
       return `<a class="${cls}" href="${item.href}">${esc(item.label)}</a>`;
     }).join('')}${mobileNavContacts(waText)}</nav>

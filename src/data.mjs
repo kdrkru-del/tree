@@ -29,7 +29,7 @@ export const nav = [
   { label: 'Цены', href: '/#prices' },
   { label: 'Комплекс', href: '/#complex' },
   { label: 'Для организаций', href: '/#organizations' },
-  { label: 'FAQ', href: '/#faq' },
+  { label: 'Вопросы', href: '/faq/' },
   { label: 'Контакты', href: '/#contacts' }
 ];
 
