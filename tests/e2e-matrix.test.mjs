@@ -192,7 +192,7 @@ test('E2E Matrix: Scenario 5 - Network / Backend error: error markup shown, lead
     assert.match(html, /class="[^"]*form-error[^"]*"/);
     assert.match(html, /form-error-wa/);
     assert.match(html, /form-error-tg/);
-    assert.match(html, /href="https:\/\/wa\.me\/79257577888\?text=/);
+    assert.match(html, /href="https:\/\/wa\.me\/79998081951\?text=/);
     assert.match(html, /href="https:\/\/t\.me\/Romatran"/);
 
     // Verify delivery failure throws and does not emit lead_form
