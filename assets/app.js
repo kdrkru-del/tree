@@ -112,23 +112,36 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     updateRail();
   }
 
+  function getPlacement(node) {
+    return node?.dataset?.placement || node?.closest('[data-placement]')?.dataset?.placement || 'page';
+  }
+
   function initGoals() {
     document.addEventListener('click', (event) => {
       const goalNode = event.target.closest('[data-goal]');
+      const linkNode = event.target.closest('a[href]');
+      const targetNode = goalNode || linkNode;
+      const placement = getPlacement(targetNode);
       const goal = goalNode ? goalNode.dataset.goal : '';
-      if (goal && goal !== 'click_phone' && goal !== 'click_messenger') {
-        reachGoal(goal, { href: goalNode.getAttribute('href') });
-      }
+      const href = targetNode ? targetNode.getAttribute('href') : '';
       const phoneLink = event.target.closest('a[href^="tel:"]');
-      if (phoneLink) {
-        reachGoal('click_phone', { href: phoneLink.getAttribute('href') });
-        reachGoal('phone_click', { href: phoneLink.getAttribute('href') });
+      const messengerChannel = getMessengerChannel(href, goal);
+
+      if (goal && goal !== 'click_phone' && goal !== 'click_messenger') {
+        reachGoal(goal, { href, placement });
       }
-      const messengerChannel = goalNode ? getMessengerChannel(goalNode.getAttribute('href'), goal) : '';
+      if (phoneLink) {
+        reachGoal('click_phone', { href: phoneLink.getAttribute('href'), placement: getPlacement(phoneLink) });
+        reachGoal('phone_click', { href: phoneLink.getAttribute('href'), placement: getPlacement(phoneLink) });
+      }
       if (messengerChannel) {
-        reachGoal('click_messenger', { channel: messengerChannel });
+        const channelGoal = `click_${messengerChannel}`;
+        if (goal !== channelGoal) {
+          reachGoal(channelGoal, { href, placement });
+        }
+        reachGoal('click_messenger', { channel: messengerChannel, placement });
         if (messengerChannel === 'telegram') {
-          reachGoal('telegram_click', { channel: 'telegram' });
+          reachGoal('telegram_click', { channel: 'telegram', placement });
         }
       }
     });
@@ -303,6 +316,8 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       const errorEl    = form.querySelector('[data-form-error]');
       if (!phoneInput || !submitBtn) return;
 
+      const placement = getPlacement(form);
+
       let abandonedTimer = null;
       const onPhoneEntered = (delayMs = 12000) => {
         if (form.dataset.submitting === 'true' || form.dataset.submitted === 'true') return;
@@ -343,12 +358,15 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         }
       });
 
-      phoneInput.addEventListener('focus', () => {
-        if (!form.dataset.started) {
-          form.dataset.started = 'true';
-          reachGoal('lead_form_start', { form: form.dataset.formId || form.dataset.quizId || 'form' });
-        }
-      }, { once: true });
+      const trackFormStart = () => {
+        if (form.dataset.started) return;
+        form.dataset.started = 'true';
+        const fId = form.dataset.formId || form.dataset.quizId || 'form';
+        reachGoal('form_start', { form: fId, placement });
+        reachGoal('lead_form_start', { form: fId, placement });
+      };
+      form.addEventListener('focusin', trackFormStart, { once: true });
+      phoneInput.addEventListener('focus', trackFormStart, { once: true });
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -441,9 +459,11 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
           }
 
           // Успех — только после реального ответа сервера
-          reachGoal('lead_form', { form: formId, service });
-          reachGoal('lead_form_success', { form: formId, service });
-          reachGoal('lead_sent', { form: formId, phone });
+          reachGoal('form_submit_success', { form: formId, placement, service });
+          reachGoal('lead_form', { form: formId, placement, service });
+          reachGoal('lead_submit', { form: formId, placement, service });
+          reachGoal('lead_form_success', { form: formId, placement, service });
+          reachGoal('lead_sent', { form: formId, phone, placement });
           phoneInput.value = '';
           if (nameInput) nameInput.value = '';
           if (cityInput) cityInput.value = '';
