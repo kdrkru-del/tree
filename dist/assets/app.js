@@ -454,7 +454,9 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
 
         const leadId  = createLeadId();
         const formId  = form.dataset.formId || form.dataset.quizId || 'form';
-        const service = form.querySelector('[name="service"]')?.value || 'Заявка с сайта';
+        const baseService = form.querySelector('[name="service"]')?.value || 'Заявка с сайта';
+        const discountOffer = form.dataset.discountOffer || '';
+        const service = discountOffer ? `${baseService} (${discountOffer})` : baseService;
         const name    = nameInput ? nameInput.value.trim() : '';
         const cityInput = form.querySelector('[name="city"]');
         const city = cityInput ? cityInput.value.trim() : '';
@@ -520,11 +522,13 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
           }
 
           // Успех — только после реального ответа сервера
-          reachGoal('form_submit_success', { form: formId, placement, service });
-          reachGoal('lead_form', { form: formId, placement, service });
-          reachGoal('lead_submit', { form: formId, placement, service });
-          reachGoal('lead_form_success', { form: formId, placement, service });
-          reachGoal('lead_sent', { form: formId, phone, placement });
+          const currentPlacement = form.dataset.placement || placement;
+          form.dataset.submitted = 'true';
+          reachGoal('form_submit_success', { form: formId, placement: currentPlacement, service });
+          reachGoal('lead_form', { form: formId, placement: currentPlacement, service });
+          reachGoal('lead_submit', { form: formId, placement: currentPlacement, service });
+          reachGoal('lead_form_success', { form: formId, placement: currentPlacement, service });
+          reachGoal('lead_sent', { form: formId, phone, placement: currentPlacement });
           phoneInput.value = '';
           if (nameInput) nameInput.value = '';
           if (cityInput) cityInput.value = '';
@@ -633,9 +637,33 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     const popup = document.querySelector('[data-calc-popup]');
     if (!popup) return;
 
+    const discountBanner = popup.querySelector('[data-popup-discount]');
+    const titleEl = popup.querySelector('#popup-title');
+    const subtitleEl = popup.querySelector('.photo-popup-subtitle');
+    const form = popup.querySelector('[data-lead-form]');
+    const submitBtn = form?.querySelector('[data-submit-btn]');
+    const defaultTitle = titleEl?.textContent || 'Рассчитать стоимость работ';
+    const defaultSubtitle = subtitleEl?.textContent || 'Назовём ориентир цены и зафиксируем её до начала работ';
+    const defaultSubmitText = submitBtn?.textContent || 'Получить расчёт';
+
     let lastActive = null;
 
-    function openPopup(serviceName) {
+    function resetDiscountMode() {
+      popup.classList.remove('photo-popup--discount');
+      if (discountBanner) discountBanner.hidden = true;
+      if (titleEl) titleEl.textContent = defaultTitle;
+      if (subtitleEl) subtitleEl.textContent = defaultSubtitle;
+      if (submitBtn) submitBtn.textContent = defaultSubmitText;
+      if (form) {
+        delete form.dataset.discountOffer;
+        form.dataset.placement = 'popup';
+      }
+    }
+
+    function openPopup(serviceName, { isExitDiscount = false } = {}) {
+      if (!isExitDiscount) {
+        resetDiscountMode();
+      }
       lastActive = document.activeElement;
       popup.classList.add('is-active');
       popup.setAttribute('aria-hidden', 'false');
@@ -666,11 +694,35 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       }
     }
 
+    function openExitDiscountModal() {
+      if (popup.classList.contains('is-active')) return;
+      if (document.querySelector('[data-lead-form][data-submitted="true"], [data-quiz-form][data-submitted="true"]')) return;
+      try {
+        if (sessionStorage.getItem('zelsrez_exit_discount_shown') === 'true') return;
+        sessionStorage.setItem('zelsrez_exit_discount_shown', 'true');
+      } catch { /* storage disabled */ }
+
+      popup.classList.add('photo-popup--discount');
+      if (discountBanner) discountBanner.hidden = false;
+      if (titleEl) titleEl.textContent = 'Закажите расчёт и получите скидку 10%';
+      if (subtitleEl) {
+        subtitleEl.textContent = 'Не спешите уходить! Оставьте номер телефона — специалист бесплатно проконсультирует и закрепит скидку 10% за вашим номером.';
+      }
+      if (submitBtn) submitBtn.textContent = 'Получить скидку 10%';
+      if (form) {
+        form.dataset.discountOffer = 'Скидка 10% при заказе с сайта';
+        form.dataset.placement = 'exit_discount';
+      }
+      reachGoal('exit_discount_open', { placement: 'exit_discount' });
+      openPopup(undefined, { isExitDiscount: true });
+    }
+
     function closePopup() {
       if (!popup.classList.contains('is-active')) return;
       popup.classList.remove('is-active');
       popup.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('has-modal-open');
+      resetDiscountMode();
 
       if (lastActive && typeof lastActive.focus === 'function') {
         lastActive.focus();
@@ -711,6 +763,23 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         }
       });
     });
+
+    // Desktop Exit-Intent Retention Trigger (10% discount modal)
+    let exitArmed = false;
+    window.setTimeout(() => { exitArmed = true; }, 25000);
+
+    const handleDesktopExitIntent = (e) => {
+      if (!exitArmed) return;
+      if (window.innerWidth <= 820) return;
+      if (e.relatedTarget || e.toElement) return;
+      if (typeof e.clientY === 'number' && e.clientY > 24) return;
+      const activeTag = document.activeElement?.tagName;
+      if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') return;
+      openExitDiscountModal();
+    };
+
+    document.addEventListener('mouseout', handleDesktopExitIntent);
+    document.documentElement.addEventListener('mouseleave', handleDesktopExitIntent);
   }
 
   /* ─── ОБРАБОТЧИК ИНТЕРАКТИВНЫХ КВИЗОВ ─── */

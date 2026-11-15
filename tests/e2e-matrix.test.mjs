@@ -368,3 +368,22 @@ test('E2E Matrix: LEP page has no unconfirmed engineer claims and has B2B VAT op
   assert.doesNotMatch(html, /\.pdf,\.doc/);
 });
 
+test('E2E Matrix: Desktop exit-intent 10% discount modal is present across pages and wired in app.js', async () => {
+  for (const slug of ['', 'spil-derevev', 'prices', 'raschistka-uchastkov']) {
+    const html = readHtml(slug);
+    assert.match(html, /data-popup-discount/, `${slug} missing discount banner`);
+    assert.match(html, /photo-popup-discount-badge">−10%<\/span>/, `${slug} missing -10% badge`);
+  }
+  const fsSync = await import('node:fs');
+  const pathMod = await import('node:path');
+  const urlMod = await import('node:url');
+  const testDir = pathMod.dirname(urlMod.fileURLToPath(import.meta.url));
+  const appSource = fsSync.readFileSync(pathMod.resolve(testDir, '..', 'src', 'app.js'), 'utf8');
+  assert.match(appSource, /openExitDiscountModal/);
+  assert.match(appSource, /zelsrez_exit_discount_shown/);
+  assert.match(appSource, /window\.innerWidth <= 820/);
+  assert.match(appSource, /exit_discount_open/);
+  assert.match(appSource, /Скидка 10% при заказе с сайта/);
+});
+
+
