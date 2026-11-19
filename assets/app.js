@@ -582,17 +582,20 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
 
   function initPhoneMasks() {
     function formatPhone(val) {
-      let digits = val.replace(/\D/g, '');
-      if (!digits.length) return '';
-      if (digits.startsWith('8')) digits = '7' + digits.slice(1);
-      else if (!digits.startsWith('7')) digits = '7' + digits;
-      digits = digits.slice(0, 11);
+      const raw = String(val || '');
+      // Поле при фокусе заполняется «+7 (»: эту «7» нельзя считать цифрой номера,
+      // иначе «8» или «7», набранные первой цифрой, попадают в сам номер.
+      const hasPrefix = /^\s*\+7/.test(raw);
+      let national = (hasPrefix ? raw.replace(/^\s*\+7/, '') : raw).replace(/\D/g, '');
+      if (!national.length) return /\d/.test(raw) ? '+7 (' : '';
+      // Ведущая 8 или 7 — это код страны или «8» междугороднего набора, а не часть номера.
+      if (national[0] === '8' || national[0] === '7') national = national.slice(1);
+      national = national.slice(0, 10);
 
-      let res = '+7 (';
-      if (digits.length > 1) res += digits.slice(1, Math.min(4, digits.length));
-      if (digits.length >= 4) res += ') ' + digits.slice(4, Math.min(7, digits.length));
-      if (digits.length >= 7) res += '-' + digits.slice(7, Math.min(9, digits.length));
-      if (digits.length >= 9) res += '-' + digits.slice(9, 11);
+      let res = '+7 (' + national.slice(0, 3);
+      if (national.length >= 3) res += ') ' + national.slice(3, 6);
+      if (national.length >= 6) res += '-' + national.slice(6, 8);
+      if (national.length >= 8) res += '-' + national.slice(8, 10);
       return res;
     }
 
@@ -615,7 +618,12 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
             return;
           }
         }
-        input.value = formatPhone(cur);
+        let formatted = formatPhone(cur);
+        // При удалении не дописываем разделитель обратно, иначе цифры нельзя стереть.
+        if (e.inputType && e.inputType.startsWith('delete') && formatted.length > 4) {
+          formatted = formatted.replace(/[\s)\-]+$/, '');
+        }
+        input.value = formatted;
       });
 
       input.addEventListener('keydown', (e) => {
