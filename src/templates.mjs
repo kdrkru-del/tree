@@ -1212,10 +1212,10 @@ const lepQuizSteps = [
 
 function heroTrustBadges(extraBadges = []) {
   const baseBadges = [
+    '✓ 10 лет опыта, более 1000 заказов',
+    '✓ Цена по фото до выезда, оплата по факту',
     '✓ Бережная работа рядом с постройками',
-    '✓ Материальная ответственность по договору',
-    '✓ Стоимость согласовываем до начала работ',
-    '✓ Москва и Московская область'
+    '✓ Материальная ответственность по договору'
   ];
   const all = [...baseBadges, ...extraBadges];
   return `<div class="hero-trust-badges" aria-label="Гарантии">${all.map((b) => `<span class="hero-trust-pill">${esc(b)}</span>`).join('')}</div>`;
