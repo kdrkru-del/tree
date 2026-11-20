@@ -162,7 +162,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">${wikimediaPreconnect}
-  <link rel="stylesheet" href="/assets/styles.css?v=20261121-home-fold">
+  <link rel="stylesheet" href="/assets/styles.css?v=20261121-inner-hero">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   ${metrikaCounter()}
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
@@ -176,7 +176,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${floatingContacts(waText)}
   ${mobileBar(leadHref, waText)}
   ${photoModal(waText)}
-  <script src="/assets/app.js?v=20261121-home-fold" type="module"></script>
+  <script src="/assets/app.js?v=20261121-inner-hero" type="module"></script>
 </body>
 </html>`;
 }
@@ -1023,6 +1023,8 @@ function innerHero(title, text, image, label, price = '', slug = '') {
           <a class="btn btn-hero-primary" href="#lead-form" data-open-form data-service="${esc(label)}" data-goal="click_calculate" data-placement="hero">Рассчитать стоимость</a>
           <a class="btn btn-hero-phone" href="${phoneHref()}" data-goal="click_phone" data-placement="hero"><svg class="hero-phone-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>${esc(formatPhoneDisplay(site.phone))}</span></a>
         </div>
+        ${heroMessengerRow('hero', `Здравствуйте! Интересует ${label}.`, 'Написать в мессенджер:')}
+        ${heroTrustBadges()}
       </div>
       <aside class="landing-hero-card inner-hero-card" aria-label="Быстрый расчёт стоимости">
         <div class="landing-hero-form-box" id="hero-form-${esc(formCode)}">

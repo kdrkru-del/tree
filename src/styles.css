@@ -6875,3 +6875,49 @@ body.has-modal-open {
     pointer-events: none;
   }
 }
+
+/* Второстепенные страницы услуг (inner-hero): мессенджеры и доверие на первом экране телефона */
+.inner-hero .hero-messengers-compact { margin: 14px 0 6px; }
+.inner-hero .hero-trust-badges { margin-top: 12px; }
+@media (max-width: 768px) {
+  .inner-hero--with-form {
+    padding: 84px 0 28px;
+  }
+  .inner-hero .hero-messengers-compact {
+    display: block;
+    margin: 10px 0 8px;
+  }
+  .inner-hero .hero-msgr-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.82rem;
+  }
+  .inner-hero .hero-msgr-links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+  .inner-hero .hero-msgr-chip {
+    justify-content: center;
+    padding: 11px 6px;
+    font-size: 0.85rem;
+  }
+  .inner-hero .hero-trust-badges {
+    margin-top: 8px;
+    gap: 6px;
+  }
+  .inner-hero .hero-trust-pill {
+    font-size: 0.76rem;
+    padding: 4px 10px;
+  }
+  .inner-hero .hero-trust-pill:nth-child(n+3) {
+    display: none;
+  }
+  .inner-hero--with-form .inner-hero-content p:not(.eyebrow) {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
