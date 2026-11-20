@@ -292,6 +292,59 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     revealItems.forEach((item) => observer.observe(item));
   }
 
+
+  // Главная на телефоне: длинные списки показываем частично, остальное под «Показать ещё».
+  // Контент остаётся в HTML (виден поисковикам и без JS), прячем только визуально.
+  function initMobileFolds() {
+    if (location.pathname !== '/' && location.pathname !== '/index.html') return;
+    if (!window.matchMedia('(max-width: 768px)').matches) return;
+    const lists = [
+      ['.main-services-grid', 3],
+      ['#clearing-videos .video-grid', 2],
+      ['#complex-videos .video-grid', 2],
+      ['.factors-grid', 4],
+      ['.trust-groups-grid', 3]
+    ];
+    lists.forEach(([selector, limit]) => {
+      const el = document.querySelector(selector);
+      if (!el || el.children.length <= limit) return;
+      const hidden = el.children.length - limit;
+      el.classList.add('fold-list');
+      el.style.setProperty('--fold-limit', String(limit));
+      Array.from(el.children).forEach((child, index) => {
+        if (index >= limit) child.classList.add('fold-item');
+      });
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-ghost fold-toggle';
+      btn.textContent = 'Показать ещё (' + hidden + ')';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.addEventListener('click', () => {
+        const open = el.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.textContent = open ? 'Свернуть' : 'Показать ещё (' + hidden + ')';
+        if (!open) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      });
+      el.insertAdjacentElement('afterend', btn);
+    });
+
+    const seo = document.querySelector('.seo-content-inner');
+    if (seo) {
+      seo.classList.add('fold-text');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-ghost fold-toggle';
+      btn.textContent = 'Читать полностью';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.addEventListener('click', () => {
+        const open = seo.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.textContent = open ? 'Свернуть' : 'Читать полностью';
+      });
+      seo.insertAdjacentElement('afterend', btn);
+    }
+  }
+
   function saveLead(payload) {
     const key = 'tree_site_leads_backup';
     const leads = JSON.parse(localStorage.getItem(key) || '[]');
@@ -940,6 +993,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
   initFloatingRail();
   initGoals();
   initHomeAnimations();
+  initMobileFolds();
   initPhoneMasks();
   initLeadForms();
   initQuizzes();

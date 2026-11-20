@@ -162,7 +162,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">${wikimediaPreconnect}
-  <link rel="stylesheet" href="/assets/styles.css?v=20261120-mobile-hero">
+  <link rel="stylesheet" href="/assets/styles.css?v=20261121-home-fold">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   ${metrikaCounter()}
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
@@ -176,7 +176,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${floatingContacts(waText)}
   ${mobileBar(leadHref, waText)}
   ${photoModal(waText)}
-  <script src="/assets/app.js?v=20261120-mobile-hero" type="module"></script>
+  <script src="/assets/app.js?v=20261121-home-fold" type="module"></script>
 </body>
 </html>`;
 }
@@ -443,14 +443,12 @@ export function homePage() {
   ${heroSection()}
   ${trustBarSection()}
   ${mainServicesSection()}
-  ${scenariosSection()}
   ${safetySection()}
   ${complexSection()}
   ${priceTableSection()}
   ${whyTrustSection()}
   ${processSection()}
   ${organizationsSection()}
-  ${experienceProofSection()}
   ${videosSection()}
   ${leadSection('Рассчитаем стоимость работ', 'Позвоните или оставьте номер — уточним задачу и назовём стоимость. Фото можно прислать позже, если удобно. Оплата по факту приёмки.', 'Расчёт стоимости', homeLeadOptions)}
   ${seoContentSection()}`;

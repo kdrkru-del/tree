@@ -87,7 +87,7 @@ test('home page renders proof, useful captions, deferred videos, safety steps, a
     assert.ok(card.indexOf('class="video-media"') < card.indexOf('class="video-caption"'));
   }
 
-  assert.match(html, /10 лет работаем с деревьями любой сложности/);
+  assert.match(html, /10 лет практического опыта/);
   assert.match(html, /Более 1000/);
   assert.match(html, /Посмотрите, как мы работаем на сложных объектах/);
   assert.match(html, /Расчистка и подготовка территории/);
