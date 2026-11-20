@@ -426,14 +426,14 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         reachGoal('form_start', { form: fId, placement });
         reachGoal('lead_form_start', { form: fId, placement });
       };
-      form.addEventListener('focusin', trackFormStart, { once: true });
-      phoneInput.addEventListener('focus', trackFormStart, { once: true });
+      // Считаем начало заполнения только по действию человека (ввод или касание поля),
+      // а не по программному фокусу при открытии попапа.
+      form.addEventListener('input', trackFormStart, { once: true });
+      phoneInput.addEventListener('pointerdown', trackFormStart, { once: true });
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
         if (abandonedTimer) clearTimeout(abandonedTimer);
-        form.dataset.submitted = 'true';
-
         if (form.dataset.submitting === 'true') return;
         form.dataset.submitting = 'true'; // guard moved up — prevents double-submit
 
