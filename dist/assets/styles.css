@@ -6773,3 +6773,77 @@ body.has-modal-open {
 
 
 
+
+/* ==========================================================================
+   Мобильный первый экран посадочных страниц (правка 20.11.2026):
+   мессенджеры и цены видны без скролла, меньше «воды» над ними.
+   ========================================================================== */
+@media (max-width: 768px) {
+  .landing-hero {
+    padding: 22px 0 18px;
+  }
+  .landing-hero-content h1 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+  .landing-hero-content .hero-subline {
+    font-size: 1.1rem;
+  }
+  .landing-hero-content .hero-lead {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin: 0 0 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .landing-hero-actions .btn-hero-secondary {
+    display: none;
+  }
+  .landing-hero .hero-messengers-compact {
+    display: block;
+    margin: 10px 0 8px;
+  }
+  .landing-hero .hero-msgr-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.82rem;
+  }
+  .landing-hero .hero-msgr-links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+  .landing-hero .hero-msgr-chip {
+    justify-content: center;
+    padding: 11px 6px;
+    font-size: 0.85rem;
+  }
+  .landing-hero .hero-trust-badges {
+    margin-top: 8px;
+    gap: 6px;
+  }
+  .landing-hero .hero-trust-pill {
+    font-size: 0.76rem;
+    padding: 4px 10px;
+  }
+  .landing-hero .hero-trust-pill:nth-child(n+3) {
+    display: none;
+  }
+  .landing-hero-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .landing-hero-card .landing-hero-prices {
+    order: 1;
+  }
+  .landing-hero-card .landing-hero-form-box {
+    order: 2;
+  }
+  .landing-hero-card .landing-hero-media {
+    order: 3;
+    height: 130px;
+  }
+}
