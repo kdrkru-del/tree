@@ -97,10 +97,39 @@ function metrikaNoScript() {
   return `<noscript><div><img src="https://mc.yandex.ru/watch/${id}" style="position:absolute; left:-9999px;" width="1" height="1" alt=""></div></noscript>`;
 }
 
+// SEO: заголовок до ~70 знаков, описание 70–160 знаков (иначе поисковик режет сниппет).
+function shortenTitle(title, max = 70) {
+  if (title.length <= max) return title;
+  const steps = [
+    (t) => t.replace('в Москве и Московской области', 'в Москве и МО').replace('Москва и Московская область', 'Москва и МО').replace('в Москве и Московской обл.', 'в Москве и МО'),
+    (t) => t.replace(/\s*[|—]\s*Зельсрез$/, ''),
+    (t) => t.replace(/\s*\|\s*Москва и МО$/, '')
+  ];
+  let t = title;
+  for (const step of steps) {
+    t = step(t);
+    if (t.length <= max) return t;
+  }
+  const cut = t.slice(0, max);
+  return cut.slice(0, cut.lastIndexOf(' ')).replace(/[\s,;:|—-]+$/, '');
+}
+
+function fitDescription(description, fallbackTail = ' Москва и Московская область, работаем ежедневно.') {
+  let d = String(description || '').trim().replace(/\s+/g, ' ');
+  if (d.length < 70) d = (d.replace(/[.]?$/, '.') + fallbackTail).trim();
+  if (d.length <= 160) return d;
+  const cut = d.slice(0, 160);
+  const stop = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '));
+  if (stop >= 90) return cut.slice(0, stop + 1);
+  const sp = cut.lastIndexOf(' ');
+  return cut.slice(0, sp).replace(/[\s,;:—-]+$/, '') + '…';
+}
+
 export function renderPage({ title, description, path = '/', body, jsonLd = [], image = images.hero, leadHref = '#lead-form', waText = '' }) {
   const canonical = pathUrl(path);
   const hasRegion = /(?:Москв|Московск)/i.test(title);
-  const fullTitle = hasRegion ? title : `${title} | ${site.region}`;
+  const fullTitle = shortenTitle(hasRegion ? title : `${title} | ${site.region}`);
+  description = fitDescription(description);
   const schemas = [organizationSchema(), ...jsonLd];
   const absoluteImage = image.startsWith('http') ? image : `${site.baseUrl}${image}`;
   const usesWikimedia = image.includes('commons.wikimedia.org') || body.includes('commons.wikimedia.org');

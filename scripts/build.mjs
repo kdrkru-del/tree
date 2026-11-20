@@ -178,9 +178,10 @@ async function build() {
     await add(page.slug, legalPage(page));
   }
 
+  const lastmod = new Date().toISOString().slice(0, 10);
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${routes.map((route) => `  <url><loc>${xmlEscape(site.baseUrl + route)}</loc></url>`).join('\n')}
+${routes.map((route) => `  <url><loc>${xmlEscape(site.baseUrl + route)}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n')}
 </urlset>
 `;
 
