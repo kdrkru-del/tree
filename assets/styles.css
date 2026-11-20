@@ -6847,3 +6847,31 @@ body.has-modal-open {
     height: 130px;
   }
 }
+
+/* Главная на телефоне: сворачиваемые списки (правка 21.11.2026) */
+.fold-toggle { display: none; }
+@media (max-width: 768px) {
+  .fold-list:not(.is-open) > .fold-item { display: none; }
+  .fold-toggle {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    margin: 14px auto 0;
+    text-align: center;
+  }
+  .fold-text:not(.is-open) {
+    max-height: 11.5em;
+    overflow: hidden;
+    position: relative;
+  }
+  .fold-text:not(.is-open)::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4em;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+    pointer-events: none;
+  }
+}
