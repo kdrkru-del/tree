@@ -6993,3 +6993,31 @@ body.has-modal-open {
     padding: 22px 18px 18px;
   }
 }
+
+/* Квиз: кнопка «Позвонить» на любом шаге */
+.quiz-call-row {
+  margin: 0 0 16px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--muted, #5f6f66);
+}
+.quiz-call-link {
+  display: inline-block;
+  font-weight: 700;
+  color: var(--green-900, #1f6a46);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+@media (max-width: 480px) {
+  .quiz-call-row { font-size: 0.9rem; }
+  .quiz-call-link {
+    display: block;
+    margin: 8px auto 0;
+    padding: 12px 16px;
+    max-width: 320px;
+    border: 2px solid var(--green-900, #1f6a46);
+    border-radius: 12px;
+    text-decoration: none;
+  }
+}
