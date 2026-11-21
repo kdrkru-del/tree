@@ -163,7 +163,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">${wikimediaPreconnect}
-  <link rel="stylesheet" href="/assets/styles.css?v=20261121-reviews2">
+  <link rel="stylesheet" href="/assets/styles.css?v=20261121-quiz3">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   ${metrikaCounter()}
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
@@ -177,7 +177,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${floatingContacts(waText)}
   ${mobileBar(leadHref, waText)}
   ${photoModal(waText)}
-  <script src="/assets/app.js?v=20261121-reviews2" type="module"></script>
+  <script src="/assets/app.js?v=20261121-quiz3" type="module"></script>
 </body>
 </html>`;
 }
@@ -1091,6 +1091,9 @@ export function servicePage(service) {
   return renderPage({ title: service.h1, description: pageDescription, path, image: service.image, body, jsonLd: [breadcrumbSchema([{ name: 'Главная', url: '/' }, { name: service.title, url: path }]), serviceSchema(service, path), faqSchema(service.faq)] });
 }
 
+// Квиз сокращён до 3 шагов: 2 ключевых вопроса + контакты (остальное уточняем по телефону или по фото).
+const quizPick = (steps, indexes) => indexes.map((i) => steps[i]).filter(Boolean);
+
 const spilQuizSteps = [
   {
     question: 'Что нужно сделать?',
@@ -1263,6 +1266,8 @@ function renderQuiz({ serviceCode, serviceName, quizId, title, subtitle, steps, 
           </div>
         </div>
 
+        <p class="quiz-call-row">Не хотите отвечать на вопросы? <a class="quiz-call-link" href="${phoneHref()}" data-goal="click_phone" data-placement="quiz">Позвоните: ${esc(formatPhoneDisplay(site.phone))}</a></p>
+
         <form class="quiz-form" data-quiz-form data-placement="service_page" id="form-${quizId}">
           <input type="hidden" name="service" value="${esc(serviceName)}">
           <input type="hidden" name="service_code" value="${serviceCode}">
@@ -1408,7 +1413,7 @@ export function spilLandingPage(service) {
     quizId: 'quiz-spil',
     title: 'Предварительный расчёт стоимости спила',
     subtitle: 'Ответьте на несколько вопросов — предварительно оценим стоимость и технологию удаления',
-    steps: spilQuizSteps,
+    steps: quizPick(spilQuizSteps, [0, 1]),
     finalCtaText: 'Получить предварительный расчёт',
     submitNote: 'Окончательная смета подтверждается по фото или при осмотре до начала работ.',
     waText: waDirectTexts.spil
@@ -1639,7 +1644,7 @@ export function emergencyLandingPage(service) {
     quizId: 'quiz-emergency',
     title: 'Предварительная оценка аварийного дерева',
     subtitle: 'Ответьте на несколько вопросов — подберём безопасный способ и назовём ориентир стоимости',
-    steps: emergencyQuizSteps,
+    steps: quizPick(emergencyQuizSteps, [0, 1]),
     finalCtaText: 'Получить расчёт',
     submitNote: 'Оценка носит предварительный характер. Окончательные условия подтверждаются до начала работ.',
     waText: waDirectTexts.emergency_tree
@@ -1865,7 +1870,7 @@ export function raschistkaLandingPage(service) {
     quizId: 'quiz-clearing',
     title: 'Предварительный расчёт расчистки участка',
     subtitle: 'Ответьте на несколько вопросов — определим фронт работ и назовём ориентировочную стоимость',
-    steps: clearingQuizSteps,
+    steps: quizPick(clearingQuizSteps, [0, 2]),
     finalCtaText: 'Получить предварительный расчёт',
     submitNote: 'Окончательная смета подтверждается по фото или при осмотре до начала работ.',
     waText: waDirectTexts.land_clearing
@@ -2100,7 +2105,7 @@ export function pruningLandingPage(service) {
     quizId: 'quiz-pruning',
     title: 'Предварительный расчёт стоимости обрезки',
     subtitle: 'Ответьте на несколько вопросов — определим вид обрезки и назовём ориентир стоимости',
-    steps: pruningQuizSteps,
+    steps: quizPick(pruningQuizSteps, [0, 1]),
     finalCtaText: 'Получить расчёт обрезки',
     submitNote: 'Окончательная цена подтверждается по фото или при осмотре до начала работ.',
     waText: waDirectTexts.tree_pruning
@@ -2317,7 +2322,7 @@ export function raschistkaProsekLepLandingPage() {
     serviceCode: 'lep_clearing',
     serviceName: 'Расчистка просек ЛЭП',
     quizId: 'quiz-lep',
-    steps: lepQuizSteps,
+    steps: quizPick(lepQuizSteps, [1, 2]),
     isLep: true,
     title: 'Расчёт стоимости расчистки просеки / территории под ЛЭП',
     subtitle: 'Ответьте на несколько вопросов — специалист подготовит предварительную смету или согласует осмотр',
@@ -2780,7 +2785,7 @@ export function izmelchenieLandingPage(service) {
     quizId: 'quiz-chipping',
     title: 'Расчёт стоимости измельчения веток',
     subtitle: 'Ответьте на несколько вопросов — определим объём работ и назовём стоимость',
-    steps: chippingQuizSteps,
+    steps: quizPick(chippingQuizSteps, [0, 1]),
     finalCtaText: 'Получить предварительный расчёт',
     submitNote: 'Окончательная смета подтверждается по фото кучи веток до выезда.',
     waText: waDirectTexts.branch_chipping
