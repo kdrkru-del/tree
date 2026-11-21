@@ -26,8 +26,9 @@ import {
   waDirectTexts,
   workExamples
 } from './data.mjs';
+import { reviews, reviewsUrl } from './reviews.mjs';
 
-const esc = (value) => String(value ?? '')
+const esc =(value) => String(value ?? '')
   .replaceAll('&', '&amp;')
   .replaceAll('<', '&lt;')
   .replaceAll('>', '&gt;')
@@ -162,7 +163,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">${wikimediaPreconnect}
-  <link rel="stylesheet" href="/assets/styles.css?v=20261121-inner-hero">
+  <link rel="stylesheet" href="/assets/styles.css?v=20261121-reviews2">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   ${metrikaCounter()}
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
@@ -176,7 +177,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${floatingContacts(waText)}
   ${mobileBar(leadHref, waText)}
   ${photoModal(waText)}
-  <script src="/assets/app.js?v=20261121-inner-hero" type="module"></script>
+  <script src="/assets/app.js?v=20261121-reviews2" type="module"></script>
 </body>
 </html>`;
 }
@@ -450,9 +451,27 @@ export function homePage() {
   ${processSection()}
   ${organizationsSection()}
   ${videosSection()}
+  ${reviewsSection()}
   ${leadSection('Рассчитаем стоимость работ', 'Позвоните или оставьте номер — уточним задачу и назовём стоимость. Фото можно прислать позже, если удобно. Оплата по факту приёмки.', 'Расчёт стоимости', homeLeadOptions)}
   ${seoContentSection()}`;
   return renderPage({ title, description, path: '/', body, jsonLd: [professionalServiceSchema(), faqSchema(homeFaq), breadcrumbSchema([{ name: 'Главная', url: '/' }])] });
+}
+
+// Блок отзывов: показывается только если в src/reviews.mjs есть настоящие отзывы.
+export function reviewsSection(items = reviews, url = reviewsUrl) {
+  const list = (items || []).filter((r) => r && r.text && r.name);
+  if (!list.length) return '';
+  const cards = list.map((r) => {
+    const meta = [r.place, r.service, r.date].filter(Boolean).map(esc).join(' · ');
+    const initial = esc(String(r.name).trim().charAt(0).toUpperCase());
+    return `<figure class="review-card">
+        <svg class="review-quote" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M7.2 6C4.9 6 3 7.9 3 10.2V18h6.6v-6.6H6.3c0-1.4 1.1-2.4 2.4-2.4V6H7.2Zm9 0c-2.3 0-4.2 1.9-4.2 4.2V18h6.6v-6.6h-3.3c0-1.4 1.1-2.4 2.4-2.4V6h-1.5Z"/></svg>
+        <blockquote class="review-text">${esc(r.text)}</blockquote>
+        <figcaption class="review-author"><span class="review-avatar" aria-hidden="true">${initial}</span><span><strong>${esc(r.name)}</strong>${meta ? `<span class="review-meta">${meta}</span>` : ''}${r.source ? `<span class="review-source">Источник: ${esc(r.source)}</span>` : ''}</span></figcaption>
+      </figure>`;
+  }).join('');
+  const more = url ? `<p class="reviews-more"><a class="btn btn-ghost" href="${esc(url)}" target="_blank" rel="noopener nofollow">Все отзывы</a></p>` : '';
+  return `<section class="section section-muted reviews-section" id="reviews"><div class="container"><div class="section-head"><h2>Отзывы клиентов</h2><p>Что говорят заказчики о работе бригады в Москве и Московской области.</p></div><div class="reviews-grid">${cards}</div>${more}</div></section>`;
 }
 
 function heroMessengerRow(placement = 'hero', waText = '', primaryLabel = 'Написать в мессенджер:') {

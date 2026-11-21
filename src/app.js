@@ -303,7 +303,8 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       ['#clearing-videos .video-grid', 2],
       ['#complex-videos .video-grid', 2],
       ['.factors-grid', 4],
-      ['.trust-groups-grid', 3]
+      ['.trust-groups-grid', 3],
+      ['.reviews-grid', 2]
     ];
     lists.forEach(([selector, limit]) => {
       const el = document.querySelector(selector);
