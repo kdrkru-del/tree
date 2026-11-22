@@ -482,8 +482,13 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       };
       // Считаем начало заполнения только по действию человека (ввод или касание поля),
       // а не по программному фокусу при открытии попапа.
-      form.addEventListener('input', trackFormStart, { once: true });
+      // В квизе выбор ответа на шаге не считаем началом формы: для него есть quiz_start,
+      // а form_start означает, что человек дошёл до поля телефона.
+      if (!form.hasAttribute('data-quiz-form')) {
+        form.addEventListener('input', trackFormStart, { once: true });
+      }
       phoneInput.addEventListener('pointerdown', trackFormStart, { once: true });
+      phoneInput.addEventListener('input', trackFormStart, { once: true });
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -582,7 +587,8 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
           reachGoal('lead_form', { form: formId, placement: currentPlacement, service });
           reachGoal('lead_submit', { form: formId, placement: currentPlacement, service });
           reachGoal('lead_form_success', { form: formId, placement: currentPlacement, service });
-          reachGoal('lead_sent', { form: formId, phone, placement: currentPlacement });
+          // Номер телефона клиента в параметры Метрики не передаём (персональные данные, 152-ФЗ).
+          reachGoal('lead_sent', { form: formId, placement: currentPlacement });
           phoneInput.value = '';
           if (nameInput) nameInput.value = '';
           if (cityInput) cityInput.value = '';

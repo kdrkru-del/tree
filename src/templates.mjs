@@ -177,7 +177,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${floatingContacts(waText)}
   ${mobileBar(leadHref, waText)}
   ${photoModal(waText)}
-  <script src="/assets/app.js?v=20261121-quiz3" type="module"></script>
+  <script src="/assets/app.js?v=20261122-analytics1" type="module"></script>
 </body>
 </html>`;
 }
