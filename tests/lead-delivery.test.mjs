@@ -105,11 +105,8 @@ test('phone-only forms keep data on errors and never count WhatsApp as delivery'
   assert.equal([...source.matchAll(/phone:\s+fields\.phone/g)].length, 1);
   assert.equal([...source.matchAll(/service:\s+fields\.service/g)].length, 1);
   assert.match(source, /deliverLead\(config\.leadEndpoint, payload\)/);
-  assert.equal([...source.matchAll(/reachGoal\('lead_form',/g)].length, 1);
-  assert.equal([...source.matchAll(/reachGoal\('lead_form_success',/g)].length, 1);
-  assert.equal([...source.matchAll(/reachGoal\('lead_sent',/g)].length, 1);
-  assert.ok(source.indexOf("await deliverLead(config.leadEndpoint, payload)") < source.indexOf("reachGoal('lead_form',"));
-  assert.ok(source.indexOf("reachGoal('lead_form',") < source.indexOf("reachGoal('lead_form_success',"));
+  assert.equal([...source.matchAll(/reachGoal\('form_submit_success',/g)].length, 1);
+  assert.ok(source.indexOf("await deliverLead(config.leadEndpoint, payload)") < source.indexOf("reachGoal('form_submit_success',"));
   assert.doesNotMatch(source, /whatsappDraftUrl|openWhatsAppDraft|lead_whatsapp_fallback|window\.open/);
   assert.ok(source.indexOf("await deliverLead(config.leadEndpoint, payload)") < source.indexOf("phoneInput.value = ''"));
 

@@ -300,14 +300,14 @@ test('E2E Matrix: Hero inline forms, contact channels, stump pages & clean copy'
   }
 });
 
-test('E2E Matrix: app.js emits form_start, form_submit_success, lead_submit, click_max with placement', async () => {
+test('E2E Matrix: app.js emits form_start, form_submit_success, click_email, click_max with placement', async () => {
   const fsSync = await import('node:fs');
   const pathMod = await import('node:path');
   const urlMod = await import('node:url');
   const testDir = pathMod.dirname(urlMod.fileURLToPath(import.meta.url));
   const appSource = fsSync.readFileSync(pathMod.resolve(testDir, '..', 'src', 'app.js'), 'utf8');
   const trackingSource = fsSync.readFileSync(pathMod.resolve(testDir, '..', 'src', 'tracking.mjs'), 'utf8');
-  for (const token of ['form_start', 'form_submit_success', 'lead_submit', 'click_${messengerChannel}', 'getMessengerChannel', 'placement']) {
+  for (const token of ['form_start', 'form_submit_success', 'click_email', 'click_${messengerChannel}', 'getMessengerChannel', 'placement']) {
     assert.ok(appSource.includes(token), `src/app.js missing ${token}`);
   }
   assert.ok(trackingSource.includes("'max'"), "src/tracking.mjs missing 'max'");

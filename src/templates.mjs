@@ -289,7 +289,7 @@ function mobileNavContacts(waText = '') {
 function footer(waText = '') {
   const displayPhone = formatPhoneDisplay(site.phone);
   const phoneEl = hasValue(site.phone) ? `<a class="phone-link footer-phone" href="${phoneHref()}" data-goal="click_phone">${esc(displayPhone)}</a>` : '';
-  const emailEl = hasValue(site.email) ? `<a class="footer-email" href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : '';
+  const emailEl = hasValue(site.email) ? `<a class="footer-email" href="mailto:${esc(site.email)}" data-goal="click_email" data-placement="footer">${esc(site.email)}</a>` : '';
   const waBtn = hasValue(site.messengerUrl)
     ? `<a class="footer-msg-btn footer-msg-wa" href="${messengerHref('/#lead-form', waText)}" target="_blank" rel="noopener" data-goal="click_whatsapp">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.6 9.6 0 0 1-4.2-1L3 21l1.5-4.5A9 9 0 1 1 21 11.5Z"/><path d="M8.8 8.2c.2 3 2 5 5 6.2l1.4-1.4 2 .9c.2.1.3.4.2.7-.5 1.4-1.6 2-3.2 1.8-4.3-.7-7.3-3.7-8-8-.2-1.5.4-2.6 1.8-3.2.3-.1.6 0 .7.3l.9 2-1.3 1.3"/></svg>
@@ -1304,7 +1304,13 @@ function renderQuiz({ serviceCode, serviceName, quizId, title, subtitle, steps, 
           <div class="quiz-step quiz-step-final" data-step="${totalSteps}">
             <div class="quiz-question-box">
               <h3 class="quiz-question-title">Куда прислать предварительный расчёт?</h3>
-              <p class="quiz-question-hint">Оценим параметры задачи и свяжемся с вами после получения ответов.</p>
+              <p class="quiz-question-hint">Выберите удобный способ — если выберете мессенджер, пришлём расчёт туда без звонка.</p>
+            </div>
+            <div class="quiz-channel-group" role="radiogroup" aria-label="Удобный способ получения расчёта">
+              <label class="quiz-channel-chip"><input type="radio" name="preferred_channel" value="WhatsApp (без звонка)" checked><span>WhatsApp (без звонка)</span></label>
+              <label class="quiz-channel-chip"><input type="radio" name="preferred_channel" value="Telegram (без звонка)"><span>Telegram (без звонка)</span></label>
+              <label class="quiz-channel-chip"><input type="radio" name="preferred_channel" value="MAX (без звонка)"><span>MAX (без звонка)</span></label>
+              <label class="quiz-channel-chip"><input type="radio" name="preferred_channel" value="Позвонить по телефону"><span>Позвонить</span></label>
             </div>
             <div class="quiz-final-grid">
               <div class="lead-field-group">

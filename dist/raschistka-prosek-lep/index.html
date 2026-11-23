@@ -429,7 +429,13 @@
           <div class="quiz-step quiz-step-final" data-step="3">
             <div class="quiz-question-box">
               <h3 class="quiz-question-title">Куда прислать предварительный расчёт?</h3>
-              <p class="quiz-question-hint">Оценим параметры задачи и свяжемся с вами после получения ответов.</p>
+              <p class="quiz-question-hint">Выберите удобный способ — если выберете мессенджер, пришлём расчёт туда без звонка.</p>
+            </div>
+            <div class="quiz-channel-group" role="radiogroup" aria-label="Удобный способ получения расчёта">
+              <label class="quiz-channel-chip"><input type="radio" name="preferred_channel" value="WhatsApp (без звонка)" checked><span>WhatsApp (без звонка)</span></label>
+              <label class="quiz-channel-chip"><input type="radio" name="preferred_channel" value="Telegram (без звонка)"><span>Telegram (без звонка)</span></label>
+              <label class="quiz-channel-chip"><input type="radio" name="preferred_channel" value="MAX (без звонка)"><span>MAX (без звонка)</span></label>
+              <label class="quiz-channel-chip"><input type="radio" name="preferred_channel" value="Позвонить по телефону"><span>Позвонить</span></label>
             </div>
             <div class="quiz-final-grid">
               <div class="lead-field-group">
@@ -740,7 +746,7 @@
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V8l5 5 5-5v8"/></svg>
         <span>MAX</span>
       </a></div>
-      <a class="footer-email" href="mailto:srez.z@yandex.ru">srez.z@yandex.ru</a>
+      <a class="footer-email" href="mailto:srez.z@yandex.ru" data-goal="click_email" data-placement="footer">srez.z@yandex.ru</a>
       <p class="call-note">В целях контроля качества разговор может быть записан.</p>
     </div>
   </div>

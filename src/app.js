@@ -186,14 +186,17 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
       const goal = goalNode ? goalNode.dataset.goal : '';
       const href = targetNode ? targetNode.getAttribute('href') : '';
       const phoneLink = event.target.closest('a[href^="tel:"]');
+      const emailLink = event.target.closest('a[href^="mailto:"]');
       const messengerChannel = getMessengerChannel(href, goal);
 
-      if (goal && goal !== 'click_phone' && goal !== 'click_messenger') {
+      if (goal && goal !== 'click_phone' && goal !== 'click_messenger' && goal !== 'click_email') {
         reachGoal(goal, { href, placement });
       }
       if (phoneLink) {
         reachGoal('click_phone', { href: phoneLink.getAttribute('href'), placement: getPlacement(phoneLink) });
-        reachGoal('phone_click', { href: phoneLink.getAttribute('href'), placement: getPlacement(phoneLink) });
+      }
+      if (emailLink) {
+        reachGoal('click_email', { href: emailLink.getAttribute('href'), placement: getPlacement(emailLink) });
       }
       if (messengerChannel) {
         const channelGoal = `click_${messengerChannel}`;
@@ -201,9 +204,6 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
           reachGoal(channelGoal, { href, placement });
         }
         reachGoal('click_messenger', { channel: messengerChannel, placement });
-        if (messengerChannel === 'telegram') {
-          reachGoal('telegram_click', { channel: 'telegram', placement });
-        }
       }
     });
 
@@ -478,7 +478,6 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         form.dataset.started = 'true';
         const fId = form.dataset.formId || form.dataset.quizId || 'form';
         reachGoal('form_start', { form: fId, placement });
-        reachGoal('lead_form_start', { form: fId, placement });
       };
       // Считаем начало заполнения только по действию человека (ввод или касание поля),
       // а не по программному фокусу при открытии попапа.
@@ -533,6 +532,10 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
               answersSummary.push(`• ${qText}: ${checked.join(', ')}`);
             }
           });
+          const preferredChannel = form.querySelector('[name="preferred_channel"]:checked')?.value || '';
+          if (preferredChannel) {
+            answersSummary.push(`• Способ ответа: ${preferredChannel}`);
+          }
           if (answersSummary.length) {
             comment = `Параметры расчёта (${service}):\n` + answersSummary.join('\n');
           }
@@ -580,15 +583,10 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
             await deliverLead(config.leadEndpoint, payload);
           }
 
-          // Успех — только после реального ответа сервера
+          // Успех — только после реального ответа сервера (чистая макро-цель без дублей)
           const currentPlacement = form.dataset.placement || placement;
           form.dataset.submitted = 'true';
           reachGoal('form_submit_success', { form: formId, placement: currentPlacement, service });
-          reachGoal('lead_form', { form: formId, placement: currentPlacement, service });
-          reachGoal('lead_submit', { form: formId, placement: currentPlacement, service });
-          reachGoal('lead_form_success', { form: formId, placement: currentPlacement, service });
-          // Номер телефона клиента в параметры Метрики не передаём (персональные данные, 152-ФЗ).
-          reachGoal('lead_sent', { form: formId, placement: currentPlacement });
           phoneInput.value = '';
           if (nameInput) nameInput.value = '';
           if (cityInput) cityInput.value = '';
