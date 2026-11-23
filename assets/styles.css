@@ -7021,3 +7021,80 @@ body.has-modal-open {
     text-decoration: none;
   }
 }
+
+/* Квиз: выбор канала получения расчёта (пункт 6 аудита 23.11.2026) */
+.quiz-channel-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+.quiz-channel-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+.quiz-channel-chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.quiz-channel-chip span {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  color: var(--graphite, #1f2937);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+.quiz-channel-chip input:checked + span {
+  border-color: var(--green-800, #166534);
+  background: #ecfdf5;
+  color: var(--green-950, #052e16);
+}
+
+/* Мобильный hero главной: исключить перекрытие кнопки #hero-inline-home нижней sticky-панелью (пункт 7) */
+@media (max-width: 640px) {
+  .hero-direct {
+    padding: 76px 0 96px;
+    min-height: auto;
+  }
+  .hero-direct .hero-content--with-form {
+    gap: 14px;
+  }
+  .hero-direct h1 {
+    font-size: 1.52rem;
+    line-height: 1.16;
+    margin-bottom: 8px;
+  }
+  .hero-direct .hero-subtitle,
+  .hero-direct .hero-lead {
+    font-size: 0.92rem;
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
+  .hero-direct .hero-inline-card {
+    padding: 14px 14px 16px;
+  }
+  .hero-direct .hero-inline-title {
+    font-size: 0.98rem;
+    margin-bottom: 8px;
+  }
+  .hero-direct .lead-form--hero-inline .hero-inline-fields {
+    gap: 7px;
+  }
+  .hero-direct .lead-form--hero-inline input[type="text"],
+  .hero-direct .lead-form--hero-inline input[type="tel"] {
+    height: 40px;
+    padding: 8px 12px;
+  }
+  .hero-direct .lead-form--hero-inline .btn-full {
+    min-height: 42px;
+    padding: 10px 14px;
+  }
+}
