@@ -3229,6 +3229,17 @@ details p {
   color: #fff !important;
 }
 
+.form-error-sms {
+  display: none;
+  background: #fff;
+  color: #1f3b2d;
+  border: 1px solid #1f3b2d;
+}
+
+@media (max-width: 600px), (pointer: coarse) {
+  .form-error-btn.form-error-sms { display: inline-flex; }
+}
+
 .form-error-wa {
   background: #25d366;
   color: #fff !important;

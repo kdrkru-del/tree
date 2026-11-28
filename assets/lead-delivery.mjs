@@ -96,3 +96,86 @@ export async function deliverLead(endpoint, payload, files = [], fetchImpl = glo
 
   return responseData;
 }
+
+// Повтор имеет смысл, только если сервер не ответил или ответил сбоем (5xx).
+export function isRetryableError(error) {
+  const status = Number(error && error.status) || 0;
+  return status === 0 || status >= 500;
+}
+
+export async function deliverLeadWithRetry(endpoint, payload, files = [], options = {}) {
+  const { attempts = 2, delayMs = 2000, fetchImpl = globalThis.fetch, timeoutMs } = options;
+  for (let attempt = 1; ; attempt += 1) {
+    try {
+      return await deliverLead(endpoint, payload, files, fetchImpl, timeoutMs);
+    } catch (error) {
+      if (attempt >= attempts || !isRetryableError(error)) throw error;
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+  }
+}
+
+// Очередь неотправленных заявок в браузере посетителя.
+const PENDING_KEY = 'tree_site_pending_leads';
+const PENDING_MAX_AGE_MS = 72 * 60 * 60 * 1000;
+const PENDING_MAX_ITEMS = 5;
+
+function readPending(storage, now) {
+  try {
+    const items = JSON.parse(storage.getItem(PENDING_KEY) || '[]');
+    return items.filter((item) => item && item.payload && now - item.queuedAt < PENDING_MAX_AGE_MS);
+  } catch {
+    return [];
+  }
+}
+
+function writePending(storage, items) {
+  try {
+    if (items.length) storage.setItem(PENDING_KEY, JSON.stringify(items.slice(-PENDING_MAX_ITEMS)));
+    else storage.removeItem(PENDING_KEY);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function removePending(storage, leadId, now) {
+  writePending(storage, readPending(storage, now).filter((item) => item.payload.lead_id !== leadId));
+}
+
+export function queuePendingLead(storage, payload, { photos = 0, now = Date.now() } = {}) {
+  const items = readPending(storage, now).filter((item) => item.payload.lead_id !== payload.lead_id);
+  items.push({ payload, photos, queuedAt: now });
+  return writePending(storage, items);
+}
+
+// Клиент отправил новую заявку успешно: старые попытки с тем же номером больше не нужны.
+export function dropPendingLeads(storage, phone, now = Date.now()) {
+  writePending(storage, readPending(storage, now).filter((item) => item.payload.phone !== phone));
+}
+
+function asDelayedPayload({ payload, photos }) {
+  const note = [
+    'Повторная отправка: с первого раза заявка не прошла (возможен дубль).',
+    photos ? `Фото не приложены (${photos} шт.), запросите у клиента.` : ''
+  ].filter(Boolean).join(' ');
+  const comment = [payload.fields && payload.fields.comment, note].filter(Boolean).join('\n');
+  return { ...payload, comment, fields: { ...payload.fields, comment } };
+}
+
+export async function flushPendingLeads(storage, send, now = Date.now()) {
+  const items = readPending(storage, now);
+  writePending(storage, items);
+  const sent = [];
+  for (const item of items) {
+    try {
+      await send(asDelayedPayload(item));
+      sent.push(item.payload);
+    } catch (error) {
+      if (isRetryableError(error)) continue;
+      // Сервер отклонил данные: повторять бессмысленно.
+    }
+    removePending(storage, item.payload.lead_id, now);
+  }
+  return sent;
+}
