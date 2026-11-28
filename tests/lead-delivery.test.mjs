@@ -106,9 +106,11 @@ test('phone-only forms keep data on errors and never count WhatsApp as delivery'
   assert.equal([...source.matchAll(/service:\s+fields\.service/g)].length, 1);
   assert.match(source, /deliverLead\(config\.leadEndpoint, payload\)/);
   assert.equal([...source.matchAll(/reachGoal\('form_submit_success',/g)].length, 1);
-  assert.ok(source.indexOf("await deliverLead(config.leadEndpoint, payload)") < source.indexOf("reachGoal('form_submit_success',"));
+  assert.ok(source.includes('await deliverLeadWithRetry(config.leadEndpoint, payload, files)'));
+  assert.ok(source.indexOf("await deliverLeadWithRetry(config.leadEndpoint, payload, files)") < source.indexOf("reachGoal('form_submit_success',"));
   assert.doesNotMatch(source, /whatsappDraftUrl|openWhatsAppDraft|lead_whatsapp_fallback|window\.open/);
-  assert.ok(source.indexOf("await deliverLead(config.leadEndpoint, payload)") < source.indexOf("phoneInput.value = ''"));
+  assert.ok(source.includes('await deliverLeadWithRetry(config.leadEndpoint, payload, files)'));
+  assert.ok(source.indexOf("await deliverLeadWithRetry(config.leadEndpoint, payload, files)") < source.indexOf("phoneInput.value = ''"));
 
   const templates = readFileSync(new URL('../src/templates.mjs', import.meta.url), 'utf8');
   assert.doesNotMatch(templates, /data-submission-link/);

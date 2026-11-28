@@ -163,7 +163,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">${wikimediaPreconnect}
-  <link rel="stylesheet" href="/assets/styles.css?v=20261121-quiz3">
+  <link rel="stylesheet" href="/assets/styles.css?v=20261126-delivery">
   <script>window.TREE_SITE_CONFIG = ${JSON.stringify({ metrikaId: site.metrikaId, leadEndpoint: site.leadEndpoint, novofonScriptUrl: site.novofonScriptUrl, phoneHref: site.phoneHref, telegramUrl: site.telegramUrl, messengerUrl: site.messengerUrl, maxUrl: site.maxUrl, maxPhone: site.maxPhone })};</script>
   ${metrikaCounter()}
   <script type="application/ld+json">${JSON.stringify(schemas)}</script>
@@ -177,7 +177,7 @@ export function renderPage({ title, description, path = '/', body, jsonLd = [], 
   ${floatingContacts(waText)}
   ${mobileBar(leadHref, waText)}
   ${photoModal(waText)}
-  <script src="/assets/app.js?v=20261122-analytics1" type="module"></script>
+  <script src="/assets/app.js?v=20261126-delivery" type="module"></script>
 </body>
 </html>`;
 }
@@ -361,6 +361,7 @@ function formErrorMarkup(customClass = '', waText = '') {
     <div class="form-error-title">Не удалось отправить заявку через сервер. Попробуйте ещё раз или свяжитесь с нами напрямую:</div>
     <div class="form-error-actions">
       <a href="${esc(site.phoneHref)}" class="form-error-btn form-error-call" data-goal="click_phone">📞 Позвонить: ${esc(formatPhoneDisplay(site.phone))}</a>
+      <a href="${esc(site.phoneHref.replace(/^tel:/, 'sms:'))}" class="form-error-btn form-error-sms" data-goal="click_sms">Отправить СМС</a>
       <a href="${esc(waLink)}" target="_blank" rel="noopener" class="form-error-btn form-error-wa" data-goal="click_whatsapp">Написать в WhatsApp</a>
       <a href="${esc(site.telegramUrl)}" target="_blank" rel="noopener" class="form-error-btn form-error-tg" data-goal="click_telegram">Написать в Telegram</a>
     </div>

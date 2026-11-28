@@ -1,4 +1,7 @@
-import { createLeadId, deliverLead } from './lead-delivery.mjs?v=20260824-metrika-goals-1';
+import {
+  createLeadId, deliverLead, deliverLeadWithRetry, dropPendingLeads,
+  flushPendingLeads, isRetryableError, queuePendingLead
+} from './lead-delivery.mjs?v=20261126-delivery';
 import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=20260824-metrika-goals-1';
 
 (function () {
@@ -353,6 +356,33 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     localStorage.setItem(key, JSON.stringify(leads.slice(-30)));
   }
 
+  let flushingPending = false;
+
+  async function retryPendingLeads() {
+    if (flushingPending || !config.leadEndpoint) return;
+    flushingPending = true;
+    try {
+      const sent = await flushPendingLeads(localStorage, (payload) => deliverLead(config.leadEndpoint, payload));
+      sent.forEach((payload) => {
+        const params = { form: payload.form, service: payload.service, recovered: true };
+        reachGoal('lead_delivery_recovered', params);
+      });
+    } catch {
+      // localStorage недоступен: повторять нечего
+    } finally {
+      flushingPending = false;
+    }
+  }
+
+  function initPendingLeadRetry() {
+    retryPendingLeads();
+    window.addEventListener('online', retryPendingLeads);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') retryPendingLeads();
+    });
+    window.setInterval(retryPendingLeads, 30000);
+  }
+
   function saveError(error) {
     const key = 'tree_site_form_errors';
     const errors = JSON.parse(localStorage.getItem(key) || '[]');
@@ -371,6 +401,11 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
     const waLink = errorEl.querySelector('.form-error-wa');
     if (waLink && config.messengerUrl) {
       waLink.href = `${config.messengerUrl}?text=${textMsg}`;
+    }
+    const smsLink = errorEl.querySelector('.form-error-sms');
+    if (smsLink && config.phoneHref) {
+      // «?&body=» понимают и Android, и iOS
+      smsLink.href = `${config.phoneHref.replace(/^tel:/, 'sms:')}?&body=${textMsg}`;
     }
     const tgLink = errorEl.querySelector('.form-error-tg');
     if (tgLink && config.telegramUrl) {
@@ -577,11 +612,8 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
 
         try {
           const files = form._selectedFiles || [];
-          if (files.length) {
-            await deliverLead(config.leadEndpoint, payload, files);
-          } else {
-            await deliverLead(config.leadEndpoint, payload);
-          }
+          await deliverLeadWithRetry(config.leadEndpoint, payload, files);
+          try { dropPendingLeads(localStorage, payload.phone); } catch { /* нет localStorage */ }
 
           // Успех — только после реального ответа сервера (чистая макро-цель без дублей)
           const currentPlacement = form.dataset.placement || placement;
@@ -625,7 +657,17 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
         } catch (error) {
           saveError({ at: new Date().toISOString(), message: error.message, payload });
           reachGoal('lead_delivery_error', { form: formId, message: error.message });
+          let queued = false;
+          if (isRetryableError(error)) {
+            try {
+              queued = queuePendingLead(localStorage, payload, { photos: (form._selectedFiles || []).length });
+            } catch { /* нет localStorage */ }
+          }
           if (errorEl) {
+            const title = errorEl.querySelector('.form-error-title');
+            if (title && queued) {
+              title.textContent = 'Заявка пока не отправлена: нет связи с сервером. Пока вы на сайте, мы будем повторять отправку. Чтобы не ждать, позвоните или напишите нам:';
+            }
             errorEl.hidden = false;
             syncErrorFallback(errorEl, payload);
           }
@@ -1001,6 +1043,7 @@ import { getFirstTouchAttribution, getMessengerChannel } from './tracking.mjs?v=
   initMobileFolds();
   initPhoneMasks();
   initLeadForms();
+  initPendingLeadRetry();
   initQuizzes();
   initPhotoPopup();
 })();
